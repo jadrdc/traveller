@@ -12,9 +12,9 @@ import com.agusteam.traveller.presenter.wishlist.viewmodels.WishListItemViewMode
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    single<SignUpViewModel> { SignUpViewModel(get(),get()) }
+    single<SignUpViewModel> { SignUpViewModel(get(), get()) }
     single<LoginViewModel> { LoginViewModel(get(), get(), get()) }
-    single<ExploreViewModel> { ExploreViewModel() }
+    single<ExploreViewModel> { ExploreViewModel(get()) }
     single<ProfileViewModel> { ProfileViewModel() }
     single<OrderHistoryViewModel> { OrderHistoryViewModel() }
     single<ShoppingitemsDetailsViewModel> { ShoppingitemsDetailsViewModel() }

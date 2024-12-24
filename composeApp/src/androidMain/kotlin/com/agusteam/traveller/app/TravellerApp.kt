@@ -1,6 +1,7 @@
 package com.agusteam.traveller.app
 
 import android.app.Application
+import com.agusteam.traveller.core.di.dataDiModule
 import com.agusteam.traveller.core.di.diDomainModule
 import com.agusteam.traveller.core.di.networkModule
 import com.agusteam.traveller.core.di.viewModelModule
@@ -13,7 +14,7 @@ class TravellerApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@TravellerApp)
-            modules(viewModelModule, diDomainModule, networkModule)
+            modules(viewModelModule, diDomainModule, networkModule,dataDiModule)
         }
         PaymentConfiguration.init(
             applicationContext,

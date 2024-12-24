@@ -38,12 +38,14 @@ fun ProviderProfileCategory(
             horizontalArrangement = Arrangement.spacedBy(8.dp), // Horizontal spacing between chips
         ) {
             categoriesModel.forEach { category ->
-                Icon(
-                    modifier = Modifier.size(34.dp),
-                    contentDescription = null,
-                    tint = primary,
-                    painter = painterResource(category.imageIcon),
-                )
+                category.imageIcon?.let {
+                    Icon(
+                        modifier = Modifier.size(34.dp),
+                        contentDescription = null,
+                        tint = primary,
+                        painter = painterResource(it),
+                    )
+                }
             }
         }
         HorizontalDivider(Modifier.padding(top = 16.dp))

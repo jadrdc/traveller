@@ -79,12 +79,14 @@ fun HomeFilterContent(
                                 ExploreEvent.OnFilterCategorySelected(category)
                             )
                         }, label = { Text(text = category.description) }, leadingIcon = {
-                            Icon(
-                                modifier = Modifier.size(12.dp),
-                                contentDescription = null,
-                                tint = primary,
-                                painter = painterResource(category.imageIcon),
-                            )
+                            category.imageIcon?.let {
+                                Icon(
+                                    modifier = Modifier.size(32.dp),
+                                    contentDescription = null,
+                                    tint = primary,
+                                    painter = painterResource(it),
+                                )
+                            }
                         }
                     )
                 }
