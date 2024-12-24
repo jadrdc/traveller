@@ -2,8 +2,8 @@ package com.agusteam.traveller.app
 
 import android.app.Application
 import com.agusteam.traveller.core.di.diDomainModule
+import com.agusteam.traveller.core.di.networkModule
 import com.agusteam.traveller.core.di.viewModelModule
-import com.agusteam.traveller.di.networkModule
 import com.stripe.android.PaymentConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
