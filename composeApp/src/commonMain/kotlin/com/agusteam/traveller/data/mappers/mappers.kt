@@ -1,0 +1,28 @@
+package com.agusteam.traveller.data.mappers
+
+import com.agusteam.traveller.core.base.OperationResult
+import com.agusteam.traveller.data.model.ErrorResponse
+import com.agusteam.traveller.data.model.LoginResponse
+import com.agusteam.traveller.domain.models.LoginModel
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
+
+
+fun LoginResponse.toDomainModel(): LoginModel {
+    return LoginModel(email, id, lastname, name, phone)
+}
+
+suspend inline fun <reified T> mapResponse(response: HttpResponse): OperationResult<T> {
+    return when (response.status.value) {
+        in 200..299 -> {
+            // Map the response body to the expected type
+            val body = response.body<T>()
+            OperationResult.Success(body)
+        }
+        else -> {
+            // Handle error response and map it to the ErrorResponse type
+            val error = response.body<ErrorResponse>()
+            OperationResult.Error(Exception(error.message))
+        }
+    }
+}

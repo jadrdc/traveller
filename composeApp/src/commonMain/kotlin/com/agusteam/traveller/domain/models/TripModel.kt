@@ -1,0 +1,13 @@
+package com.agusteam.traveller.domain.models
+
+import com.agusteam.traveller.domain.models.CategoryModel
+
+data class TripModel(
+    val name: String,
+    val image: String = "https://picsum.photos/200/300",
+    val price: String,
+    val description: String = "",
+    val date: String = "Aug 31 - Sep 5",
+    val categoryList: List<CategoryModel> = listOf(),
+    val isSavedForLater: Boolean = false
+)
