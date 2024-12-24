@@ -77,12 +77,15 @@ fun TripItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(item.categoryList) { category ->
-                        Icon(
-                            modifier = Modifier.size(24.dp),
-                            contentDescription = null,
-                            tint = primary,
-                            painter = painterResource(category.imageIcon),
-                        )
+
+                        category.imageIcon?.let {
+                            Icon(
+                                modifier = Modifier.size(32.dp),
+                                contentDescription = null,
+                                tint = primary,
+                                painter = painterResource(it),
+                            )
+                        }
                     }
                 }
             }

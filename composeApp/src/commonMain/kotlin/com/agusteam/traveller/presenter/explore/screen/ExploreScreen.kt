@@ -7,15 +7,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.presenter.common.BottomModalSheet
+import com.agusteam.traveller.presenter.common.ErrorModal
 import com.agusteam.traveller.presenter.common.SearchBar
 import com.agusteam.traveller.presenter.common.loading.ExploreScreenShimmerEffect
 import com.agusteam.traveller.presenter.explore.composable.CategorySection
@@ -23,7 +19,6 @@ import com.agusteam.traveller.presenter.explore.composable.HomeFilterContent
 import com.agusteam.traveller.presenter.explore.composable.TripItem
 import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent
 import com.agusteam.traveller.presenter.explore.viewmodels.ExploreViewModel
-import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -35,14 +30,14 @@ fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel(), goDetails: () -
     val bottomState = rememberModalBottomSheetState(
         false,
     )
-    var isLoading by remember{
-        mutableStateOf(true)
-    }
-    LaunchedEffect(Unit) {
-        delay(3000) // Delay for 3 seconds
-        isLoading = false
-    }
-    if (isLoading) {
+
+    ErrorModal(title = state.value.errorModel?.title ?: "",
+        message = state.value.errorModel?.message ?: "",
+        showError = state.value.errorModel != null, onDismiss = {
+            viewModel.onExploreEventChanged(ExploreEvent.OnErrorModalAccepted)
+        })
+
+    if (state.value.isLoadingSkeleton) {
         ExploreScreenShimmerEffect()
     } else {
         LazyColumn(

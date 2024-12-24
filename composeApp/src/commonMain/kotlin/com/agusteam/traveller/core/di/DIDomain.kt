@@ -1,7 +1,10 @@
 package com.agusteam.traveller.core.di
 
+import com.agusteam.traveller.data.imp.CategoryRepositoryImpl
 import com.agusteam.traveller.data.imp.LoginRepositoryImpl
+import com.agusteam.traveller.domain.interfaces.CategoryRepository
 import com.agusteam.traveller.domain.interfaces.LoginRepository
+import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
 import com.agusteam.traveller.domain.usecase.LoginUseCase
 import com.agusteam.traveller.domain.usecase.RequestResetPasswordEmailUseCase
 import com.agusteam.traveller.domain.usecase.SignUpUseCase
@@ -14,4 +17,6 @@ val diDomainModule = module {
     single<LoginUseCase> { LoginUseCase(get()) }
     single<RequestResetPasswordEmailUseCase> { RequestResetPasswordEmailUseCase(get()) }
     single<SignUpUseCase> { SignUpUseCase(get()) }
+    single<CategoryRepository> { CategoryRepositoryImpl(get()) }
+    single<GetCategoryUseCase> { GetCategoryUseCase(get()) }
 }

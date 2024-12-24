@@ -33,14 +33,10 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val navController = rememberNavController()
     val homeState = viewModel.state.collectAsStateWithLifecycle().value
-    LaunchedEffect(Unit) {
-
-    }
-
 
     MaterialTheme(typography = CustomTypography()) {
         Scaffold(topBar = {}, bottomBar = {
-            if (homeState.currentNavigationOption.value != HomeOption.SHOPPING_ITEM_DETAIL) BottomNavigationBar(
+            if (homeState.currentNavigationOption != HomeOption.SHOPPING_ITEM_DETAIL) BottomNavigationBar(
                 navController = navController,
                 visible = true
             )
@@ -52,30 +48,30 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                     startDestination = NavigationRoutes.HomeScreen.route
                 ) {
                     composable(NavigationRoutes.HomeScreen.route) {
-                        homeState.changeHomeOption(HomeOption.EXPLORE)
+                        viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.EXPLORE))
                         ExploreScreen { navController.navigate(NavigationRoutes.TripDetailScreen.route) }
                     }
                     composable(NavigationRoutes.ProfileScreen.route) {
-                        homeState.changeHomeOption(HomeOption.PROFILE)
+                        viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.PROFILE))
                         ProfileScreen()
                     }
                     composable(NavigationRoutes.WishListScreen.route) {
-                        homeState.changeHomeOption(HomeOption.WISHLIST)
+                        viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.WISHLIST))
                         WishListNavigationFlow()
                     }
                     composable(NavigationRoutes.TripDetailScreen.route) {
-                        homeState.changeHomeOption(HomeOption.SHOPPING_ITEM_DETAIL)
+                        viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.SHOPPING_ITEM_DETAIL))
                         ShoppingFlowNavigation(goBack = { navController.popBackStack() })
                     }
 
                     composable(NavigationRoutes.OrderHistoryScreen.route) {
                         OrderHistoryNavigationFlow(onClick = {
-                            homeState.changeHomeOption(HomeOption.SHOPPING_ITEM_DETAIL)
+                            viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.SHOPPING_ITEM_DETAIL))
                         }, onBackPreesed = {
-                            homeState.changeHomeOption(HomeOption.TRIP)
+                            viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.TRIP))
                         })
                         LaunchedEffect(Unit) {
-                            homeState.changeHomeOption(HomeOption.TRIP)
+                            viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.TRIP))
                         }
                     }
                 }

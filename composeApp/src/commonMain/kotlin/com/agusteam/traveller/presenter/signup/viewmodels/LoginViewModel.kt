@@ -54,7 +54,7 @@ class LoginViewModel(
         }
     }
 
-    private fun OnErrorHappened(value: Boolean, title: String = "", message: String = "") {
+    private fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
         val errorModel = if (!value) {
             null
         } else {
@@ -72,7 +72,7 @@ class LoginViewModel(
             updateState { copy(isLoading = true) }
             when (val result = useCase(state.value.email, state.value.password)) {
                 is OperationResult.Error -> {
-                    OnErrorHappened(
+                    onErrorHappened(
                         true,
                         "Error de Inicio de Sesión",
                         result.exception.message ?: ""
@@ -93,7 +93,7 @@ class LoginViewModel(
             updateState { copy(isLoading = true) }
             when (val result = requestResetPasswordEmailUseCase(state.value.email)) {
                 is OperationResult.Error -> {
-                    OnErrorHappened(
+                    onErrorHappened(
                         true,
                         "Error al reiniciar la contraseña",
                         "No se pudo enviar el email de reinicio de contraseña."
@@ -101,7 +101,7 @@ class LoginViewModel(
                 }
 
                 is OperationResult.Success -> {
-                    OnErrorHappened(
+                    onErrorHappened(
                         true,
                         "Reinicio de contraseña ",
                         "Email enviado"
@@ -116,7 +116,7 @@ class LoginViewModel(
         viewModelScope.launch {
             val result = validator.validateField(ValidatorType.EMAIL, value = state.value.email)
             if (result.isError || state.value.email.isBlank()) {
-                OnErrorHappened(
+                onErrorHappened(
                     true,
                     "Error al reiniciar la contraseña",
                     "No se pudo enviar el email de reinicio de contraseña.el campo correo no puede ser invalido"
@@ -142,7 +142,7 @@ class LoginViewModel(
             }
 
             is LoginEvent.ClearErrorLogin -> {
-                OnErrorHappened(false)
+                onErrorHappened(false)
             }
 
             is LoginEvent.OnClickPasswordForgot -> {

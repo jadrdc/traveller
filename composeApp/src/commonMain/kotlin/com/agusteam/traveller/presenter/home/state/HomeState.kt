@@ -1,14 +1,14 @@
 package com.agusteam.traveller.presenter.home.state
 
-import androidx.compose.runtime.mutableStateOf
 import com.agusteam.traveller.core.base.ViewModelState
+import com.agusteam.traveller.domain.models.ErrorModel
 
-class HomeState : ViewModelState {
-    var currentNavigationOption = mutableStateOf(HomeOption.EXPLORE)
+data class HomeState(
+    val currentNavigationOption: HomeOption = HomeOption.EXPLORE,
+    val isLoading: Boolean = false,
+    val errorModel: ErrorModel? = null
+) : ViewModelState {
 
-    fun changeHomeOption(option: HomeOption) {
-        currentNavigationOption.value = option
-    }
 }
 
 enum class HomeOption {

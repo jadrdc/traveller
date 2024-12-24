@@ -27,7 +27,7 @@ class SignUpViewModel(
                 state.value.password
             )) {
                 is OperationResult.Error -> {
-                    OnErrorHappened(
+                    onErrorHappened(
                         true,
                         "Error al registrar la cuenta",
                         message = result.exception.message ?: " "
@@ -35,7 +35,7 @@ class SignUpViewModel(
                 }
 
                 is OperationResult.Success -> {
-                    OnErrorHappened(
+                    onErrorHappened(
                         true,
                         "Confirmación enviada",
                         "¡Cuenta creada con éxito! Hemos enviado un correo de confirmación a tu dirección de correo electrónico. Por favor, revisa tu bandeja de entrada y confirma tu cuenta."
@@ -58,7 +58,7 @@ class SignUpViewModel(
         }
     }
 
-    private fun OnErrorHappened(value: Boolean, title: String = "", message: String = "") {
+    private fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
         val errorModel = if (!value) {
             null
         } else {
@@ -175,7 +175,7 @@ class SignUpViewModel(
             }
 
             is SignUpEvent.ClearError -> {
-                OnErrorHappened(false)
+                onErrorHappened(false)
             }
         }
     }

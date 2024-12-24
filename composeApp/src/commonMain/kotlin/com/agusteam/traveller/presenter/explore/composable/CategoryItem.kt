@@ -28,13 +28,14 @@ fun CategoryItem(
     Column(Modifier.clickable(interactionSource = null, indication = null) {
         onSelected(item)
     }, horizontalAlignment = Alignment.CenterHorizontally) {
-        Icon(
-            modifier = Modifier.size(32.dp),
-            contentDescription = null,
-            tint = color,
-            painter = painterResource(item.imageIcon),
-        )
-
+        item.imageIcon?.let {
+            Icon(
+                modifier = Modifier.size(32.dp),
+                contentDescription = null,
+                tint = color,
+                painter = painterResource(it),
+            )
+        }
         Text(
             text = item.description,
             color = color,
