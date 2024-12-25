@@ -13,9 +13,9 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     single<SignUpViewModel> { SignUpViewModel(get(), get()) }
-    single<LoginViewModel> { LoginViewModel(get(), get(), get()) }
+    single<LoginViewModel> { LoginViewModel(get(), get(), get(), get()) }
     single<ExploreViewModel> { ExploreViewModel(get()) }
-    single<ProfileViewModel> { ProfileViewModel() }
+    single<ProfileViewModel> { ProfileViewModel(get()) }
     single<OrderHistoryViewModel> { OrderHistoryViewModel() }
     single<ShoppingitemsDetailsViewModel> { ShoppingitemsDetailsViewModel() }
     single<OrderDetailViewModel> { OrderDetailViewModel() }

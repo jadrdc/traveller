@@ -13,7 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.presenter.common.BottomModalSheet
 import com.agusteam.traveller.presenter.common.ErrorModal
 import com.agusteam.traveller.presenter.common.SearchBar
-import com.agusteam.traveller.presenter.common.loading.ExploreScreenShimmerEffect
+import com.agusteam.traveller.presenter.common.loading.TripItemLoadingSection
 import com.agusteam.traveller.presenter.explore.composable.CategorySection
 import com.agusteam.traveller.presenter.explore.composable.HomeFilterContent
 import com.agusteam.traveller.presenter.explore.composable.TripItem
@@ -37,27 +37,29 @@ fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel(), goDetails: () -
             viewModel.onExploreEventChanged(ExploreEvent.OnErrorModalAccepted)
         })
 
-    if (state.value.isLoadingSkeleton) {
-        ExploreScreenShimmerEffect()
-    } else {
-        LazyColumn(
-            Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                SearchBar(Modifier) { value ->
-                    viewModel.onExploreEventChanged(
-                        ExploreEvent.OnFilterChanged(
-                            value
-                        )
+    LazyColumn(
+        Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            SearchBar(Modifier, isloadingn = state.value.categoryState.isLoadingSkeleton) { value ->
+                viewModel.onExploreEventChanged(
+                    ExploreEvent.OnFilterChanged(
+                        value
                     )
-                }
-            }
-            item {
-                CategorySection(
-                    categories = state.value.categories,
-                    onCategorySelected = { event -> viewModel.onExploreEventChanged(event) },
                 )
             }
+        }
+        item {
+            CategorySection(
+                categoryState = state.value.categoryState,
+                onCategorySelected = { event -> viewModel.onExploreEventChanged(event) },
+            )
+        }
+        if (state.value.categoryState.isLoadingSkeleton) {
+            item {
+                TripItemLoadingSection()
+            }
+        } else {
             items(state.value.items) { item ->
                 TripItem(item, onClick = { goDetails() }, toggleFavorite = { event ->
                     viewModel.onExploreEventChanged(event)

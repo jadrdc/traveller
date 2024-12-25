@@ -15,9 +15,10 @@ import kotlinx.coroutines.launch
 
 class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
     GenericViewModel<ExploreState, ExploreEvent>(ExploreState()) {
+
     init {
         viewModelScope.launch {
-            updateState { copy(isLoadingSkeleton = true) }
+            updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = true)) }
             when (val result = getCategoryUseCase()) {
                 is OperationResult.Error -> {
                     onErrorHappened(
@@ -32,8 +33,10 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
                         result.data.map { it.copy(isSelected = it.description == POPULAR) }
                     updateState {
                         copy(
-                            categories = categories,
-                            selectedCategoryModel = categories.firstOrNull { it.isSelected },
+                            categoryState = categoryState.copy(
+                                selectedCategoryModel = categories.firstOrNull { it.isSelected },
+                                categories = categories
+                            ),
                             filterState = ExploreFilterState(
                                 selectedCategoryModel = categories.firstOrNull { it.isSelected },
                             ),
@@ -42,16 +45,18 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
                     }
                 }
             }
-            updateState { copy(isLoadingSkeleton = false) }
+            updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = false)) }
         }
     }
 
     private fun updateSelectedCategory(categoryModel: CategoryModel) {
         updateState {
             copy(
+                categoryState = categoryState.copy(
+                    selectedCategoryModel = categoryModel,
+                    categories = updateCategoriesSelection(categoryState.categories, categoryModel)
+                ),
                 filterState = filterState.copy(selectedCategoryModel = categoryModel),
-                selectedCategoryModel = categoryModel,
-                categories = updateCategoriesSelection(categories, categoryModel),
             )
         }
     }
@@ -60,8 +65,10 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
         updateState {
             copy(
                 shouldBottomModal = false,
-                selectedCategoryModel = categoryModel,
-                categories = updateCategoriesSelection(categories, categoryModel),
+                categoryState = categoryState.copy(
+                    selectedCategoryModel = categoryModel,
+                    categories = updateCategoriesSelection(categoryState.categories, categoryModel)
+                ),
                 filterState = filterState.copy(searchText = ""),
             )
         }
@@ -96,7 +103,7 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
         updateState {
             copy(
                 filterState = filterState.copy(
-                    selectedCategoryModel = selectedCategoryModel, searchText = ""
+                    selectedCategoryModel = categoryState.selectedCategoryModel, searchText = ""
                 )
             )
         }

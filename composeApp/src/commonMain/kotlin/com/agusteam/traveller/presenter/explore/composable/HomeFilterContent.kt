@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +28,6 @@ import com.agusteam.traveller.presenter.explore.state.ExploreState
 import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent
 import com.agusteam.traveller.presenter.theme.primary
 import com.agusteam.traveller.presenter.theme.secondary
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import traveller.composeapp.generated.resources.Res
 import traveller.composeapp.generated.resources.clear
@@ -74,7 +72,7 @@ fun HomeFilterContent(
                 Modifier.padding(top = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp), // Horizontal spacing between chips
             ) {
-                exploreState.categories.forEach { category ->
+                exploreState.categoryState.categories.forEach { category ->
                     FilterChip(
                         selected = category === exploreState.filterState.selectedCategoryModel,
                         onClick = {

@@ -17,6 +17,17 @@ fun formatMoney(amount: Int): String {
     }.reversed() // Reverse back to the correct order
     return "$$formatted.00" // Add the dollar sign and decimal part
 }
+
+fun formatPhone(phone: String): String {
+    if (phone.length != 10 || phone.any { !it.isDigit() }) {
+        return "XXX-XXX-XXXX"
+        //throw IllegalArgumentException("Phone number must be exactly 10 digits.")
+    }
+
+    return "${phone.substring(0, 3)}-${phone.substring(3, 6)}-${phone.substring(6)}"
+}
+
+
 fun createCategories(): List<CategoryModel> = listOf(
     CategoryModel(
         isSelected = true,

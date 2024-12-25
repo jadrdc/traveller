@@ -6,6 +6,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 expect val networkModule: Module
+expect val dataStorageDIModule:Module
 val dataDiModule = module {
     single<SignUpService> { SignUpService(get()) }
     single<CategoryService> { CategoryService(get()) }
