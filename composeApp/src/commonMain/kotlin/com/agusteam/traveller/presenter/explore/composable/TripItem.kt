@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -77,15 +78,13 @@ fun TripItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(item.categoryList) { category ->
-
-                        category.imageIcon?.let {
-                            Icon(
-                                modifier = Modifier.size(32.dp),
-                                contentDescription = null,
-                                tint = primary,
-                                painter = painterResource(it),
-                            )
-                        }
+                        AsyncImage(
+                            model = category.imageUrl,
+                            contentScale = ContentScale.FillBounds,
+                            modifier = Modifier.size(32.dp),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(primary)
+                        )
                     }
                 }
             }

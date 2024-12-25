@@ -15,9 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.agusteam.traveller.presenter.common.ActionButton
 import com.agusteam.traveller.presenter.common.AmountSliderPicker
 import com.agusteam.traveller.presenter.common.LinkButton
@@ -79,14 +82,13 @@ fun HomeFilterContent(
                                 ExploreEvent.OnFilterCategorySelected(category)
                             )
                         }, label = { Text(text = category.description) }, leadingIcon = {
-                            category.imageIcon?.let {
-                                Icon(
-                                    modifier = Modifier.size(32.dp),
-                                    contentDescription = null,
-                                    tint = primary,
-                                    painter = painterResource(it),
-                                )
-                            }
+                            AsyncImage(
+                                model = category.imageUrl,
+                                contentScale = ContentScale.FillBounds,
+                                modifier = Modifier.size(32.dp),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(primary)
+                            )
                         }
                     )
                 }

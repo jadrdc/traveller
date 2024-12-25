@@ -1,27 +1,21 @@
 package com.agusteam.traveller.presenter
 
 import com.agusteam.traveller.domain.models.CategoryModel
-import com.agusteam.traveller.domain.models.TripProviderModel
 import com.agusteam.traveller.domain.models.TripDetailsModel
 import com.agusteam.traveller.domain.models.TripModel
-import traveller.composeapp.generated.resources.Res
-import traveller.composeapp.generated.resources.ic_beach
-import traveller.composeapp.generated.resources.ic_camping
-import traveller.composeapp.generated.resources.ic_favorite
-import traveller.composeapp.generated.resources.ic_hiking
-import traveller.composeapp.generated.resources.ic_mountain
+import com.agusteam.traveller.domain.models.TripProviderModel
 
 
 fun createCategories(): List<CategoryModel> = listOf(
     CategoryModel(
         isSelected = true,
-        imageIcon = Res.drawable.ic_favorite,
+        imageUrl = "",
         description = "Populares"
     ),
-    CategoryModel(imageIcon = Res.drawable.ic_mountain, description = "Montaña"),
-    CategoryModel(imageIcon = Res.drawable.ic_camping, description = "Camping"),
-    CategoryModel(imageIcon = Res.drawable.ic_hiking, description = "Hiking"),
-    CategoryModel(imageIcon = Res.drawable.ic_beach, description = "Playa")
+    CategoryModel(imageUrl = " Res.drawable.ic_mountain", description = "Montaña"),
+    CategoryModel(imageUrl = "", description = "Camping"),
+    CategoryModel(imageUrl = "", description = "Hiking"),
+    CategoryModel(imageUrl = "es.drawable.ic_beach", description = "Playa")
 )
 
 fun createShoppingItems(categories: List<CategoryModel>) = listOf(

@@ -15,7 +15,7 @@ fun LoginResponse.toDomainModel(): LoginModel {
 }
 
 fun CategoryResponse.toDomainModel(): CategoryModel {
-    return CategoryModel(description = description, isSelected = false, imageIcon = null)
+    return CategoryModel(description = description, isSelected = false, imageUrl = image)
 }
 
 suspend inline fun <reified T> mapResponse(response: HttpResponse): OperationResult<T> {
