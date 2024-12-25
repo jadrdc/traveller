@@ -5,7 +5,18 @@ import com.agusteam.traveller.domain.models.TripDetailsModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.models.TripProviderModel
 
-
+fun formatMoney(amount: Int): String {
+    val amountString = amount.toString()
+    val formatted = buildString {
+        // Reverse the string to process from the end
+        val reversed = amountString.reversed()
+        for (i in reversed.indices) {
+            if (i > 0 && i % 3 == 0) append(",") // Add commas every 3 digits
+            append(reversed[i])
+        }
+    }.reversed() // Reverse back to the correct order
+    return "$$formatted.00" // Add the dollar sign and decimal part
+}
 fun createCategories(): List<CategoryModel> = listOf(
     CategoryModel(
         isSelected = true,
