@@ -4,11 +4,14 @@ import com.agusteam.traveller.data.imp.CategoryRepositoryImpl
 import com.agusteam.traveller.data.imp.LocalStorageDataStore
 import com.agusteam.traveller.data.imp.LoginRepositoryImpl
 import com.agusteam.traveller.data.imp.TripProviderRepositoryImp
+import com.agusteam.traveller.data.imp.TripRepositoryImp
 import com.agusteam.traveller.domain.interfaces.CategoryRepository
 import com.agusteam.traveller.domain.interfaces.LocalStoragePreferenceRepository
 import com.agusteam.traveller.domain.interfaces.LoginRepository
 import com.agusteam.traveller.domain.interfaces.TripProviderRepository
+import com.agusteam.traveller.domain.interfaces.TripRepository
 import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
+import com.agusteam.traveller.domain.usecase.GetPaginatedTripsUseCase
 import com.agusteam.traveller.domain.usecase.GetProfileUseCase
 import com.agusteam.traveller.domain.usecase.GetTripProviderDetailsUseCase
 import com.agusteam.traveller.domain.usecase.LoginUseCase
@@ -31,4 +34,6 @@ val diDomainModule = module {
     single<GetProfileUseCase> { GetProfileUseCase(get()) }
     single<GetTripProviderDetailsUseCase> { GetTripProviderDetailsUseCase(get()) }
     single<LocalStoragePreferenceRepository> { LocalStorageDataStore(get()) }
+    single<TripRepository> { TripRepositoryImp(get()) }
+    single<GetPaginatedTripsUseCase> { GetPaginatedTripsUseCase(get()) }
 }

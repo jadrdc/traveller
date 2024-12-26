@@ -8,8 +8,6 @@ import com.agusteam.traveller.data.model.LoginResponse
 import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.domain.models.LoginModel
 import com.agusteam.traveller.domain.models.TripProviderModel
-import com.agusteam.traveller.presenter.createCategories
-import com.agusteam.traveller.presenter.createShoppingItems
 import com.agusteam.traveller.presenter.formatPhone
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
@@ -25,11 +23,12 @@ fun CategoryResponse.toDomainModel(): CategoryModel {
 
 fun BusinessProfileModel.toDomain(): TripProviderModel {
     return TripProviderModel(
-        upcomingTrips = createShoppingItems(createCategories()),
         address = address,
         phone = formatPhone(phone),
         email = email,
-        categoryModel = createCategories().filter { it.description != "Populares" },
+        categoryModel = categories.map {
+            CategoryModel(imageUrl = it.image, description = it.description)
+        },
         name = name,
         avatarUrl = image,
         registeredItems = "0",

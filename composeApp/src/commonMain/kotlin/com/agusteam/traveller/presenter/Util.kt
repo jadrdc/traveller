@@ -23,7 +23,6 @@ fun formatPhone(phone: String): String {
         return "XXX-XXX-XXXX"
         //throw IllegalArgumentException("Phone number must be exactly 10 digits.")
     }
-
     return "${phone.substring(0, 3)}-${phone.substring(3, 6)}-${phone.substring(6)}"
 }
 
@@ -44,7 +43,6 @@ fun createShoppingItems(categories: List<CategoryModel>) = listOf(
     TripModel(name = "Trudille", price = "23,430", categoryList = categories),
     TripModel(
         name = "Playa Fronton",
-        price = "2,430",
         categoryList = categories.take(2)
     ),
     TripModel(
@@ -61,7 +59,7 @@ fun createShoppingItems(categories: List<CategoryModel>) = listOf(
     TripModel(
         name = "Los Cacaos",
         price = "6,300",
-        categoryList = listOf(categories[1], categories[3])
+        categoryList = if (categories.size >= 4) listOf(categories[1], categories[3]) else listOf()
     ),
     TripModel(
         name = "Playa Fronton",
@@ -103,7 +101,6 @@ fun getIncludedServices(): List<String> {
 
 fun getProvider(): TripProviderModel {
     return TripProviderModel(
-        upcomingTrips = createShoppingItems(createCategories()),
         address = "Calle, Av. San Vicente de Paúl Megacentro, Santo Domingo Este 11504",
         phone = "809-945-3434",
         email = "email@email.com",
@@ -133,4 +130,16 @@ fun getShoppingItemsDetails(): TripDetailsModel {
         includedServices = getIncludedServices(),
     )
 }
+
+fun getGalleryPhoto(): List<String> {
+    return listOf(
+        "https://picsum.photos/200/300",
+        "https://picsum.photos/300/300",
+        "https://picsum.photos/400/300",
+        "https://picsum.photos/500/300"
+    )
+}
+
+
 const val SAMPLE_ID_TRIP = "d8dd3906-9086-4136-b431-03819ada31ba"
+const val SAMPLE_ID_TRIP_2 = "9be4c770-c341-4463-acf5-e98b57b7e080"

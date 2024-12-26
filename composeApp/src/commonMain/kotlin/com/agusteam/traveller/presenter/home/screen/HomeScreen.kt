@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.presenter.common.BottomNavigationBar
 import com.agusteam.traveller.presenter.explore.screen.ExploreScreen
 import com.agusteam.traveller.presenter.home.navigation.NavigationRoutes
@@ -49,7 +50,9 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                 ) {
                     composable(NavigationRoutes.HomeScreen.route) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.EXPLORE))
-                        ExploreScreen { navController.navigate(NavigationRoutes.TripDetailScreen.route) }
+                        ExploreScreen { tripModel ->
+                            navController.navigate(NavigationRoutes.TripDetailScreen.route)
+                        }
                     }
                     composable(NavigationRoutes.ProfileScreen.route) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.PROFILE))

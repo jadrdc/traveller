@@ -8,29 +8,48 @@ import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
+import com.agusteam.traveller.domain.usecase.GetPaginatedTripsUseCase
 import com.agusteam.traveller.presenter.createShoppingItems
 import com.agusteam.traveller.presenter.explore.state.ExploreFilterState
 import com.agusteam.traveller.presenter.explore.state.ExploreState
 import kotlinx.coroutines.launch
 
-class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
+class ExploreViewModel(
+    val getCategoryUseCase: GetCategoryUseCase,
+    val getPaginatedTripsUseCase: GetPaginatedTripsUseCase
+) :
     GenericViewModel<ExploreState, ExploreEvent>(ExploreState()) {
 
     init {
+        initialLoad()
+    }
+
+    private fun initialLoad() {
         viewModelScope.launch {
             updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = true)) }
             when (val result = getCategoryUseCase()) {
                 is OperationResult.Error -> {
-                    onErrorHappened(
-                        true,
-                        "¡Oops! Algo salió mal.",
-                        "Intenta nuevamente más tarde o contacta nuestro soporte si el problema persiste."
-                    )
+
                 }
 
                 is OperationResult.Success -> {
                     val categories =
                         result.data.map { it.copy(isSelected = it.description == POPULAR) }
+                    when (val resultTrips = getPaginatedTripsUseCase()) {
+                        is OperationResult.Error -> {}
+                        is OperationResult.Success -> {
+                            val tripList = resultTrips.data.map { trip ->
+                                TripModel(
+                                    name = trip.name,
+                                    description = trip.description,
+                                    lat = trip.lat,
+                                    lng = trip.lng,
+                                    destiny = trip.destiny, categoryList = categories
+                                )
+                            }
+                            updateState { copy(items = tripList) }
+                        }
+                    }
                     updateState {
                         copy(
                             categoryState = categoryState.copy(
@@ -40,13 +59,13 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
                             filterState = ExploreFilterState(
                                 selectedCategoryModel = categories.firstOrNull { it.isSelected },
                             ),
-                            items = createShoppingItems(categories)
                         )
                     }
                 }
             }
             updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = false)) }
         }
+
     }
 
     private fun updateSelectedCategory(categoryModel: CategoryModel) {

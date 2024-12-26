@@ -17,6 +17,7 @@ import com.agusteam.traveller.presenter.common.ProviderOverViewItem
 import com.agusteam.traveller.presenter.common.ProviderProfileCategory
 import com.agusteam.traveller.presenter.common.ProviderProfileOverview
 import com.agusteam.traveller.presenter.orders.composable.UpcomingTripItemSection
+import com.agusteam.traveller.presenter.profile.composable.TripProviderOverviewShimmer
 import com.agusteam.traveller.presenter.profile.viewmodels.TripProviderViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -46,31 +47,35 @@ fun TripProviderProfileScreen(
             item {
                 NavigationBar(title = stringResource(Res.string.agency_title)) { onBackPressed() }
             }
-
-            state.tripProviderModel?.let {
+            if (state.tripProviderModel != null) {
                 item {
                     ProviderOverViewItem(
-                        isLoading = state.isLoading,
-                        tripProviderModel = it
+                        tripProviderModel = state.tripProviderModel
                     )
                 }
 
                 item {
-                    ProviderProfileOverview(it)
+                    ProviderProfileOverview(state.tripProviderModel)
                 }
 
                 item {
                     ProviderProfileCategory(
-                        modifier = Modifier.padding(top = 16.dp),
-                        it.categoryModel
+                        modifier = Modifier,
+                        state.tripProviderModel.categoryModel
                     )
                 }
+            } else {
                 item {
-                    UpcomingTripItemSection(
-                        upcomingTripItemList = it.upcomingTrips,
-                    ) {}
+                    TripProviderOverviewShimmer()
                 }
             }
+            if (state.tripProviderModel != null) item {
+                UpcomingTripItemSection(
+                    upcomingTripItemList = state.upcomingTrips,
+                ) {}
+            }
+
+
         }
     }
 }

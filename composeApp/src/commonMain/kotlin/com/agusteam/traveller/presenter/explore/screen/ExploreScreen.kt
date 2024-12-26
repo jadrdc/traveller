@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.presenter.common.BottomModalSheet
 import com.agusteam.traveller.presenter.common.ErrorModal
 import com.agusteam.traveller.presenter.common.SearchBar
@@ -24,7 +25,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel(), goDetails: () -> Unit) {
+fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel(), goDetails: (TripModel) -> Unit) {
 
     val state = viewModel.state.collectAsStateWithLifecycle()
     val bottomState = rememberModalBottomSheetState(
@@ -61,7 +62,7 @@ fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel(), goDetails: () -
             }
         } else {
             items(state.value.items) { item ->
-                TripItem(item, onClick = { goDetails() }, toggleFavorite = { event ->
+                TripItem(item, onClick = { goDetails(item) }, toggleFavorite = { event ->
                     viewModel.onExploreEventChanged(event)
                 })
             }

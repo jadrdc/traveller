@@ -1,10 +1,10 @@
 package com.agusteam.traveller.domain.models
 
-import com.agusteam.traveller.presenter.SAMPLE_ID_TRIP
+import com.agusteam.traveller.presenter.SAMPLE_ID_TRIP_2
 import kotlin.math.roundToInt
 
 data class TripProviderModel(
-    val id: String = SAMPLE_ID_TRIP,
+    val id: String = SAMPLE_ID_TRIP_2,
     val name: String,
     val image: String,
     val avatarUrl: String,
@@ -15,8 +15,7 @@ data class TripProviderModel(
     val email: String,
     val address: String,
     val month: Int,
-    val categoryModel: List<CategoryModel>,
-    val upcomingTrips: List<TripModel>
+    val categoryModel: List<CategoryModel>
 ) {
     fun getTimePeriodUnit(): String {
         val result = if (month in 0..11) {
