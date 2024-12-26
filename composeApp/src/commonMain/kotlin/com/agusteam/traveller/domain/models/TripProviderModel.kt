@@ -1,9 +1,10 @@
 package com.agusteam.traveller.domain.models
 
+import com.agusteam.traveller.presenter.SAMPLE_ID_TRIP
 import kotlin.math.roundToInt
 
 data class TripProviderModel(
-    val id: String = "d8dd3906-9086-4136-b431-03819ada31ba",
+    val id: String = SAMPLE_ID_TRIP,
     val name: String,
     val image: String,
     val avatarUrl: String,

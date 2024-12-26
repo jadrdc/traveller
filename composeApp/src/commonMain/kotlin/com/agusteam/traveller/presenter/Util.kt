@@ -133,3 +133,4 @@ fun getShoppingItemsDetails(): TripDetailsModel {
         includedServices = getIncludedServices(),
     )
 }
+const val SAMPLE_ID_TRIP = "d8dd3906-9086-4136-b431-03819ada31ba"
