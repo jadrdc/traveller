@@ -1,7 +1,5 @@
 package com.agusteam.traveller.domain.models
 
-import com.agusteam.traveller.domain.models.CategoryModel
-
 data class TripModel(
     val name: String,
     val image: String = "https://picsum.photos/200/300",

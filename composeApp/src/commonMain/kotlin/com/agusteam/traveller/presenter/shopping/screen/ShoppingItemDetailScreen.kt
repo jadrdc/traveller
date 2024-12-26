@@ -46,7 +46,7 @@ import traveller.composeapp.generated.resources.total_payment
 fun ShoppingItemDetailScreen(
     viewModel: ShoppingitemsDetailsViewModel = koinViewModel(),
     goBack: () -> Unit,
-    goProviderProfile: () -> Unit,
+    goProviderProfile: (id: String) -> Unit,
     payItem: () -> Unit
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -77,7 +77,7 @@ fun ShoppingItemDetailScreen(
                     modifier = Modifier, tripProviderModel =
                     state.value.tripProviderModel
                 ) {
-                    goProviderProfile()
+                    goProviderProfile(state.value.tripProviderModel.id)
                 }
             }
             item {

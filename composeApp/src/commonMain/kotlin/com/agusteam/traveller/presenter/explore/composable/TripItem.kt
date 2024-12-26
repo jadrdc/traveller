@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +32,6 @@ import com.agusteam.traveller.presenter.theme.CustomFontFamily
 import com.agusteam.traveller.presenter.theme.grey500
 import com.agusteam.traveller.presenter.theme.primary
 import com.agusteam.traveller.presenter.theme.secondary
-import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun TripItem(

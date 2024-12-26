@@ -43,5 +43,4 @@ class ProfileViewModel(val getProfileUseCase: GetProfileUseCase) :
 
 }
 
-sealed interface ProfileEvent {
-}
+sealed interface ProfileEvent

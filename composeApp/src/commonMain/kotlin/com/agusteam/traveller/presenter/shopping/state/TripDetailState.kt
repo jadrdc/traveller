@@ -7,6 +7,7 @@ import com.agusteam.traveller.presenter.getProvider
 
 data class TripDetailState(
     val title: String = "",
+    val tripId: String="",
     val tripProviderModel: TripProviderModel = getProvider(),
     val isMarkedAsFavorite: Boolean = false,
     val initialPayment: String = "$1000.0",

@@ -1,11 +1,16 @@
 package com.agusteam.traveller.data.mappers
 
 import com.agusteam.traveller.core.base.OperationResult
+import com.agusteam.traveller.data.model.BusinessProfileModel
 import com.agusteam.traveller.data.model.CategoryResponse
 import com.agusteam.traveller.data.model.ErrorResponse
 import com.agusteam.traveller.data.model.LoginResponse
 import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.domain.models.LoginModel
+import com.agusteam.traveller.domain.models.TripProviderModel
+import com.agusteam.traveller.presenter.createCategories
+import com.agusteam.traveller.presenter.createShoppingItems
+import com.agusteam.traveller.presenter.formatPhone
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 
@@ -16,6 +21,22 @@ fun LoginResponse.toDomainModel(): LoginModel {
 
 fun CategoryResponse.toDomainModel(): CategoryModel {
     return CategoryModel(description = description, isSelected = false, imageUrl = image)
+}
+
+fun BusinessProfileModel.toDomain(): TripProviderModel {
+    return TripProviderModel(
+        upcomingTrips = createShoppingItems(createCategories()),
+        address = address,
+        phone = formatPhone(phone),
+        email = email,
+        categoryModel = createCategories().filter { it.description != "Populares" },
+        name = name,
+        avatarUrl = image,
+        registeredItems = "0",
+        month = month,
+        currentItems = "0",
+        description = description, image = image
+    )
 }
 
 suspend inline fun <reified T> mapResponse(response: HttpResponse): OperationResult<T> {

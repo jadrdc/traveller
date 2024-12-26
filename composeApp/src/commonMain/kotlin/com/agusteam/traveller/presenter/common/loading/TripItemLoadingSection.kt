@@ -1,11 +1,13 @@
 package com.agusteam.traveller.presenter.common.loading
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun TripItemLoadingSection() {
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         TripItemLoading()
         TripItemLoading()
         TripItemLoading()

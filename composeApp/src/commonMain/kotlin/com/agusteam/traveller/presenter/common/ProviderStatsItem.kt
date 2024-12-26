@@ -8,7 +8,6 @@ import com.agusteam.traveller.domain.models.TripProviderModel
 import org.jetbrains.compose.resources.stringResource
 import traveller.composeapp.generated.resources.Res
 import traveller.composeapp.generated.resources.current_trips
-import traveller.composeapp.generated.resources.time_using_app
 import traveller.composeapp.generated.resources.trip_offered
 
 @Composable
@@ -26,8 +25,8 @@ fun ProviderStatsItem(tripProviderModel: TripProviderModel) {
         )
         ProviderStatItem(
             showDivider = false,
-            value = tripProviderModel.startingPoint,
-            label = stringResource(Res.string.time_using_app)
+            value = tripProviderModel.getTimePeriodUnit(),
+            label = tripProviderModel.getTimePeriod()
         )
     }
 }

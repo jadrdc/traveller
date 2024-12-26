@@ -23,15 +23,16 @@ fun ShoppingFlowNavigation(
         navController = navController,
         startDestination = ShoppingNavigationRoutes.ShoppingItemDetailScreen.route
     ) {
-       composable(ShoppingNavigationRoutes.ShoppingItemDetailScreen.route) {
+        composable(ShoppingNavigationRoutes.ShoppingItemDetailScreen.route) {
             ShoppingItemDetailScreen(viewModel, goBack = { goBack() }, payItem = {
                 navController.navigate(ShoppingNavigationRoutes.ShoppingItemPayingScreen.route)
-            }, goProviderProfile = {
-                navController.navigate(ShoppingNavigationRoutes.ProviderProfileScreen.route)
+            }, goProviderProfile = { id ->
+                navController.navigate(ShoppingNavigationRoutes.ProviderProfileScreen.createRoute(id))
             })
         }
-        composable(ShoppingNavigationRoutes.ProviderProfileScreen.route) {
-            TripProviderProfileScreen {
+        composable(ShoppingNavigationRoutes.ProviderProfileScreen.route) { backStackEntry ->
+            val providerId = backStackEntry.arguments?.getString("id") ?: ""
+            TripProviderProfileScreen(id = providerId) {
                 navController.popBackStack()
             }
         }

@@ -47,7 +47,10 @@
     <string name="cancellation_policy">Politicas de cancelacion</string>
     <string name="trip_offered">Viajes ofrecidos</string>
     <string name="current_trips">Viajes actuales</string>
-    <string name="time_using_app">Meses</string>
+    <string name="years_using_app">Año</string>
+    <string name="agency_title">Agencia</string>
+    <string name="month_using_app">Mes</string>
+    <string name="months_using_app">Meses</string>
     <string name="address">Direccion</string>
     <string name="cancellation_policy_details">Cancel up to 24 hours before the start time for a full refund.</string>
     <string name="password_not_matching">Debes usar la misma password para ambos campos</string>

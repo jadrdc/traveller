@@ -5,6 +5,7 @@ import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
 import com.agusteam.traveller.presenter.orders.viewmodels.OrderDetailViewModel
 import com.agusteam.traveller.presenter.orders.viewmodels.OrderHistoryViewModel
 import com.agusteam.traveller.presenter.profile.viewmodels.ProfileViewModel
+import com.agusteam.traveller.presenter.profile.viewmodels.TripProviderViewModel
 import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingitemsDetailsViewModel
 import com.agusteam.traveller.presenter.signup.viewmodels.LoginViewModel
 import com.agusteam.traveller.presenter.signup.viewmodels.SignUpViewModel
@@ -21,4 +22,5 @@ val viewModelModule = module {
     single<OrderDetailViewModel> { OrderDetailViewModel() }
     single<WishListItemViewModel> { WishListItemViewModel() }
     single<HomeViewModel> { HomeViewModel() }
+    single<TripProviderViewModel> { TripProviderViewModel(get()) }
 }

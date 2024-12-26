@@ -3,11 +3,14 @@ package com.agusteam.traveller.core.di
 import com.agusteam.traveller.data.imp.CategoryRepositoryImpl
 import com.agusteam.traveller.data.imp.LocalStorageDataStore
 import com.agusteam.traveller.data.imp.LoginRepositoryImpl
+import com.agusteam.traveller.data.imp.TripProviderRepositoryImp
 import com.agusteam.traveller.domain.interfaces.CategoryRepository
 import com.agusteam.traveller.domain.interfaces.LocalStoragePreferenceRepository
 import com.agusteam.traveller.domain.interfaces.LoginRepository
+import com.agusteam.traveller.domain.interfaces.TripProviderRepository
 import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
 import com.agusteam.traveller.domain.usecase.GetProfileUseCase
+import com.agusteam.traveller.domain.usecase.GetTripProviderDetailsUseCase
 import com.agusteam.traveller.domain.usecase.LoginUseCase
 import com.agusteam.traveller.domain.usecase.RequestResetPasswordEmailUseCase
 import com.agusteam.traveller.domain.usecase.SaveLocalDataUseCase
@@ -22,8 +25,10 @@ val diDomainModule = module {
     single<RequestResetPasswordEmailUseCase> { RequestResetPasswordEmailUseCase(get()) }
     single<SignUpUseCase> { SignUpUseCase(get()) }
     single<CategoryRepository> { CategoryRepositoryImpl(get()) }
+    single<TripProviderRepository> { TripProviderRepositoryImp(get()) }
     single<GetCategoryUseCase> { GetCategoryUseCase(get()) }
     single<SaveLocalDataUseCase> { SaveLocalDataUseCase(get()) }
     single<GetProfileUseCase> { GetProfileUseCase(get()) }
+    single<GetTripProviderDetailsUseCase> { GetTripProviderDetailsUseCase(get()) }
     single<LocalStoragePreferenceRepository> { LocalStorageDataStore(get()) }
 }

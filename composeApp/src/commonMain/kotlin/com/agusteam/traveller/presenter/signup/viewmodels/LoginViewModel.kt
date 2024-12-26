@@ -3,7 +3,6 @@ package com.agusteam.traveller.presenter.signup.viewmodels
 import androidx.lifecycle.viewModelScope
 import com.agusteam.traveller.core.base.GenericViewModel
 import com.agusteam.traveller.core.base.OperationResult
-import com.agusteam.traveller.data.util.NAME
 import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.LoginModel
 import com.agusteam.traveller.domain.usecase.LoginUseCase

@@ -51,7 +51,7 @@ fun ItemProviderOverviewItem(
                 )
                 Text(
                     modifier = Modifier,
-                    text = tripProviderModel.startingPoint,
+                    text = "${tripProviderModel.month} ${tripProviderModel.getTimePeriod()}",
                     color = grey500,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal

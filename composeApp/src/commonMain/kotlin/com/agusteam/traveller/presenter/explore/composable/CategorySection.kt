@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.presenter.common.loading.CategoryLoadingList
 import com.agusteam.traveller.presenter.explore.state.CategoryState
 import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent

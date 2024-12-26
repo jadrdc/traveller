@@ -55,7 +55,7 @@ fun createShoppingItems(categories: List<CategoryModel>) = listOf(
     TripModel(
         name = "Pico Duarte",
         price = "22,000",
-        categoryList = listOf(categories.first())
+        categoryList = categories.firstOrNull()?.let { listOf(it) } ?: listOf()
     ),
     TripModel(name = "Valle Nuevo", price = "2,300"),
     TripModel(
@@ -109,10 +109,10 @@ fun getProvider(): TripProviderModel {
         email = "email@email.com",
         categoryModel = createCategories().filter { it.description != "Populares" },
         name = "AgustTrip",
-        startingPoint = "4 months",
         avatarUrl = "https://picsum.photos/200/300",
         registeredItems = "48",
         currentItems = "23",
+        image = "", month = 2,
         description = "Descubre el mundo con [Nombre de la Empresa]. Somos expertos en crear experiencias únicas para cada viajero, diseñando itinerarios personalizados que combinan aventura, confort y cultura. Desde escapadas románticas hasta viajes en grupo o aventuras familiares, nos aseguramos de que cada detalle esté cuidadosamente planificado para que disfrutes al máximo.\n" +
                 "\n" +
                 "Conectamos a nuestros clientes con los destinos más impresionantes, ofreciendo servicios de calidad, atención personalizada y precios competitivos. ¡Haz realidad tus sueños de viaje con nosotros!"
