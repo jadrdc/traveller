@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.agusteam.traveller.domain.models.TripProviderModel
+import com.agusteam.traveller.presenter.getTimePeriod
 import com.agusteam.traveller.presenter.theme.grey500
 import com.agusteam.traveller.presenter.theme.secondary
 import org.jetbrains.compose.resources.stringResource
@@ -51,7 +52,7 @@ fun ItemProviderOverviewItem(
                 )
                 Text(
                     modifier = Modifier,
-                    text = "${tripProviderModel.month} ${tripProviderModel.getTimePeriod()}",
+                    text = "${tripProviderModel.month} ${getTimePeriod(tripProviderModel.month)}",
                     color = grey500,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal

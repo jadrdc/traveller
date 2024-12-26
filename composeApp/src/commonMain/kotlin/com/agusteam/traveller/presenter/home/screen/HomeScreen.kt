@@ -23,6 +23,7 @@ import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
 import com.agusteam.traveller.presenter.orders.navigation.OrderHistoryNavigationFlow
 import com.agusteam.traveller.presenter.profile.screen.ProfileScreen
 import com.agusteam.traveller.presenter.shopping.navigation.ShoppingFlowNavigation
+import com.agusteam.traveller.presenter.signup.navigation.SignupNavigationRoutes
 import com.agusteam.traveller.presenter.theme.CustomTypography
 import com.agusteam.traveller.presenter.wishlist.navigation.WishListNavigationFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview

@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.agusteam.traveller.domain.models.TripProviderModel
+import com.agusteam.traveller.presenter.getTimePeriod
+import com.agusteam.traveller.presenter.getTimePeriodUnit
 import org.jetbrains.compose.resources.stringResource
 import traveller.composeapp.generated.resources.Res
 import traveller.composeapp.generated.resources.current_trips
@@ -25,8 +27,8 @@ fun ProviderStatsItem(tripProviderModel: TripProviderModel) {
         )
         ProviderStatItem(
             showDivider = false,
-            value = tripProviderModel.getTimePeriodUnit(),
-            label = tripProviderModel.getTimePeriod()
+            value = getTimePeriodUnit(tripProviderModel.month),
+            label = getTimePeriod(tripProviderModel.month)
         )
     }
 }

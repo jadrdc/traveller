@@ -4,6 +4,32 @@ import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.domain.models.TripDetailsModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.models.TripProviderModel
+import kotlin.math.roundToInt
+
+fun getTimePeriodUnit(month:Int): String {
+    val result = if (month in 0..11) {
+        month.toDouble()  // Convert month to Double for fractional support
+    } else {
+        month / 12.0  // Divide by 12 to get the number of years as a double
+    }
+    val roundedResult = (result * 10.0).roundToInt() / 10.0
+
+    return roundedResult.toString()  // Format the result to 1 decimal point
+}
+
+fun getTimePeriod(month: Int): String {
+    return if (month == 0 || month in 2..11) {
+        "Meses"
+    } else if (month == 1) {
+        "Mes"
+    } else if (month == 12) {
+        "Año"
+    } else if (month > 12) {
+        "Años"
+    } else {
+        ""
+    }
+}
 
 fun formatMoney(amount: Int): String {
     val amountString = amount.toString()
@@ -140,6 +166,6 @@ fun getGalleryPhoto(): List<String> {
     )
 }
 
-
+const val TRIP_NAME = "Trudille"
 const val SAMPLE_ID_TRIP = "d8dd3906-9086-4136-b431-03819ada31ba"
 const val SAMPLE_ID_TRIP_2 = "9be4c770-c341-4463-acf5-e98b57b7e080"
