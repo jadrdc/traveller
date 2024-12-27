@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.agusteam.traveller.domain.models.TripModel
+import com.agusteam.traveller.presenter.TRIP_IMAGE
 import com.agusteam.traveller.presenter.common.FavoriteButton
 import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent
 import com.agusteam.traveller.presenter.theme.CustomFontFamily
@@ -43,7 +44,7 @@ fun TripItem(
         Box {
             AsyncImage(
                 modifier = Modifier.fillMaxWidth().height(290.dp).clip(RoundedCornerShape(16.dp)),
-                model = item.image,
+                model = TRIP_IMAGE,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )

@@ -15,7 +15,7 @@ import traveller.composeapp.generated.resources.Res
 import traveller.composeapp.generated.resources.location
 
 @Composable
-fun MapDetails(){
+fun MapDetails(lat: Double, lng: Double) {
     Column(Modifier.padding(horizontal = 16.dp)) {
         Text(
             text = stringResource(Res.string.location),
@@ -23,7 +23,7 @@ fun MapDetails(){
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
-        MapComponent(Modifier.padding(top = 16.dp))
+        MapComponent(Modifier.padding(top = 16.dp), lat = lat, lng = lng)
         HorizontalDivider(
             modifier = Modifier.padding(top = 16.dp),
         )

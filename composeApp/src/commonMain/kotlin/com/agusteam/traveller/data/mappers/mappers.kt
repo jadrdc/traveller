@@ -28,7 +28,7 @@ fun BusinessProfileModel.toDomain(): TripProviderModel {
         email = email,
         categoryModel = categories.map {
             CategoryModel(imageUrl = it.image, description = it.description)
-        },
+        }, id = id,
         name = name,
         avatarUrl = image,
         registeredItems = "0",

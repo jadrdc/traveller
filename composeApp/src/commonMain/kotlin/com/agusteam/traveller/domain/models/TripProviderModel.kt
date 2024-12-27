@@ -1,12 +1,9 @@
 package com.agusteam.traveller.domain.models
 
-import com.agusteam.traveller.presenter.SAMPLE_ID_TRIP_2
-
 data class TripProviderModel(
-    val id: String = SAMPLE_ID_TRIP_2,
+    val id: String,
     val name: String,
     val image: String,
-    val avatarUrl: String,
     val registeredItems: String,
     val currentItems: String,
     val description: String,
@@ -14,5 +11,7 @@ data class TripProviderModel(
     val email: String,
     val address: String,
     val month: Int,
+
+    val avatarUrl: String = "",
     val categoryModel: List<CategoryModel>
 )

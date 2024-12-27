@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.agusteam.traveller.domain.models.TripProviderModel
 import com.agusteam.traveller.presenter.getTimePeriod
+import com.agusteam.traveller.presenter.shopping.state.TripDetailState
 import com.agusteam.traveller.presenter.theme.grey500
 import com.agusteam.traveller.presenter.theme.secondary
 import org.jetbrains.compose.resources.stringResource
@@ -28,7 +29,7 @@ import traveller.composeapp.generated.resources.agency
 @Composable
 fun ItemProviderOverviewItem(
     modifier: Modifier = Modifier,
-    tripProviderModel: TripProviderModel,
+    state: TripDetailState,
     goProviderProfile: () -> Unit
 ) {
     Column(Modifier.clickable { goProviderProfile() }.padding(start = 16.dp, end = 16.dp)) {
@@ -38,21 +39,21 @@ fun ItemProviderOverviewItem(
         ) {
             AsyncImage(
                 modifier = Modifier.size(48.dp).clip(CircleShape),
-                model = tripProviderModel.avatarUrl,
+                model = state.businessImage,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )
             Column {
                 Text(
                     modifier = Modifier,
-                    text = stringResource(Res.string.agency) + " " + tripProviderModel.name,
+                    text = stringResource(Res.string.agency) + " " + state.businessName,
                     color = secondary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     modifier = Modifier,
-                    text = "${tripProviderModel.month} ${getTimePeriod(tripProviderModel.month)}",
+                    text = "${state.month} ${getTimePeriod(state.month)}",
                     color = grey500,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal

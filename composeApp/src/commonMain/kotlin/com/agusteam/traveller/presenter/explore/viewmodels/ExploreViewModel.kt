@@ -9,7 +9,6 @@ import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
 import com.agusteam.traveller.domain.usecase.GetPaginatedTripsUseCase
-import com.agusteam.traveller.presenter.createShoppingItems
 import com.agusteam.traveller.presenter.explore.state.ExploreFilterState
 import com.agusteam.traveller.presenter.explore.state.ExploreState
 import kotlinx.coroutines.launch
@@ -40,11 +39,17 @@ class ExploreViewModel(
                         is OperationResult.Success -> {
                             val tripList = resultTrips.data.map { trip ->
                                 TripModel(
+                                    businessId = trip.businessModel.id,
+                                    businessName = trip.businessModel.name,
+                                    image = trip.businessModel.image,
+                                    businessImage = trip.businessModel.image,
                                     name = trip.name,
                                     description = trip.description,
                                     lat = trip.lat,
                                     lng = trip.lng,
-                                    destiny = trip.destiny, categoryList = categories
+                                    destiny = trip.destiny,
+                                    month = trip.businessModel.month,
+                                    categoryList = categories
                                 )
                             }
                             updateState { copy(items = tripList) }

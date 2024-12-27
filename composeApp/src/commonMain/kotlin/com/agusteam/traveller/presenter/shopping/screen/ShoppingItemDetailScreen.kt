@@ -41,6 +41,7 @@ import traveller.composeapp.generated.resources.leaving_time
 import traveller.composeapp.generated.resources.pay
 import traveller.composeapp.generated.resources.starting_place
 import traveller.composeapp.generated.resources.total_payment
+import kotlin.math.ln
 
 @Composable
 fun ShoppingItemDetailScreen(
@@ -69,15 +70,15 @@ fun ShoppingItemDetailScreen(
                 ShoppingItemOverview(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     title = state.value.title,
-                    description = state.value.details.description
+                    description = state.value.description
                 )
             }
             item {
                 ItemProviderOverviewItem(
-                    modifier = Modifier, tripProviderModel =
-                    state.value.tripProviderModel
+                    modifier = Modifier, state =
+                    state.value
                 ) {
-                    goProviderProfile(state.value.tripProviderModel.id)
+                    goProviderProfile(state.value.businessId)
                 }
             }
             item {
@@ -116,7 +117,7 @@ fun ShoppingItemDetailScreen(
                 )
             }
             item {
-                MapDetails()
+                MapDetails(lat = state.value.lat, lng = state.value.lng)
             }
             item {
                 CancellationPolicy(

@@ -6,7 +6,7 @@ import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.models.TripProviderModel
 import kotlin.math.roundToInt
 
-fun getTimePeriodUnit(month:Int): String {
+fun getTimePeriodUnit(month: Int): String {
     val result = if (month in 0..11) {
         month.toDouble()  // Convert month to Double for fractional support
     } else {
@@ -135,7 +135,7 @@ fun getProvider(): TripProviderModel {
         avatarUrl = "https://picsum.photos/200/300",
         registeredItems = "48",
         currentItems = "23",
-        image = "", month = 2,
+        image = "", month = 2, id = "",
         description = "Descubre el mundo con [Nombre de la Empresa]. Somos expertos en crear experiencias únicas para cada viajero, diseñando itinerarios personalizados que combinan aventura, confort y cultura. Desde escapadas románticas hasta viajes en grupo o aventuras familiares, nos aseguramos de que cada detalle esté cuidadosamente planificado para que disfrutes al máximo.\n" +
                 "\n" +
                 "Conectamos a nuestros clientes con los destinos más impresionantes, ofreciendo servicios de calidad, atención personalizada y precios competitivos. ¡Haz realidad tus sueños de viaje con nosotros!"
@@ -166,6 +166,8 @@ fun getGalleryPhoto(): List<String> {
     )
 }
 
-const val TRIP_NAME = "Trudille"
 const val SAMPLE_ID_TRIP = "d8dd3906-9086-4136-b431-03819ada31ba"
 const val SAMPLE_ID_TRIP_2 = "9be4c770-c341-4463-acf5-e98b57b7e080"
+const val TRIP_IMAGE = "https://picsum.photos/200/300"
+const val PRICE = "2,430"
+const val DATE_RANGE = "Aug 31 - Sep 5"
