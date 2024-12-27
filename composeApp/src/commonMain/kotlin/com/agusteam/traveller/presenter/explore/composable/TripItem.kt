@@ -60,7 +60,7 @@ fun TripItem(
                 }
             }
         }
-        Column {
+        Column(Modifier) {
             Row(
                 Modifier.fillMaxWidth().padding(top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,

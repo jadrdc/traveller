@@ -1,6 +1,7 @@
 package com.agusteam.traveller.presenter.shopping.state
 
 import com.agusteam.traveller.core.base.ViewModelState
+import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.PaymentModel
 import com.agusteam.traveller.domain.models.TripProviderModel
 import com.agusteam.traveller.domain.models.TripDetailsModel
@@ -17,11 +18,15 @@ data class TripDetailState(
     val lng: Double = 0.0,
     val avatarUrl: String = "",
     val month: Int = 0,
-
-
-    val tripId: String = "",
-    val tripProviderModel: TripProviderModel = getProvider(),
     val isMarkedAsFavorite: Boolean = false,
+    val errorModel: ErrorModel? = null,
+    val userId: String = "",
+    val tripId: String = "",
+    val includedServices: List<String> = listOf(),
+    val isLoading: Boolean = false,
+
+
+    val tripProviderModel: TripProviderModel = getProvider(),
     val initialPayment: String = "$1000.0",
     val totalPayment: String = "$12000.0",
     val selectedPaymentType: PaymentModel = PaymentModel.TOTAL_PAYMENT,

@@ -67,6 +67,8 @@ kotlin {
             implementation(libs.androidx.navigation.compose)
             api(libs.datastore.preferences)
             api(libs.datastore)
+            implementation (libs.android.lottie.compose) // Latest version as of now
+
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)

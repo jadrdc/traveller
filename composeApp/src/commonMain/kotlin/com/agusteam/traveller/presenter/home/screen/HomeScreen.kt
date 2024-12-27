@@ -17,7 +17,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.agusteam.traveller.presenter.common.BottomNavigationBar
 import com.agusteam.traveller.presenter.explore.screen.ExploreScreen
-import com.agusteam.traveller.presenter.home.navigation.HomeScreenRoute
 import com.agusteam.traveller.presenter.home.navigation.NavigationRoutes
 import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
 import com.agusteam.traveller.presenter.home.state.HomeOption
@@ -25,7 +24,7 @@ import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
 import com.agusteam.traveller.presenter.orders.navigation.OrderHistoryNavigationFlow
 import com.agusteam.traveller.presenter.profile.screen.ProfileScreen
 import com.agusteam.traveller.presenter.shopping.navigation.ShoppingFlowNavigation
-import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingitemsDetailsViewModel
+import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingItemDetailsViewModel
 import com.agusteam.traveller.presenter.theme.CustomTypography
 import com.agusteam.traveller.presenter.wishlist.navigation.WishListNavigationFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -37,7 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val navController = rememberNavController()
     val homeState = viewModel.state.collectAsStateWithLifecycle().value
-    val shoppingViewModel: ShoppingitemsDetailsViewModel = koinViewModel()
+    val shoppingViewModel: ShoppingItemDetailsViewModel = koinViewModel()
 
 
     MaterialTheme(typography = CustomTypography()) {
@@ -49,13 +48,20 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
         ) { innnerPadding ->
             Box(modifier = Modifier.padding(innnerPadding).background(Color.White)) {
                 NavHost(
-                    navController = navController, startDestination = HomeScreenRoute
+                    navController = navController,
+                    startDestination = NavigationRoutes.HomeScreen.route
+
                 ) {
-                    composable<HomeScreenRoute> {
+                    composable(
+                        NavigationRoutes.HomeScreen.route
+                    ) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.EXPLORE))
-                        ExploreScreen { tripModel ->
+                        ExploreScreen { tripModel, userId ->
                             navController.navigate(
                                 TripDetailScreenRoute(
+                                    userdId = userId,
+                                    tripId = tripModel.id,
+                                    isFavorite = tripModel.isSavedForLater,
                                     month = tripModel.month,
                                     businessImage = tripModel.businessImage,
                                     businessName = tripModel.businessName,
@@ -81,7 +87,8 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.SHOPPING_ITEM_DETAIL))
                         LaunchedEffect(Unit) {
                             shoppingViewModel.handleEvent(
-                                ShoppingitemsDetailsViewModel.ShoppingDetailEvent.ShoppingDetailLoaded(
+                                ShoppingItemDetailsViewModel.ShoppingDetailEvent.ShoppingDetailLoaded(
+                                    isFavorite = model.isFavorite,
                                     name = model.name,
                                     month = model.month,
                                     businessImage = model.businessImage,
@@ -89,7 +96,9 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                                     businessName = model.businessName,
                                     description = model.description,
                                     lat = model.lat.toDouble(),
-                                    lng = model.lng.toDouble()
+                                    lng = model.lng.toDouble(),
+                                    tripId = model.tripId,
+                                    userId = model.userdId
                                 )
                             )
                         }

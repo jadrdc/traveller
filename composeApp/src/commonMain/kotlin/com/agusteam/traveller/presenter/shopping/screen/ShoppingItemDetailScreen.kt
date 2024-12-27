@@ -14,16 +14,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.presenter.common.ActionButton
 import com.agusteam.traveller.presenter.common.CancellationPolicy
+import com.agusteam.traveller.presenter.common.ErrorModal
 import com.agusteam.traveller.presenter.common.ItemProviderOverviewItem
 import com.agusteam.traveller.presenter.common.LinkButton
 import com.agusteam.traveller.presenter.common.MapDetails
-import com.agusteam.traveller.presenter.getIncludedServices
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemHeader
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemIncluded
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemOverview
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingitemContent
 import com.agusteam.traveller.presenter.shopping.model.ShoppingDetailModel
-import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingitemsDetailsViewModel
+import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingItemDetailsViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import traveller.composeapp.generated.resources.Res
@@ -41,17 +41,20 @@ import traveller.composeapp.generated.resources.leaving_time
 import traveller.composeapp.generated.resources.pay
 import traveller.composeapp.generated.resources.starting_place
 import traveller.composeapp.generated.resources.total_payment
-import kotlin.math.ln
 
 @Composable
 fun ShoppingItemDetailScreen(
-    viewModel: ShoppingitemsDetailsViewModel = koinViewModel(),
+    viewModel: ShoppingItemDetailsViewModel = koinViewModel(),
     goBack: () -> Unit,
     goProviderProfile: (id: String) -> Unit,
     payItem: () -> Unit
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
-
+    ErrorModal(title = state.value.errorModel?.title ?: "",
+        message = state.value.errorModel?.message ?: "",
+        showError = state.value.errorModel != null, onDismiss = {
+            viewModel.handleEvent(ShoppingItemDetailsViewModel.ShoppingDetailEvent.OnErrorModalAccepted)
+        })
     Box(Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.padding(
@@ -64,7 +67,9 @@ fun ShoppingItemDetailScreen(
                     images = state.value.details.galleryPhotos,
                     isSavedForLater = state.value.isMarkedAsFavorite,
                     onBackPressed = goBack
-                )
+                ) {
+                    viewModel.handleEvent(ShoppingItemDetailsViewModel.ShoppingDetailEvent.MarkFavorite)
+                }
             }
             item {
                 ShoppingItemOverview(
@@ -132,7 +137,7 @@ fun ShoppingItemDetailScreen(
                 ShoppingItemIncluded(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     title = stringResource(Res.string.included_services),
-                    items = getIncludedServices()
+                    items = state.value.includedServices
                 )
             }
         }

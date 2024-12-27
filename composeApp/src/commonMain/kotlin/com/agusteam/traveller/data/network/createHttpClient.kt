@@ -14,6 +14,7 @@ fun createHttpClient(engine: HttpClientEngine): HttpClient {
         install(Logging) {
             level = LogLevel.ALL
         }
+
         install(HttpTimeout) {
             socketTimeoutMillis = 60_000
             requestTimeoutMillis = 60_000

@@ -14,7 +14,7 @@ import traveller.composeapp.generated.resources.ic_arrow_back
 fun BackIcon(modifier: Modifier, onClick: () -> Unit) {
     Icon(
         contentDescription = null,
-        modifier = modifier.size(16.dp).clickable { onClick() },
+        modifier = modifier.size(24.dp).clickable { onClick() },
         painter = painterResource(Res.drawable.ic_arrow_back)
     )
 }

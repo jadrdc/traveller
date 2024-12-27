@@ -20,6 +20,7 @@ koin = "4.0.0"
 ktor-client = "3.0.3"
 coil3 = "3.0.0-rc02"
 ksp = "2.0.20-1.0.24"
+lottieComposeVersion = "5.0.0"
 mapsComposeVersion = "6.2.1"
 materialIconsExtended = "1.7.6"
 materialIconsExtendedVersion = "1.5.0"
@@ -36,6 +37,7 @@ datastore = "1.1.1"
 
 
 [libraries]
+android-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieComposeVersion" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
 ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor-client" }

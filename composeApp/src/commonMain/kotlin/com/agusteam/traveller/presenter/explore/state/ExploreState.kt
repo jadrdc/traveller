@@ -5,6 +5,7 @@ import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.TripModel
 
 data class ExploreState(
+    val userId: String = "",
     val errorModel: ErrorModel? = null,
     val categoryState: CategoryState = CategoryState(),
     val items: List<TripModel> = listOf(),

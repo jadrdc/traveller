@@ -66,48 +66,54 @@ fun createCategories(): List<CategoryModel> = listOf(
 )
 
 fun createShoppingItems(categories: List<CategoryModel>) = listOf(
-    TripModel(name = "Trudille", price = "23,430", categoryList = categories),
+    TripModel(name = "Trudille", price = "23,430", categoryList = categories, id = ""),
     TripModel(
         name = "Playa Fronton",
-        categoryList = categories.take(2)
+        categoryList = categories.take(2),
+        id = ""
     ),
     TripModel(
         name = "Valle de Dios",
         price = "2,000",
-        categoryList = categories.drop(2)
+        categoryList = categories.drop(2),
+        id = ""
     ),
     TripModel(
         name = "Pico Duarte",
         price = "22,000",
-        categoryList = categories.firstOrNull()?.let { listOf(it) } ?: listOf()
-    ),
-    TripModel(name = "Valle Nuevo", price = "2,300"),
+        categoryList = categories.firstOrNull()?.let { listOf(it) } ?: listOf(),
+        id = ""),
+    TripModel(name = "Valle Nuevo", price = "2,300", id = ""),
     TripModel(
         name = "Los Cacaos",
         price = "6,300",
-        categoryList = if (categories.size >= 4) listOf(categories[1], categories[3]) else listOf()
+        categoryList = if (categories.size >= 4) listOf(categories[1], categories[3]) else listOf(),
+        id = ""
     ),
     TripModel(
         name = "Playa Fronton",
         price = "2,430",
-        categoryList = categories.take(2)
+        categoryList = categories.take(2),
+        id = ""
     ),
     TripModel(
         name = "Valle de Dios",
         price = "2,000",
-        categoryList = categories.drop(2)
+        categoryList = categories.drop(2),
+        id = ""
     ),
     TripModel(
         name = "Pico Duarte",
         price = "22,000",
-        categoryList = listOf(categories.first())
+        categoryList = listOf(categories.first()),
+        id = ""
     ),
-    TripModel(name = "Valle Nuevo", price = "2,300"),
+    TripModel(name = "Valle Nuevo", price = "2,300", id = ""),
     TripModel(
         name = "Los Cacaos",
         price = "6,300",
-        categoryList = listOf(categories[1], categories[3])
-    )
+        categoryList = listOf(categories[1], categories[3]),
+        id =""    )
 )
 
 fun getIncludedServices(): List<String> {
@@ -121,7 +127,7 @@ fun getIncludedServices(): List<String> {
         "Refrigerio y bebidas no alcohólicas",
         "Seguro Médico de Aventura",
         "Servicio de Aeroambulancia",
-        "Super Staff entrenado en Primeros Auxilios en Lugares Remotos“))",
+        "Super Staff entrenado en Primeros Auxilios en Lugares Remotos",
     )
 }
 
@@ -166,8 +172,6 @@ fun getGalleryPhoto(): List<String> {
     )
 }
 
-const val SAMPLE_ID_TRIP = "d8dd3906-9086-4136-b431-03819ada31ba"
-const val SAMPLE_ID_TRIP_2 = "9be4c770-c341-4463-acf5-e98b57b7e080"
 const val TRIP_IMAGE = "https://picsum.photos/200/300"
 const val PRICE = "2,430"
 const val DATE_RANGE = "Aug 31 - Sep 5"

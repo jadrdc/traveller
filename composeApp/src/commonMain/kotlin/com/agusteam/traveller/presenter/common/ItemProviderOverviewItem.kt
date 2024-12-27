@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.agusteam.traveller.domain.models.TripProviderModel
 import com.agusteam.traveller.presenter.getTimePeriod
 import com.agusteam.traveller.presenter.shopping.state.TripDetailState
 import com.agusteam.traveller.presenter.theme.grey500

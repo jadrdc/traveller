@@ -14,10 +14,13 @@ import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
 import com.agusteam.traveller.domain.usecase.GetPaginatedTripsUseCase
 import com.agusteam.traveller.domain.usecase.GetProfileUseCase
 import com.agusteam.traveller.domain.usecase.GetTripProviderDetailsUseCase
+import com.agusteam.traveller.domain.usecase.GetTripsIncludedServicesUseCase
 import com.agusteam.traveller.domain.usecase.LoginUseCase
+import com.agusteam.traveller.domain.usecase.MarkFavoriteTripUseCase
 import com.agusteam.traveller.domain.usecase.RequestResetPasswordEmailUseCase
 import com.agusteam.traveller.domain.usecase.SaveLocalDataUseCase
 import com.agusteam.traveller.domain.usecase.SignUpUseCase
+import com.agusteam.traveller.domain.usecase.UnmarkedFavoriteTripUseCase
 import com.agusteam.traveller.domain.validators.FieldValidator
 import org.koin.dsl.module
 
@@ -36,4 +39,7 @@ val diDomainModule = module {
     single<LocalStoragePreferenceRepository> { LocalStorageDataStore(get()) }
     single<TripRepository> { TripRepositoryImp(get()) }
     single<GetPaginatedTripsUseCase> { GetPaginatedTripsUseCase(get()) }
+    single<UnmarkedFavoriteTripUseCase> { UnmarkedFavoriteTripUseCase(get()) }
+    single<MarkFavoriteTripUseCase> { MarkFavoriteTripUseCase(get()) }
+    single<GetTripsIncludedServicesUseCase> { GetTripsIncludedServicesUseCase(get()) }
 }

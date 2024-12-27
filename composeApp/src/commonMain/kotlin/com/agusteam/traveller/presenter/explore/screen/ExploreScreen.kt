@@ -25,7 +25,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel(), goDetails: (TripModel) -> Unit) {
+fun ExploreScreen(
+    viewModel: ExploreViewModel = koinViewModel(),
+    goDetails: (TripModel, String) -> Unit
+) {
 
     val state = viewModel.state.collectAsStateWithLifecycle()
     val bottomState = rememberModalBottomSheetState(
@@ -62,9 +65,12 @@ fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel(), goDetails: (Tri
             }
         } else {
             items(state.value.items) { item ->
-                TripItem(item, onClick = { goDetails(item) }, toggleFavorite = { event ->
-                    viewModel.onExploreEventChanged(event)
-                })
+                TripItem(
+                    item,
+                    onClick = { goDetails(item, state.value.userId) },
+                    toggleFavorite = { event ->
+                        viewModel.onExploreEventChanged(event)
+                    })
             }
         }
     }

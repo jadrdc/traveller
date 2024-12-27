@@ -27,18 +27,17 @@ import traveller.composeapp.generated.resources.agency_title
 @Composable
 fun TripProviderProfileScreen(
     tripProviderModel: TripProviderViewModel = koinViewModel(),
-    id: String,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    businessId: String
 ) {
-    val state = tripProviderModel.state.collectAsStateWithLifecycle().value
-
     LaunchedEffect(Unit) {
         tripProviderModel.handlerEvent(
             TripProviderViewModel.TripProviderEvent.TripProviderDetailsLoading(
-                id
+                businessId
             )
         )
     }
+    val state = tripProviderModel.state.collectAsStateWithLifecycle().value
     Column(Modifier.background(Color.White).padding(horizontal = 16.dp)) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

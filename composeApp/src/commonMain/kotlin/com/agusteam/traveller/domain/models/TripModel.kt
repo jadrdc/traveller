@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TripModel(
+    val id: String,
     val name: String,
     val destiny: String = "",
     val lat: Double = 0.0,
@@ -22,5 +23,5 @@ data class TripModel(
     val price: String = PRICE,
     val date: String = DATE_RANGE,
     val categoryList: List<CategoryModel> = listOf(),
-    val isSavedForLater: Boolean = false
+    val isSavedForLater: Boolean = false,
 )
