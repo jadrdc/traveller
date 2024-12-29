@@ -18,7 +18,7 @@ fun MainNavigationFlow() {
     ) {
         composable(SignupNavigationRoutes.LoginScreen.route) {
             LoginScreen(onLogin = {
-                navController.navigate(SignupNavigationRoutes.HomeScreen.route) {
+                navController.navigate(SignupNavigationRoutes.HomeScreen) {
                     popUpTo(SignupNavigationRoutes.LoginScreen.route) { inclusive = true }
                 }
             }, onSignUp = {
@@ -28,7 +28,7 @@ fun MainNavigationFlow() {
         composable(SignupNavigationRoutes.SignUpCreateScreen.route) {
             SignUpAccountScreen(onBackPressed = { navController.popBackStack() })
         }
-        composable(SignupNavigationRoutes.HomeScreen.route) {
+        composable<SignupNavigationRoutes.HomeScreen> {
             HomeScreen()
         }
     }

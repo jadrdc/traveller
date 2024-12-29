@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 import com.agusteam.traveller.domain.models.PaymentModel
 import com.agusteam.traveller.presenter.common.CustomRadioButton
 import com.agusteam.traveller.presenter.shopping.state.TripDetailState
-import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingitemsDetailsViewModel
+import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingItemDetailsViewModel
 import com.agusteam.traveller.presenter.theme.secondary
 import org.jetbrains.compose.resources.stringResource
 import traveller.composeapp.generated.resources.Res
@@ -23,7 +23,7 @@ import traveller.composeapp.generated.resources.total_payment_description
 @Composable
 fun ShoppingPaymentWay(
     state: TripDetailState,
-    onEvent: (ShoppingitemsDetailsViewModel.ShoppingDetailEvent) -> Unit
+    onEvent: (ShoppingItemDetailsViewModel.ShoppingDetailEvent) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
@@ -38,7 +38,7 @@ fun ShoppingPaymentWay(
             isSelected = PaymentModel.TOTAL_PAYMENT == state.selectedPaymentType
         ) {
             onEvent(
-                ShoppingitemsDetailsViewModel.ShoppingDetailEvent.OnPaymentTypePicked(
+                ShoppingItemDetailsViewModel.ShoppingDetailEvent.OnPaymentTypePicked(
                 PaymentModel.TOTAL_PAYMENT))
         }
         CustomRadioButton(
@@ -50,7 +50,7 @@ fun ShoppingPaymentWay(
             isSelected = PaymentModel.BOOKING_PAYMENT == state.selectedPaymentType
         ) {
             onEvent(
-                ShoppingitemsDetailsViewModel.ShoppingDetailEvent.OnPaymentTypePicked(
+                ShoppingItemDetailsViewModel.ShoppingDetailEvent.OnPaymentTypePicked(
                 PaymentModel.BOOKING_PAYMENT))
 
         }

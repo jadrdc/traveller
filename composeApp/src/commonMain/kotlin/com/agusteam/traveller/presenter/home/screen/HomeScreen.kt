@@ -14,9 +14,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.agusteam.traveller.presenter.common.BottomNavigationBar
 import com.agusteam.traveller.presenter.explore.screen.ExploreScreen
 import com.agusteam.traveller.presenter.home.navigation.NavigationRoutes
+import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
 import com.agusteam.traveller.presenter.home.state.HomeOption
 import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
 import com.agusteam.traveller.presenter.orders.navigation.OrderHistoryNavigationFlow
@@ -34,11 +36,11 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val navController = rememberNavController()
     val homeState = viewModel.state.collectAsStateWithLifecycle().value
 
+
     MaterialTheme(typography = CustomTypography()) {
         Scaffold(topBar = {}, bottomBar = {
             if (homeState.currentNavigationOption != HomeOption.SHOPPING_ITEM_DETAIL) BottomNavigationBar(
-                navController = navController,
-                visible = true
+                navController = navController, visible = true
             )
         }, modifier = Modifier.fillMaxSize(), containerColor = Color.White
         ) { innnerPadding ->
@@ -46,10 +48,29 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                 NavHost(
                     navController = navController,
                     startDestination = NavigationRoutes.HomeScreen.route
+
                 ) {
-                    composable(NavigationRoutes.HomeScreen.route) {
+                    composable(
+                        NavigationRoutes.HomeScreen.route
+                    ) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.EXPLORE))
-                        ExploreScreen { navController.navigate(NavigationRoutes.TripDetailScreen.route) }
+                        ExploreScreen { tripModel, userId ->
+                            navController.navigate(
+                                TripDetailScreenRoute(
+                                    userdId = userId,
+                                    tripId = tripModel.id,
+                                    isFavorite = tripModel.isSavedForLater,
+                                    month = tripModel.month,
+                                    businessImage = tripModel.businessImage,
+                                    businessName = tripModel.businessName,
+                                    businessId = tripModel.businessId,
+                                    name = tripModel.name,
+                                    description = tripModel.description,
+                                    lat = tripModel.lat.toFloat(),
+                                    lng = tripModel.lng.toFloat()
+                                )
+                            )
+                        }
                     }
                     composable(NavigationRoutes.ProfileScreen.route) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.PROFILE))
@@ -59,9 +80,12 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.WISHLIST))
                         WishListNavigationFlow()
                     }
-                    composable(NavigationRoutes.TripDetailScreen.route) {
+                    composable<TripDetailScreenRoute> { backStackEntry ->
+                        val model = backStackEntry.toRoute<TripDetailScreenRoute>()
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.SHOPPING_ITEM_DETAIL))
-                        ShoppingFlowNavigation(goBack = { navController.popBackStack() })
+                        ShoppingFlowNavigation(
+                            model = model,
+                            goBack = { navController.popBackStack() })
                     }
 
                     composable(NavigationRoutes.OrderHistoryScreen.route) {

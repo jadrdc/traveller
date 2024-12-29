@@ -1,7 +1,5 @@
 package com.agusteam.traveller.core.base
 
-import com.agusteam.traveller.core.base.Error
-
 enum class NetworkError : Error {
     REQUEST_TIMEOUT,
     UNAUTHORIZED,

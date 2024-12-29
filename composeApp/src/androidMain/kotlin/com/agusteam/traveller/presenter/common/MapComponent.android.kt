@@ -23,13 +23,13 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-actual fun MapComponent(modifier: Modifier) {
+actual fun MapComponent(modifier: Modifier, lat: Double, lng: Double) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(250.dp),
     ) {
-        val coordinates = LatLng(17.7546, -71.5288)
+        val coordinates = LatLng(lat, lng)
         val cameraPositionState = rememberCameraPositionState {
             position = CameraPosition.fromLatLngZoom(coordinates, 15f)
         }

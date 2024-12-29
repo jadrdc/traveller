@@ -4,10 +4,10 @@ import com.agusteam.traveller.core.base.ViewModelState
 import com.agusteam.traveller.domain.models.ErrorModel
 
 data class LoginState(
-    val email: String = "",
+    val email: String = "jadrdc@gmail.com",
     val isEmailError: Boolean = false,
     val emailError: String = "",
-    val password: String = "",
+    val password: String = "Josea92@",
     val passwordError: String = "",
     val isPasswordError: Boolean = false,
     val isLoading: Boolean = false,

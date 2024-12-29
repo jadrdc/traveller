@@ -1,11 +1,13 @@
 package com.agusteam.traveller.presenter.profile.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Email
@@ -15,13 +17,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.domain.models.ProfileDataModel
-import com.agusteam.traveller.presenter.profile.composable.ProfileItem
+import com.agusteam.traveller.presenter.common.ErrorModal
+import com.agusteam.traveller.presenter.common.effects.shimmerEffect
+import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent
+import com.agusteam.traveller.presenter.profile.composable.ProfileDetailItemSection
+import com.agusteam.traveller.presenter.profile.composable.ProfileHeader
+import com.agusteam.traveller.presenter.profile.viewmodels.ProfileEvent
 import com.agusteam.traveller.presenter.profile.viewmodels.ProfileViewModel
 import com.agusteam.traveller.presenter.theme.primary
 import org.jetbrains.compose.resources.stringResource
@@ -62,34 +70,38 @@ fun ProfileScreen(
                 icon = Icons.Filled.Phone
             )
         )
+    ErrorModal(title = state.errorModel?.title ?: "",
+        message = state.errorModel?.message ?: "",
+        showError = state.errorModel != null, onDismiss = {
+            viewModel.handleEvent(ProfileEvent.OnErrorModalAccepted)
+        })
+
     Column(
         Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-
-        Text(
-            modifier = Modifier.padding(vertical = 16.dp),
-            text = state.name + " " + state.lastname,
-            fontSize = 35.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(top = 16.dp)
-        ) {
-            items(profiles) { item ->
-                ProfileItem(item)
+        ProfileHeader(isLoading = state.isLoading, value = state.fullName)
+        ProfileDetailItemSection(isLoading = state.isLoading, profileList = profiles)
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.padding(top = 40.dp).align(Alignment.CenterHorizontally)
+                    .clip(RoundedCornerShape(8.dp))
+                    .height(16.dp)
+                    .width(60.dp)
+                    .shimmerEffect()
+            )
+        } else {
+            Box(Modifier.padding(top = 40.dp).align(Alignment.CenterHorizontally).clickable {
+                // TODO IMPLEMENTAR LOGOUT CALL
+            }) {
+                Text(
+                    color = primary,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.End,
+                    text = stringResource(Res.string.logout),
+                )
             }
         }
-        Box(Modifier.padding(top = 40.dp).align(Alignment.CenterHorizontally)) {
-            Text(
-                color = primary,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-                textAlign = TextAlign.End,
-                text = stringResource(Res.string.logout),
-            )
-        }
-
     }
 }

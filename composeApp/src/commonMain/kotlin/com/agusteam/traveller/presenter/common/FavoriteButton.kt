@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import traveller.composeapp.generated.resources.Res
@@ -20,18 +19,17 @@ import traveller.composeapp.generated.resources.ic_favorite_filled
 
 @Composable
 fun FavoriteButton(
-    size: Dp = 24.dp,
-    icon:Dp=16.dp,
-    isSavedForLater: Boolean, onFavoriteToggle: () -> Unit
+    isSavedForLater: Boolean,
+    onFavoriteToggle: () -> Unit
 ) {
-    Box(Modifier.clip(CircleShape).size(size).background(Color.White, CircleShape)) {
+    Box(
+        Modifier.clip(CircleShape).size(32.dp).background(Color.White, CircleShape)
+            .clickable(interactionSource = null, indication = null) {
+                onFavoriteToggle()
+            }) {
         Icon(
             tint = if (isSavedForLater) Color.Red else Color.Black,
-            modifier = Modifier.size(icon)
-                .clickable(interactionSource = null, indication = null) {
-
-                    onFavoriteToggle()
-                }.align(Alignment.Center),
+            modifier = Modifier.size(24.dp).align(Alignment.Center),
             contentDescription = null,
             painter = painterResource(
                 if (isSavedForLater) Res.drawable.ic_favorite_filled

@@ -51,7 +51,7 @@ fun ProviderProfileOverview(tripProviderModel: TripProviderModel) {
         profileList.forEach { profile ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Top,
             ) {
 
                 Icon(

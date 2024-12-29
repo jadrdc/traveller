@@ -7,6 +7,7 @@ import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.LoginModel
 import com.agusteam.traveller.domain.usecase.LoginUseCase
 import com.agusteam.traveller.domain.usecase.RequestResetPasswordEmailUseCase
+import com.agusteam.traveller.domain.usecase.SaveLocalDataUseCase
 import com.agusteam.traveller.domain.validators.FieldValidator
 import com.agusteam.traveller.domain.validators.ValidatorType
 import com.agusteam.traveller.presenter.signup.state.LoginState
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val validator: FieldValidator,
     private val useCase: LoginUseCase,
+    private val saveLocalDataUseCase: SaveLocalDataUseCase,
     private val requestResetPasswordEmailUseCase: RequestResetPasswordEmailUseCase
 ) : GenericViewModel<LoginState, LoginEvent>(LoginState()) {
 
@@ -81,6 +83,7 @@ class LoginViewModel(
 
                 is OperationResult.Success -> {
                     val userModel = result.data
+                    saveLocalDataUseCase(userModel)
                     sendEvent(LoginEvent.OnUserLogon(userModel))
                 }
             }

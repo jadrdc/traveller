@@ -4,19 +4,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.presenter.theme.CustomFontFamily
 import com.agusteam.traveller.presenter.theme.grey500
 import com.agusteam.traveller.presenter.theme.primary
-import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CategoryItem(
@@ -28,14 +29,13 @@ fun CategoryItem(
     Column(Modifier.clickable(interactionSource = null, indication = null) {
         onSelected(item)
     }, horizontalAlignment = Alignment.CenterHorizontally) {
-        item.imageIcon?.let {
-            Icon(
-                modifier = Modifier.size(32.dp),
-                contentDescription = null,
-                tint = color,
-                painter = painterResource(it),
-            )
-        }
+        AsyncImage(
+            model = item.imageUrl,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.size(32.dp),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(color)
+        )
         Text(
             text = item.description,
             color = color,

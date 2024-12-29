@@ -73,7 +73,7 @@ fun WishItem(
                 )
             }
         }
-        FavoriteButton(isSavedForLater = true, icon = 32.dp, size = 32.dp) {
+        FavoriteButton(isSavedForLater = true) {
 
         }
     }

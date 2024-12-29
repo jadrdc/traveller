@@ -24,7 +24,8 @@ import com.agusteam.traveller.presenter.theme.secondary
 
 @Composable
 fun ProviderOverViewItem(
-    modifier: Modifier = Modifier, tripProviderModel: TripProviderModel
+    modifier: Modifier = Modifier,
+    tripProviderModel: TripProviderModel
 ) {
     Column(
         modifier.shadow(

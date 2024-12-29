@@ -1,57 +1,110 @@
 package com.agusteam.traveller.presenter.explore.viewmodels
 
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.viewModelScope
 import com.agusteam.traveller.core.base.GenericViewModel
 import com.agusteam.traveller.core.base.OperationResult
 import com.agusteam.traveller.data.util.POPULAR
+import com.agusteam.traveller.data.util.USER_ID
 import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
-import com.agusteam.traveller.presenter.createShoppingItems
+import com.agusteam.traveller.domain.usecase.GetPaginatedTripsUseCase
+import com.agusteam.traveller.domain.usecase.GetProfileUseCase
+import com.agusteam.traveller.domain.usecase.MarkFavoriteTripUseCase
+import com.agusteam.traveller.domain.usecase.UnmarkedFavoriteTripUseCase
 import com.agusteam.traveller.presenter.explore.state.ExploreFilterState
 import com.agusteam.traveller.presenter.explore.state.ExploreState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 
-class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
+class ExploreViewModel(
+    val getProfileUseCase: GetProfileUseCase,
+    val getCategoryUseCase: GetCategoryUseCase,
+    val getPaginatedTripsUseCase: GetPaginatedTripsUseCase,
+    val markFavoriteTripUseCase: MarkFavoriteTripUseCase,
+    val unmarkedFavoriteTripUseCase: UnmarkedFavoriteTripUseCase
+) :
     GenericViewModel<ExploreState, ExploreEvent>(ExploreState()) {
+
     init {
+        initialLoad()
+        getUserInfo()
+    }
+
+    private fun getUserInfo() {
         viewModelScope.launch {
-            updateState { copy(isLoadingSkeleton = true) }
+            getProfileUseCase().mapLatest { preference ->
+                val userIdKey = stringPreferencesKey(USER_ID)
+                val userId = preference[userIdKey] ?: ""
+                updateState {
+                    copy(userId = userId)
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun initialLoad() {
+        viewModelScope.launch {
+            updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = true)) }
             when (val result = getCategoryUseCase()) {
                 is OperationResult.Error -> {
-                    onErrorHappened(
-                        true,
-                        "¡Oops! Algo salió mal.",
-                        "Intenta nuevamente más tarde o contacta nuestro soporte si el problema persiste."
-                    )
+
                 }
 
                 is OperationResult.Success -> {
                     val categories =
                         result.data.map { it.copy(isSelected = it.description == POPULAR) }
+                    when (val resultTrips = getPaginatedTripsUseCase()) {
+                        is OperationResult.Error -> {}
+                        is OperationResult.Success -> {
+                            val tripList = resultTrips.data.map { trip ->
+                                TripModel(
+                                    id = trip.id,
+                                    businessId = trip.businessModel.id,
+                                    businessName = trip.businessModel.name,
+                                    image = trip.businessModel.image,
+                                    businessImage = trip.businessModel.image,
+                                    name = trip.name,
+                                    description = trip.description,
+                                    lat = trip.lat,
+                                    lng = trip.lng,
+                                    destiny = trip.destiny,
+                                    month = trip.businessModel.month,
+                                    categoryList = categories
+                                )
+                            }
+                            updateState { copy(items = tripList) }
+                        }
+                    }
                     updateState {
                         copy(
-                            categories = categories,
-                            selectedCategoryModel = categories.firstOrNull { it.isSelected },
+                            categoryState = categoryState.copy(
+                                selectedCategoryModel = categories.firstOrNull { it.isSelected },
+                                categories = categories
+                            ),
                             filterState = ExploreFilterState(
                                 selectedCategoryModel = categories.firstOrNull { it.isSelected },
                             ),
-                            items = createShoppingItems(categories)
                         )
                     }
                 }
             }
-            updateState { copy(isLoadingSkeleton = false) }
+            updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = false)) }
         }
+
     }
 
     private fun updateSelectedCategory(categoryModel: CategoryModel) {
         updateState {
             copy(
+                categoryState = categoryState.copy(
+                    selectedCategoryModel = categoryModel,
+                    categories = updateCategoriesSelection(categoryState.categories, categoryModel)
+                ),
                 filterState = filterState.copy(selectedCategoryModel = categoryModel),
-                selectedCategoryModel = categoryModel,
-                categories = updateCategoriesSelection(categories, categoryModel),
             )
         }
     }
@@ -60,8 +113,10 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
         updateState {
             copy(
                 shouldBottomModal = false,
-                selectedCategoryModel = categoryModel,
-                categories = updateCategoriesSelection(categories, categoryModel),
+                categoryState = categoryState.copy(
+                    selectedCategoryModel = categoryModel,
+                    categories = updateCategoriesSelection(categoryState.categories, categoryModel)
+                ),
                 filterState = filterState.copy(searchText = ""),
             )
         }
@@ -96,7 +151,7 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
         updateState {
             copy(
                 filterState = filterState.copy(
-                    selectedCategoryModel = selectedCategoryModel, searchText = ""
+                    selectedCategoryModel = categoryState.selectedCategoryModel, searchText = ""
                 )
             )
         }
@@ -130,16 +185,38 @@ class ExploreViewModel(val getCategoryUseCase: GetCategoryUseCase) :
     private fun updateShoppingitem(
         item: TripModel
     ) {
-        updateState {
-            copy(
-                items = items.map {
-                    if (it === item) {
-                        it.copy(isSavedForLater = !it.isSavedForLater)
-                    } else {
-                        it
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            val markState = !item.isSavedForLater
+            val result = if (markState) {
+                markFavoriteTripUseCase(userId = state.value.userId, tripId = item.id)
+            } else {
+                unmarkedFavoriteTripUseCase(userId = state.value.userId, tripId = item.id)
+            }
+            when (result) {
+                is OperationResult.Error -> {
+                    onErrorHappened(
+                        true,
+                        "Error cambiando el estado de viaje",
+                        "No se pudo completar la operacion,intente mas tarde."
+                    )
+                }
+
+                is OperationResult.Success -> {
+                    updateState {
+                        copy(
+                            items = items.map {
+                                if (it === item) {
+                                    it.copy(isSavedForLater = markState)
+                                } else {
+                                    it
+                                }
+                            }
+                        )
                     }
                 }
-            )
+            }
+            updateState { copy(isLoading = false) }
         }
     }
 

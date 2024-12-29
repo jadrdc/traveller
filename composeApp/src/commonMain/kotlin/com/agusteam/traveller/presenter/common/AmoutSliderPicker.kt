@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.agusteam.traveller.presenter.explore.state.ExploreFilterState
+import com.agusteam.traveller.presenter.formatMoney
 import com.agusteam.traveller.presenter.theme.primary
 import com.agusteam.traveller.presenter.theme.secondary
 import org.jetbrains.compose.resources.painterResource
@@ -90,8 +91,8 @@ fun AmountSliderPicker(
                 .padding(top = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = filterState.minimumAmount.toInt().toString())
-            Text(text = filterState.selectedAmount.toInt().toString())
+            Text(text = formatMoney(filterState.minimumAmount.toInt()))
+            Text(text = formatMoney(filterState.selectedAmount.toInt()))
         }
     }
 }

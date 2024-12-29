@@ -20,6 +20,7 @@ koin = "4.0.0"
 ktor-client = "3.0.3"
 coil3 = "3.0.0-rc02"
 ksp = "2.0.20-1.0.24"
+lottieComposeVersion = "5.0.0"
 mapsComposeVersion = "6.2.1"
 materialIconsExtended = "1.7.6"
 materialIconsExtendedVersion = "1.5.0"
@@ -32,9 +33,11 @@ pods-google-maps = "9.1.1"
 pods-google-ios-maps-utils = "6.0.0"
 stripeAndroid = "21.2.1"
 stripeJava = "28.0.0"
+datastore = "1.1.1"
 
 
 [libraries]
+android-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieComposeVersion" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
 ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor-client" }
@@ -42,7 +45,6 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-client" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-client" }
-
 maps-secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 google-playServices-maps = "com.google.android.gms:play-services-maps:${versions.playServicesMaps}"
 android-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsComposeVersion" }
@@ -67,18 +69,16 @@ koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", versi
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
-
-
-
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
 coil-network-ktor2 = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil3" }
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil3" }
 coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
-
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 stripe-android = { module = "com.stripe:stripe-android", version.ref = "stripeAndroid" }
 stripe-java = { module = "com.stripe:stripe-java", version.ref = "stripeJava" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 
 [plugins]

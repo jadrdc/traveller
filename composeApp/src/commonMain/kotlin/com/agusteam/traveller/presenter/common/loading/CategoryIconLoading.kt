@@ -29,7 +29,7 @@ fun CategoryIconLoading() {
             modifier = Modifier
                 .padding(top = 4.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .height(16.dp,)
+                .height(16.dp)
                 .width(48.dp)
                 .shimmerEffect()
         )

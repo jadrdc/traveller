@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BackButton(onClick: () -> Unit) {
-    Box(Modifier.clip(CircleShape).size(24.dp).background(Color.White, CircleShape)) {
-        BackIcon(Modifier.align(Alignment.Center),){onClick()}
+    Box(Modifier.clip(CircleShape).size(32.dp).background(Color.White, CircleShape)) {
+        BackIcon(Modifier.align(Alignment.Center)){onClick()}
     }
 }
