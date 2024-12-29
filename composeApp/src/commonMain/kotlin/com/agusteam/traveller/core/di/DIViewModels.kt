@@ -16,7 +16,7 @@ val viewModelModule = module {
     single<SignUpViewModel> { SignUpViewModel(get(), get()) }
     single<LoginViewModel> { LoginViewModel(get(), get(), get(), get()) }
     single<ExploreViewModel> { ExploreViewModel(get(), get(), get(), get(), get()) }
-    single<ProfileViewModel> { ProfileViewModel(get()) }
+    single<ProfileViewModel> { ProfileViewModel(get(), get()) }
     single<OrderHistoryViewModel> { OrderHistoryViewModel() }
     single<ShoppingItemDetailsViewModel> { ShoppingItemDetailsViewModel(get(), get(), get()) }
     single<OrderDetailViewModel> { OrderDetailViewModel() }

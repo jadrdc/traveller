@@ -1,5 +1,6 @@
 package com.agusteam.traveller.presenter.profile.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,9 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.domain.models.ProfileDataModel
+import com.agusteam.traveller.presenter.common.ErrorModal
 import com.agusteam.traveller.presenter.common.effects.shimmerEffect
+import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent
 import com.agusteam.traveller.presenter.profile.composable.ProfileDetailItemSection
 import com.agusteam.traveller.presenter.profile.composable.ProfileHeader
+import com.agusteam.traveller.presenter.profile.viewmodels.ProfileEvent
 import com.agusteam.traveller.presenter.profile.viewmodels.ProfileViewModel
 import com.agusteam.traveller.presenter.theme.primary
 import org.jetbrains.compose.resources.stringResource
@@ -66,6 +70,12 @@ fun ProfileScreen(
                 icon = Icons.Filled.Phone
             )
         )
+    ErrorModal(title = state.errorModel?.title ?: "",
+        message = state.errorModel?.message ?: "",
+        showError = state.errorModel != null, onDismiss = {
+            viewModel.handleEvent(ProfileEvent.OnErrorModalAccepted)
+        })
+
     Column(
         Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
@@ -81,7 +91,9 @@ fun ProfileScreen(
                     .shimmerEffect()
             )
         } else {
-            Box(Modifier.padding(top = 40.dp).align(Alignment.CenterHorizontally)) {
+            Box(Modifier.padding(top = 40.dp).align(Alignment.CenterHorizontally).clickable {
+                // TODO IMPLEMENTAR LOGOUT CALL
+            }) {
                 Text(
                     color = primary,
                     fontWeight = FontWeight.SemiBold,

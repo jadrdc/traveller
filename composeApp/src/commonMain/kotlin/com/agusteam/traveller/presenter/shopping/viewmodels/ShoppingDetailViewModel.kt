@@ -20,21 +20,21 @@ class ShoppingItemDetailsViewModel(
     TripDetailState()
 ) {
 
-    init {
-        //REFACTOR PARA NO TENER ESTE VIEWMODEL CREADO A NIVEL DE COMPOSABLE
-        if (state.value.tripId.isBlank())
-        viewModelScope.launch {
-            updateState { copy(isLoading = true) }
-            when (val result = getTripsIncludedServicesUseCase(state.value.tripId)) {
-                is OperationResult.Success -> {
-                    updateState { copy(includedServices = result.data) }
-                }
+    private fun getIncludedServices() {
+        if (state.value.tripId.isNotBlank()) {
+            viewModelScope.launch {
+                updateState { copy(isLoadingContent = true) }
+                when (val result = getTripsIncludedServicesUseCase(state.value.tripId)) {
+                    is OperationResult.Success -> {
+                        updateState { copy(includedServices = result.data) }
+                    }
 
-                is OperationResult.Error -> {
-                    val e=result.exception
+                    is OperationResult.Error -> {
+                        val e = result.exception
+                    }
                 }
+                updateState { copy(isLoadingContent = false) }
             }
-            updateState { copy(isLoading = true) }
         }
     }
 
@@ -69,12 +69,14 @@ class ShoppingItemDetailsViewModel(
                         title = event.name,
                     )
                 }
+                getIncludedServices()
             }
         }
     }
 
     private fun markTripFavorite() {
         viewModelScope.launch {
+            updateState { copy(isLoading = true) }
             val markState = !state.value.isMarkedAsFavorite
             val result = if (markState) {
                 markFavoriteTripUseCase(userId = state.value.userId, tripId = state.value.tripId)
@@ -101,6 +103,7 @@ class ShoppingItemDetailsViewModel(
                     }
                 }
             }
+            updateState { copy(isLoading = false) }
         }
     }
 

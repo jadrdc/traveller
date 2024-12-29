@@ -10,5 +10,6 @@ data class ExploreState(
     val categoryState: CategoryState = CategoryState(),
     val items: List<TripModel> = listOf(),
     val shouldBottomModal: Boolean = false,
+    val isLoading: Boolean = false,
     val filterState: ExploreFilterState = ExploreFilterState(selectedCategoryModel = null)
 ) : ViewModelState

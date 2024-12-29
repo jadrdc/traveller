@@ -16,6 +16,7 @@ import com.agusteam.traveller.domain.usecase.GetProfileUseCase
 import com.agusteam.traveller.domain.usecase.GetTripProviderDetailsUseCase
 import com.agusteam.traveller.domain.usecase.GetTripsIncludedServicesUseCase
 import com.agusteam.traveller.domain.usecase.LoginUseCase
+import com.agusteam.traveller.domain.usecase.LogoutUseCase
 import com.agusteam.traveller.domain.usecase.MarkFavoriteTripUseCase
 import com.agusteam.traveller.domain.usecase.RequestResetPasswordEmailUseCase
 import com.agusteam.traveller.domain.usecase.SaveLocalDataUseCase
@@ -28,6 +29,7 @@ val diDomainModule = module {
     single<FieldValidator> { FieldValidator() }
     single<LoginRepository> { LoginRepositoryImpl(get()) }
     single<LoginUseCase> { LoginUseCase(get()) }
+    single<LogoutUseCase> { LogoutUseCase(get()) }
     single<RequestResetPasswordEmailUseCase> { RequestResetPasswordEmailUseCase(get()) }
     single<SignUpUseCase> { SignUpUseCase(get()) }
     single<CategoryRepository> { CategoryRepositoryImpl(get()) }

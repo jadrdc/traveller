@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface LocalStoragePreferenceRepository {
     suspend fun save(key: String, value: String)
     suspend fun getValue(): Flow<Preferences>
+    suspend fun clear()
 }

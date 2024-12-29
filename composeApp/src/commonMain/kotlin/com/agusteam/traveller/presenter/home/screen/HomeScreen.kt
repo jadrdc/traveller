@@ -24,7 +24,6 @@ import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
 import com.agusteam.traveller.presenter.orders.navigation.OrderHistoryNavigationFlow
 import com.agusteam.traveller.presenter.profile.screen.ProfileScreen
 import com.agusteam.traveller.presenter.shopping.navigation.ShoppingFlowNavigation
-import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingItemDetailsViewModel
 import com.agusteam.traveller.presenter.theme.CustomTypography
 import com.agusteam.traveller.presenter.wishlist.navigation.WishListNavigationFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -36,7 +35,6 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val navController = rememberNavController()
     val homeState = viewModel.state.collectAsStateWithLifecycle().value
-    val shoppingViewModel: ShoppingItemDetailsViewModel = koinViewModel()
 
 
     MaterialTheme(typography = CustomTypography()) {
@@ -85,25 +83,8 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                     composable<TripDetailScreenRoute> { backStackEntry ->
                         val model = backStackEntry.toRoute<TripDetailScreenRoute>()
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.SHOPPING_ITEM_DETAIL))
-                        LaunchedEffect(Unit) {
-                            shoppingViewModel.handleEvent(
-                                ShoppingItemDetailsViewModel.ShoppingDetailEvent.ShoppingDetailLoaded(
-                                    isFavorite = model.isFavorite,
-                                    name = model.name,
-                                    month = model.month,
-                                    businessImage = model.businessImage,
-                                    businessId = model.businessId,
-                                    businessName = model.businessName,
-                                    description = model.description,
-                                    lat = model.lat.toDouble(),
-                                    lng = model.lng.toDouble(),
-                                    tripId = model.tripId,
-                                    userId = model.userdId
-                                )
-                            )
-                        }
                         ShoppingFlowNavigation(
-                            viewModel = shoppingViewModel,
+                            model = model,
                             goBack = { navController.popBackStack() })
                     }
 

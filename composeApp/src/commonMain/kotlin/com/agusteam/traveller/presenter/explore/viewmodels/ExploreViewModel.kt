@@ -186,6 +186,7 @@ class ExploreViewModel(
         item: TripModel
     ) {
         viewModelScope.launch {
+            updateState { copy(isLoading = true) }
             val markState = !item.isSavedForLater
             val result = if (markState) {
                 markFavoriteTripUseCase(userId = state.value.userId, tripId = item.id)
@@ -215,6 +216,7 @@ class ExploreViewModel(
                     }
                 }
             }
+            updateState { copy(isLoading = false) }
         }
     }
 

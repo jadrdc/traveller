@@ -19,4 +19,10 @@ class LocalStorageDataStore(private val storage: DataStore<Preferences>) :
     override suspend fun getValue(): Flow<Preferences> {
         return storage.data
     }
+
+    override suspend fun clear() {
+        storage.edit { preference ->
+            preference.clear()
+        }
+    }
 }

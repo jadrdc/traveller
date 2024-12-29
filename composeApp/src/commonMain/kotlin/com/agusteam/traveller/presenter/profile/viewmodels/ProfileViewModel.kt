@@ -3,20 +3,24 @@ package com.agusteam.traveller.presenter.profile.viewmodels
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.viewModelScope
 import com.agusteam.traveller.core.base.GenericViewModel
+import com.agusteam.traveller.core.di.viewModelModule
 import com.agusteam.traveller.data.util.EMAIL
 import com.agusteam.traveller.data.util.LAST_NAME
 import com.agusteam.traveller.data.util.NAME
 import com.agusteam.traveller.data.util.PHONE
+import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.usecase.GetProfileUseCase
+import com.agusteam.traveller.domain.usecase.LogoutUseCase
 import com.agusteam.traveller.presenter.formatPhone
 import com.agusteam.traveller.presenter.profile.state.ProfileState
+import com.agusteam.traveller.presenter.signup.viewmodels.LoginEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ProfileViewModel(val getProfileUseCase: GetProfileUseCase) :
+class ProfileViewModel(val getProfileUseCase: GetProfileUseCase, val logoutUseCase: LogoutUseCase) :
     GenericViewModel<ProfileState, ProfileEvent>(ProfileState()) {
 
     init {
@@ -41,6 +45,48 @@ class ProfileViewModel(val getProfileUseCase: GetProfileUseCase) :
         }
     }
 
+    fun handleEvent(event: ProfileEvent) {
+        when (event) {
+            ProfileEvent.LogoutUser -> {
+
+            }
+
+            ProfileEvent.OnErrorModalAccepted -> {
+                onErrorHappened(false)
+            }
+        }
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            try {
+                logoutUseCase()
+            } catch (e: Exception) {
+                onErrorHappened(
+                    true,
+                    "Error Inesperado",
+                    "No se pudo completar la operacion,intente mas tarde."
+                )
+            }
+        }
+    }
+
+    private fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
+        val errorModel = if (!value) {
+            null
+        } else {
+            ErrorModel(title = title, message = message)
+        }
+        updateState {
+            copy(
+                errorModel = errorModel
+            )
+        }
+    }
 }
 
-sealed interface ProfileEvent
+sealed interface ProfileEvent {
+    data object LogoutUser : ProfileEvent
+    data object OnErrorModalAccepted : ProfileEvent
+
+}
