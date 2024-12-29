@@ -1,5 +1,6 @@
 package com.agusteam.traveller.presenter.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +34,8 @@ fun ProviderOverViewItem(
             shape = RoundedCornerShape(8.dp),
             ambientColor = Color.Black.copy(alpha = 0.1f), // Soft shadow color
             spotColor = Color.Black.copy(alpha = 0.2f)
-        ).fillMaxWidth()
+        ).fillMaxWidth().background(Color.White, shape = RoundedCornerShape(8.dp))
+
     ) {
         Row(
             Modifier.fillMaxWidth().padding(16.dp),

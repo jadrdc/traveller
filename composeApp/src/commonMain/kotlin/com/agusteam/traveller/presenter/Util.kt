@@ -113,7 +113,8 @@ fun createShoppingItems(categories: List<CategoryModel>) = listOf(
         name = "Los Cacaos",
         price = "6,300",
         categoryList = listOf(categories[1], categories[3]),
-        id =""    )
+        id = ""
+    )
 )
 
 fun getIncludedServices(): List<String> {
@@ -175,3 +176,5 @@ fun getGalleryPhoto(): List<String> {
 const val TRIP_IMAGE = "https://picsum.photos/200/300"
 const val PRICE = "2,430"
 const val DATE_RANGE = "Aug 31 - Sep 5"
+const val URL = "http://127.0.0.1:9000/"
+const val URL2 = "http://10.0.2.2:9000/"

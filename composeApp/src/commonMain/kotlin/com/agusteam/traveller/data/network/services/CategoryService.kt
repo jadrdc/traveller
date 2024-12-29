@@ -3,6 +3,7 @@ package com.agusteam.traveller.data.network.services
 import com.agusteam.traveller.core.base.OperationResult
 import com.agusteam.traveller.data.mappers.mapResponse
 import com.agusteam.traveller.data.model.CategoryResponse
+import com.agusteam.traveller.presenter.URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
@@ -14,7 +15,7 @@ class CategoryService(
     suspend fun getCategories(): OperationResult<List<CategoryResponse>> {
         return try {
             val response = httpClient.get(
-                urlString = "http://10.0.2.2:9000/categories"
+                urlString = "${URL}categories"
             ) {
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
             }

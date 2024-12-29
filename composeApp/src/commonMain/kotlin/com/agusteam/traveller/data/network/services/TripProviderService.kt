@@ -4,6 +4,7 @@ import com.agusteam.traveller.core.base.OperationResult
 import com.agusteam.traveller.data.mappers.mapResponse
 import com.agusteam.traveller.data.model.BusinessProfileModel
 import com.agusteam.traveller.data.model.TripProviderRequest
+import com.agusteam.traveller.presenter.URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -16,7 +17,7 @@ class TripProviderService(
     suspend fun getBusinessProfile(request: TripProviderRequest): OperationResult<BusinessProfileModel> {
         return try {
             val response = httpClient.post(
-                urlString = "http://10.0.2.2:9000/businessProfile"
+                urlString = "${URL}businessProfile"
             ) {
                 setBody(request)
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set

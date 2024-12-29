@@ -6,6 +6,7 @@ import com.agusteam.traveller.data.model.LoginRequest
 import com.agusteam.traveller.data.model.LoginResponse
 import com.agusteam.traveller.data.model.RequestPasswordChangeModel
 import com.agusteam.traveller.data.model.UserSignUpRequest
+import com.agusteam.traveller.presenter.URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -18,7 +19,7 @@ class SignUpService(
     suspend fun login(model: LoginRequest): OperationResult<LoginResponse> {
         return try {
             val response = httpClient.post(
-                urlString = "http://10.0.2.2:9000/login"
+                urlString = "${URL}login"
             ) {
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
                 setBody(model)
@@ -32,7 +33,7 @@ class SignUpService(
     suspend fun signUp(model: UserSignUpRequest): OperationResult<String> {
         return try {
             val response = httpClient.post(
-                urlString = "http://10.0.2.2:9000/signup"
+                urlString = "${URL}signup"
             ) {
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
                 setBody(model)
@@ -46,7 +47,7 @@ class SignUpService(
     suspend fun resetPasswordForEmail(model: RequestPasswordChangeModel): OperationResult<String> {
         return try {
             val response = httpClient.post(
-                urlString = "http://10.0.2.2:9000/resetPasswordForEmail"
+                urlString = "${URL}resetPasswordForEmail"
             ) {
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
                 setBody(model)

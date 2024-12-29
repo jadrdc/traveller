@@ -5,6 +5,7 @@ import com.agusteam.traveller.data.mappers.mapResponse
 import com.agusteam.traveller.data.model.IncludedServiceModel
 import com.agusteam.traveller.data.model.TripFavoriteRequest
 import com.agusteam.traveller.data.model.TripsPaginatedResponse
+import com.agusteam.traveller.presenter.URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -21,7 +22,7 @@ class TripService(
     suspend fun markAsFavorite(model: TripFavoriteRequest): OperationResult<Boolean> {
         return try {
             val response = httpClient.post(
-                urlString = "http://10.0.2.2:9000/trip/favorite"
+                urlString = "${URL}trip/favorite"
             ) {
                 setBody(model)
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
@@ -35,7 +36,7 @@ class TripService(
     suspend fun getTripsIncludeServices(trip: String): OperationResult<List<String>> {
         return try {
             val response = httpClient.get(
-                urlString = "http://10.0.2.2:9000/trip/included/$trip" // Use string interpolation to insert the trip
+                urlString = "${URL}trip/included/$trip" // Use string interpolation to insert the trip
             ) {
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
             }
@@ -48,7 +49,7 @@ class TripService(
     suspend fun unmarkAsFavorite(model: TripFavoriteRequest): OperationResult<Boolean> {
         return try {
             val response = httpClient.delete(
-                urlString = "http://10.0.2.2:9000/trip/favorite"
+                urlString = "${URL}trip/favorite"
             ) {
                 setBody(model)
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
@@ -62,7 +63,7 @@ class TripService(
     suspend fun getTrips(): OperationResult<List<TripsPaginatedResponse>> {
         return try {
             val response = httpClient.get(
-                urlString = "http://10.0.2.2:9000/trip"
+                urlString = "${URL}trip"
             ) {
                 contentType(ContentType.Application.Json) // Ensure the Content-Type is set
             }
