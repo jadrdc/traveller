@@ -4,7 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
 import com.agusteam.traveller.presenter.home.screen.HomeScreen
+import com.agusteam.traveller.presenter.home.state.HomeOption
+import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
+import com.agusteam.traveller.presenter.shopping.navigation.ShoppingFlowNavigation
 import com.agusteam.traveller.presenter.signup.screen.LoginScreen
 import com.agusteam.traveller.presenter.signup.screen.SignUpAccountScreen
 
@@ -29,7 +34,15 @@ fun MainNavigationFlow() {
             SignUpAccountScreen(onBackPressed = { navController.popBackStack() })
         }
         composable<SignupNavigationRoutes.HomeScreen> {
-            HomeScreen()
+            HomeScreen() { route ->
+                navController.navigate(route)
+            }
+        }
+        composable<TripDetailScreenRoute> { backStackEntry ->
+            val model = backStackEntry.toRoute<TripDetailScreenRoute>()
+            ShoppingFlowNavigation(
+                model = model,
+                goBack = { navController.popBackStack() })
         }
     }
 

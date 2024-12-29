@@ -14,7 +14,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.agusteam.traveller.presenter.common.BottomNavigationBar
 import com.agusteam.traveller.presenter.explore.screen.ExploreScreen
 import com.agusteam.traveller.presenter.home.navigation.NavigationRoutes
@@ -23,7 +22,6 @@ import com.agusteam.traveller.presenter.home.state.HomeOption
 import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
 import com.agusteam.traveller.presenter.orders.navigation.OrderHistoryNavigationFlow
 import com.agusteam.traveller.presenter.profile.screen.ProfileScreen
-import com.agusteam.traveller.presenter.shopping.navigation.ShoppingFlowNavigation
 import com.agusteam.traveller.presenter.theme.CustomTypography
 import com.agusteam.traveller.presenter.wishlist.navigation.WishListNavigationFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -32,7 +30,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
-fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
+fun HomeScreen(
+    viewModel: HomeViewModel = koinViewModel(),
+    onNavigateDetails: (TripDetailScreenRoute) -> Unit
+) {
     val navController = rememberNavController()
     val homeState = viewModel.state.collectAsStateWithLifecycle().value
 
@@ -55,7 +56,7 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                     ) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.EXPLORE))
                         ExploreScreen { tripModel, userId ->
-                            navController.navigate(
+                            onNavigateDetails(
                                 TripDetailScreenRoute(
                                     userdId = userId,
                                     tripId = tripModel.id,
@@ -79,13 +80,6 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                     composable(NavigationRoutes.WishListScreen.route) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.WISHLIST))
                         WishListNavigationFlow()
-                    }
-                    composable<TripDetailScreenRoute> { backStackEntry ->
-                        val model = backStackEntry.toRoute<TripDetailScreenRoute>()
-                        viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.SHOPPING_ITEM_DETAIL))
-                        ShoppingFlowNavigation(
-                            model = model,
-                            goBack = { navController.popBackStack() })
                     }
 
                     composable(NavigationRoutes.OrderHistoryScreen.route) {
