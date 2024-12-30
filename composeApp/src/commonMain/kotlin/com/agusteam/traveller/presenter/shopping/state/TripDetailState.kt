@@ -25,6 +25,8 @@ data class TripDetailState(
     val includedServices: List<String> = listOf(),
     val isLoading: Boolean = false,
     val isLoadingContent: Boolean = false,
+    val galleryPhotos: List<String> = listOf(),
+    val cancellationPolicy: String = "",
 
     val tripProviderModel: TripProviderModel = getProvider(),
     val initialPayment: String = "$1000.0",

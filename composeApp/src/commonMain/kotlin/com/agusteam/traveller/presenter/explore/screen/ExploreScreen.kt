@@ -39,7 +39,7 @@ fun ExploreScreen(
 
     val state = viewModel.state.collectAsStateWithLifecycle()
     val bottomState = rememberModalBottomSheetState(
-        false,
+        true,
     )
 
     ErrorModal(title = state.value.errorModel?.title ?: "",

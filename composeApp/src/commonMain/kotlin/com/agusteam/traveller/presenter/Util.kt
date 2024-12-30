@@ -164,16 +164,6 @@ fun getShoppingItemsDetails(): TripDetailsModel {
     )
 }
 
-fun getGalleryPhoto(): List<String> {
-    return listOf(
-        "https://picsum.photos/200/300",
-        "https://picsum.photos/300/300",
-        "https://picsum.photos/400/300",
-        "https://picsum.photos/500/300"
-    )
-}
-
-const val TRIP_IMAGE = "https://picsum.photos/200/300"
 const val PRICE = "2,430"
 const val DATE_RANGE = "Aug 31 - Sep 5"
 const val URL = "http://127.0.0.1:9000/"

@@ -27,5 +27,6 @@ data class TripDetailScreenRoute(
     val month: Int = 0,
     val isFavorite: Boolean,
     val userdId: String,
+    val images: List<String>, val cancellationPolicy: String
 )
 

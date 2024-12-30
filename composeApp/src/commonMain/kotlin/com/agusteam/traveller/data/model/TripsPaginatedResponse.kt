@@ -1,6 +1,7 @@
 package com.agusteam.traveller.data.model
 
 import kotlinx.serialization.Serializable
+
 @Serializable
 data class TripsPaginatedResponse(
     val businessModel: SummaryBusinessModel,
@@ -9,5 +10,7 @@ data class TripsPaginatedResponse(
     val lat: Double,
     val lng: Double,
     val id: String,
-    val name: String
+    val name: String,
+    val images: List<String>,
+    val cancellation_policy: String
 )

@@ -42,7 +42,7 @@ fun WishItem(
         ) {
             AsyncImage(
                 modifier = Modifier.size(64.dp).clip(RoundedCornerShape(8.dp)),
-                model = item.image,
+                model = item.images.firstOrNull() ?: "",
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )

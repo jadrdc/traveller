@@ -33,7 +33,9 @@ fun ShoppingFlowNavigation(
                 lat = model.lat.toDouble(),
                 lng = model.lng.toDouble(),
                 tripId = model.tripId,
-                userId = model.userdId
+                userId = model.userdId,
+                images = model.images,
+                cancellationPolicy = model.cancellationPolicy
             )
         )
     }

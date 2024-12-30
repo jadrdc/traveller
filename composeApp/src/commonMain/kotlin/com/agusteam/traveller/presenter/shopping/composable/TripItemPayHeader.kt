@@ -38,7 +38,7 @@ fun TripItemPayHeader(
         ) {
             AsyncImage(
                 modifier = Modifier.size(120.dp).clip(RoundedCornerShape(8.dp)),
-                model = state.details.galleryPhotos[0],
+                model = state.galleryPhotos[0],
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )

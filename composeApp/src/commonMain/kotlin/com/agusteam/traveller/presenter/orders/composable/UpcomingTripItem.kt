@@ -56,7 +56,7 @@ fun UpcomingTripItem(
                 AsyncImage(
                     modifier = Modifier.height(180.dp).fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp)),
-                    model = item.image,
+                    model = item.images.firstOrNull() ?: "",
                     contentScale = ContentScale.FillBounds,
                     contentDescription = null
                 )

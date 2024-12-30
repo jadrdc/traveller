@@ -1,6 +1,5 @@
 package com.agusteam.traveller.presenter.common
 
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,8 +17,7 @@ fun BottomModalSheet(
     content: @Composable () -> Unit
 ) {
     ModalBottomSheet(
-        modifier = Modifier.wrapContentHeight()
-            .fillMaxHeight(0.90f),
+        modifier = Modifier.wrapContentHeight(),
         sheetState = sheetState,
         containerColor = Color.White,
         onDismissRequest = {

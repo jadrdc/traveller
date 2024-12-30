@@ -65,8 +65,9 @@ class ShoppingItemDetailsViewModel(
                         lat = event.lat,
                         lng = event.lng,
                         description = event.description,
-                        details = getShoppingItemsDetails(),
+                        details = getShoppingItemsDetails().copy(galleryPhotos = event.images),
                         title = event.name,
+                        cancellationPolicy = event.cancellationPolicy
                     )
                 }
                 getIncludedServices()
@@ -140,9 +141,11 @@ class ShoppingItemDetailsViewModel(
             val description: String,
             val month: Int,
             val isFavorite: Boolean,
-            val userId: String
+            val userId: String,
+            val images: List<String>,
+            val cancellationPolicy: String,
 
-        ) : ShoppingDetailEvent
+            ) : ShoppingDetailEvent
 
         data object MarkFavorite : ShoppingDetailEvent
         data object OnErrorModalAccepted : ShoppingDetailEvent

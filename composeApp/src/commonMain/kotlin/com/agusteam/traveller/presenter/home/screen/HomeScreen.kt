@@ -58,6 +58,8 @@ fun HomeScreen(
                         ExploreScreen { tripModel, userId ->
                             onNavigateDetails(
                                 TripDetailScreenRoute(
+                                    cancellationPolicy=tripModel.cancellationPolicy,
+                                    images = tripModel.images,
                                     userdId = userId,
                                     tripId = tripModel.id,
                                     isFavorite = tripModel.isSavedForLater,

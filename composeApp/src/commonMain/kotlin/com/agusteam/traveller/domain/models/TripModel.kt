@@ -2,7 +2,6 @@ package com.agusteam.traveller.domain.models
 
 import com.agusteam.traveller.presenter.DATE_RANGE
 import com.agusteam.traveller.presenter.PRICE
-import com.agusteam.traveller.presenter.TRIP_IMAGE
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,9 +16,8 @@ data class TripModel(
     val businessName: String = "",
     val description: String = "",
     val month: Int = 0,
-
-
-    val image: String = TRIP_IMAGE,
+    val images: List<String> = listOf(),
+    val cancellationPolicy: String = "",
     val price: String = PRICE,
     val date: String = DATE_RANGE,
     val categoryList: List<CategoryModel> = listOf(),

@@ -143,7 +143,7 @@ fun ShoppingItemDetailScreen(
                 item {
                     CancellationPolicy(
                         title = stringResource(Res.string.cancellation_policy),
-                        description = stringResource(Res.string.cancellation_policy_details),
+                        description = state.cancellationPolicy,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     ) {
 

@@ -62,10 +62,11 @@ class ExploreViewModel(
                         is OperationResult.Success -> {
                             val tripList = resultTrips.data.map { trip ->
                                 TripModel(
+                                    cancellationPolicy = trip.cancellation_policy,
                                     id = trip.id,
                                     businessId = trip.businessModel.id,
                                     businessName = trip.businessModel.name,
-                                    image = trip.businessModel.image,
+                                    images = trip.images,
                                     businessImage = trip.businessModel.image,
                                     name = trip.name,
                                     description = trip.description,
