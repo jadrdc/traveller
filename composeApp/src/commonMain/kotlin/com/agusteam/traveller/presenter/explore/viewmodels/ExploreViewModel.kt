@@ -51,7 +51,7 @@ class ExploreViewModel(
             updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = true)) }
             when (val result = getCategoryUseCase()) {
                 is OperationResult.Error -> {
-
+                    updateState { copy(showUIError = true) }
                 }
 
                 is OperationResult.Success -> {

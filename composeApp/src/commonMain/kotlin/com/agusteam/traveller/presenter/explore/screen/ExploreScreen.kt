@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.presenter.common.BottomModalSheet
 import com.agusteam.traveller.presenter.common.ErrorModal
+import com.agusteam.traveller.presenter.common.ErrorState
 import com.agusteam.traveller.presenter.common.SearchBar
 import com.agusteam.traveller.presenter.common.loading.TripItemLoadingSection
 import com.agusteam.traveller.presenter.explore.composable.CategorySection
@@ -46,74 +47,79 @@ fun ExploreScreen(
         showError = state.value.errorModel != null, onDismiss = {
             viewModel.onExploreEventChanged(ExploreEvent.OnErrorModalAccepted)
         })
-    Box() {
-        LazyColumn(
-            Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                SearchBar(
-                    Modifier,
-                    isloadingn = state.value.categoryState.isLoadingSkeleton
-                ) { value ->
-                    viewModel.onExploreEventChanged(
-                        ExploreEvent.OnFilterChanged(
-                            value
+
+    if (state.value.showUIError) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            ErrorState()
+        }
+    } else {
+        Box {
+            LazyColumn(
+                Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    SearchBar(
+                        Modifier,
+                        isloadingn = state.value.categoryState.isLoadingSkeleton
+                    ) { value ->
+                        viewModel.onExploreEventChanged(
+                            ExploreEvent.OnFilterChanged(
+                                value
+                            )
                         )
+                    }
+                }
+                item {
+                    CategorySection(
+                        categoryState = state.value.categoryState,
+                        onCategorySelected = { event -> viewModel.onExploreEventChanged(event) },
                     )
                 }
+                if (state.value.categoryState.isLoadingSkeleton) {
+                    item {
+                        TripItemLoadingSection()
+                    }
+                } else {
+                    items(state.value.items) { item ->
+                        TripItem(
+                            item,
+                            onClick = { goDetails(item, state.value.userId) },
+                            toggleFavorite = { event ->
+                                viewModel.onExploreEventChanged(event)
+                            })
+                    }
+                }
             }
-            item {
-                CategorySection(
-                    categoryState = state.value.categoryState,
-                    onCategorySelected = { event -> viewModel.onExploreEventChanged(event) },
+            if (state.value.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(enabled = false) {}, // Prevents interaction
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = primary)
+                }
+            }
+
+            if (state.value.shouldBottomModal) {
+                BottomModalSheet(
+                    sheetState = bottomState,
+                    onDismiss = {
+                        viewModel.onExploreEventChanged(
+                            ExploreEvent.OnFilterChanged(
+                                false
+                            )
+                        )
+                    },
+                    content = {
+                        HomeFilterContent(
+                            exploreState = state.value,
+                            onEventChanged = { event -> viewModel.onExploreEventChanged(event) },
+                        )
+                    },
                 )
             }
-            if (state.value.categoryState.isLoadingSkeleton) {
-                item {
-                    TripItemLoadingSection()
-                }
-            } else {
-                items(state.value.items) { item ->
-                    TripItem(
-                        item,
-                        onClick = { goDetails(item, state.value.userId) },
-                        toggleFavorite = { event ->
-                            viewModel.onExploreEventChanged(event)
-                        })
-                }
-            }
-        }
-        if (state.value.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(enabled = false) {}, // Prevents interaction
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(color = primary)
-            }
-        }
-
-
-
-        if (state.value.shouldBottomModal) {
-            BottomModalSheet(
-                sheetState = bottomState,
-                onDismiss = {
-                    viewModel.onExploreEventChanged(
-                        ExploreEvent.OnFilterChanged(
-                            false
-                        )
-                    )
-                },
-                content = {
-                    HomeFilterContent(
-                        exploreState = state.value,
-                        onEventChanged = { event -> viewModel.onExploreEventChanged(event) },
-                    )
-                },
-            )
-
         }
     }
 }
