@@ -13,5 +13,6 @@ data class BusinessProfileModel(
     val description: String,
     val image: String,
     val month: Int,
-    val categories: List<CategoryResponse> = listOf()
+    val categories: List<CategoryResponse> = listOf(),
+    val tripOffers: Int = 0
 )

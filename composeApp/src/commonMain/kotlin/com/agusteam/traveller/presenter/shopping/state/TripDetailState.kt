@@ -5,6 +5,8 @@ import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.PaymentModel
 import com.agusteam.traveller.domain.models.TripProviderModel
 import com.agusteam.traveller.domain.models.TripDetailsModel
+import com.agusteam.traveller.presenter.INITIAL_PAYMENT
+import com.agusteam.traveller.presenter.TOTAL_PAYMENT
 import com.agusteam.traveller.presenter.getProvider
 
 data class TripDetailState(
@@ -29,8 +31,8 @@ data class TripDetailState(
     val cancellationPolicy: String = "",
 
     val tripProviderModel: TripProviderModel = getProvider(),
-    val initialPayment: String = "$1000.0",
-    val totalPayment: String = "$12000.0",
+    val initialPayment: String = INITIAL_PAYMENT,
+    val totalPayment: String = TOTAL_PAYMENT,
     val selectedPaymentType: PaymentModel = PaymentModel.TOTAL_PAYMENT,
     val details: TripDetailsModel = TripDetailsModel()
 ) : ViewModelState

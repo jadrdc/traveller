@@ -9,8 +9,10 @@ import com.agusteam.traveller.domain.usecase.GetTripsIncludedServicesUseCase
 import com.agusteam.traveller.domain.usecase.MarkFavoriteTripUseCase
 import com.agusteam.traveller.domain.usecase.UnmarkedFavoriteTripUseCase
 import com.agusteam.traveller.presenter.getShoppingItemsDetails
+import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
 import com.agusteam.traveller.presenter.shopping.state.TripDetailState
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 class ShoppingItemDetailsViewModel(
     val getTripsIncludedServicesUseCase: GetTripsIncludedServicesUseCase,
@@ -19,110 +21,134 @@ class ShoppingItemDetailsViewModel(
 ) : GenericViewModel<TripDetailState, ShoppingItemDetailsViewModel.ShoppingDetailEvent>(
     TripDetailState()
 ) {
-
-    private fun getIncludedServices() {
-        if (state.value.tripId.isNotBlank()) {
-            viewModelScope.launch {
-                updateState { copy(isLoadingContent = true) }
-                when (val result = getTripsIncludedServicesUseCase(state.value.tripId)) {
-                    is OperationResult.Success -> {
-                        updateState { copy(includedServices = result.data) }
-                    }
-
-                    is OperationResult.Error -> {
-                        val e = result.exception
-                    }
-                }
-                updateState { copy(isLoadingContent = false) }
+    fun loadShoppingDetails(model: TripDetailScreenRoute) {
+        viewModelScope.launch {
+            try {
+                handleEvent(
+                    ShoppingDetailEvent.ShoppingDetailLoaded(
+                        isFavorite = model.isFavorite,
+                        name = model.name,
+                        month = model.month,
+                        businessImage = model.businessImage,
+                        businessId = model.businessId,
+                        businessName = model.businessName,
+                        description = model.description,
+                        lat = model.lat.toDouble(),
+                        lng = model.lng.toDouble(),
+                        tripId = model.tripId,
+                        userId = model.userdId,
+                        images = model.images,
+                        cancellationPolicy = model.cancellationPolicy
+                    )
+                )
+            } catch (e: CancellationException) {
+                val es = e.message
             }
+        }
+    }
+
+    private suspend fun getIncludedServices() {
+        if (state.value.tripId.isNotBlank()) {
+            setState { copy(isLoadingContent = true) }
+            when (val result = getTripsIncludedServicesUseCase(state.value.tripId)) {
+                is OperationResult.Success -> {
+                    updateState { copy(includedServices = result.data) }
+                }
+
+                is OperationResult.Error -> {
+                    val e = result.exception
+                }
+            }
+            setState { copy(isLoadingContent = false) }
         }
     }
 
     fun handleEvent(event: ShoppingDetailEvent) {
-        when (event) {
-            is ShoppingDetailEvent.OnPaymentTypePicked -> {
-                changePaymentModel(event.paymentModel)
-            }
-
-            is ShoppingDetailEvent.MarkFavorite -> {
-                markTripFavorite()
-            }
-
-            is ShoppingDetailEvent.OnErrorModalAccepted -> {
-                onErrorHappened(false)
-            }
-
-            is ShoppingDetailEvent.ShoppingDetailLoaded -> {
-                updateState {
-                    copy(
-                        userId = event.userId,
-                        tripId = event.tripId,
-                        isMarkedAsFavorite = event.isFavorite,
-                        month = event.month,
-                        businessImage = event.businessImage,
-                        businessId = event.businessId,
-                        businessName = event.businessName,
-                        lat = event.lat,
-                        lng = event.lng,
-                        description = event.description,
-                        details = getShoppingItemsDetails().copy(galleryPhotos = event.images),
-                        title = event.name,
-                        cancellationPolicy = event.cancellationPolicy
-                    )
-                }
-                getIncludedServices()
-            }
-        }
-    }
-
-    private fun markTripFavorite() {
         viewModelScope.launch {
-            updateState { copy(isLoading = true) }
-            val markState = !state.value.isMarkedAsFavorite
-            val result = if (markState) {
-                markFavoriteTripUseCase(userId = state.value.userId, tripId = state.value.tripId)
-            } else {
-                unmarkedFavoriteTripUseCase(
-                    userId = state.value.userId,
-                    tripId = state.value.tripId
-                )
-            }
-            when (result) {
-                is OperationResult.Error -> {
-                    onErrorHappened(
-                        true,
-                        "Error cambiando el estado de viaje",
-                        "No se pudo completar la operacion,intente mas tarde."
-                    )
+            when (event) {
+                is ShoppingDetailEvent.OnPaymentTypePicked -> {
+                    changePaymentModel(event.paymentModel)
                 }
 
-                is OperationResult.Success -> {
-                    updateState {
+                is ShoppingDetailEvent.MarkFavorite -> {
+                    markTripFavorite()
+                }
+
+                is ShoppingDetailEvent.OnErrorModalAccepted -> {
+                    onErrorHappened(false)
+                }
+
+                is ShoppingDetailEvent.ShoppingDetailLoaded -> {
+                    setState {
                         copy(
-                            isMarkedAsFavorite = markState
+                            userId = event.userId,
+                            tripId = event.tripId,
+                            isMarkedAsFavorite = event.isFavorite,
+                            month = event.month,
+                            businessImage = event.businessImage,
+                            businessId = event.businessId,
+                            businessName = event.businessName,
+                            lat = event.lat,
+                            lng = event.lng,
+                            description = event.description,
+                            details = getShoppingItemsDetails().copy(galleryPhotos = event.images),
+                            title = event.name,
+                            cancellationPolicy = event.cancellationPolicy
                         )
                     }
+                    getIncludedServices()
                 }
+
             }
-            updateState { copy(isLoading = false) }
         }
     }
 
-    private fun changePaymentModel(paymentModel: PaymentModel) {
-        updateState {
+    private suspend fun markTripFavorite() {
+        setState { copy(isLoading = true) }
+        val markState = !state.value.isMarkedAsFavorite
+        val result = if (markState) {
+            markFavoriteTripUseCase(userId = state.value.userId, tripId = state.value.tripId)
+        } else {
+            unmarkedFavoriteTripUseCase(
+                userId = state.value.userId,
+                tripId = state.value.tripId
+            )
+        }
+        when (result) {
+            is OperationResult.Error -> {
+                onErrorHappened(
+                    true,
+                    "Error cambiando el estado de viaje",
+                    "No se pudo completar la operacion,intente mas tarde."
+                )
+            }
+
+            is OperationResult.Success -> {
+                setState {
+                    copy(
+                        isMarkedAsFavorite = markState
+                    )
+                }
+            }
+        }
+        setState { copy(isLoading = false) }
+    }
+
+    private suspend fun changePaymentModel(paymentModel: PaymentModel) {
+        setState {
             copy(
                 selectedPaymentType = paymentModel
             )
         }
     }
 
-    private fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
+    private suspend fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
         val errorModel = if (!value) {
             null
         } else {
             ErrorModel(title = title, message = message)
         }
-        updateState {
+        setState {
             copy(
                 errorModel = errorModel
             )

@@ -32,7 +32,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Preview
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
-    onNavigateDetails: (TripDetailScreenRoute) -> Unit
+    onNavigateDetails: (TripDetailScreenRoute) -> Unit,
+    logout: () -> Unit
 ) {
     val navController = rememberNavController()
     val homeState = viewModel.state.collectAsStateWithLifecycle().value
@@ -58,7 +59,7 @@ fun HomeScreen(
                         ExploreScreen { tripModel, userId ->
                             onNavigateDetails(
                                 TripDetailScreenRoute(
-                                    cancellationPolicy=tripModel.cancellationPolicy,
+                                    cancellationPolicy = tripModel.cancellationPolicy,
                                     images = tripModel.images,
                                     userdId = userId,
                                     tripId = tripModel.id,
@@ -77,7 +78,7 @@ fun HomeScreen(
                     }
                     composable(NavigationRoutes.ProfileScreen.route) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.PROFILE))
-                        ProfileScreen()
+                        ProfileScreen(logout = logout)
                     }
                     composable(NavigationRoutes.WishListScreen.route) {
                         viewModel.handleEvent(HomeViewModel.HomeEvent.ChangeHomeTab(HomeOption.WISHLIST))

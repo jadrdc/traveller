@@ -30,35 +30,38 @@ class ExploreViewModel(
     GenericViewModel<ExploreState, ExploreEvent>(ExploreState()) {
 
     init {
-        initialLoad()
-        getUserInfo()
-    }
-
-    private fun getUserInfo() {
         viewModelScope.launch {
-            getProfileUseCase().mapLatest { preference ->
-                val userIdKey = stringPreferencesKey(USER_ID)
-                val userId = preference[userIdKey] ?: ""
-                updateState {
-                    copy(userId = userId)
-                }
-            }.launchIn(viewModelScope)
+            initialLoad()
+            getUserInfo()
         }
     }
 
-    private fun initialLoad() {
-        viewModelScope.launch {
-            updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = true)) }
-            when (val result = getCategoryUseCase()) {
-                is OperationResult.Error -> {
-                    updateState { copy(showUIError = true) }
-                }
+    private suspend fun getUserInfo() {
+        getProfileUseCase().mapLatest { preference ->
+            val userIdKey = stringPreferencesKey(USER_ID)
+            val userId = preference[userIdKey] ?: ""
+            setState {
+                copy(userId = userId)
+            }
+        }.launchIn(viewModelScope)
+    }
 
-                is OperationResult.Success -> {
-                    val categories =
-                        result.data.map { it.copy(isSelected = it.description == POPULAR) }
+    private suspend fun initialLoad() {
+        setState { copy(categoryState = categoryState.copy(isLoadingSkeleton = true)) }
+        when (val result = getCategoryUseCase()) {
+            is OperationResult.Error -> {
+                setState { copy(showUIError = true) }
+            }
+
+            is OperationResult.Success -> {
+                val categories =
+                    result.data.map { it.copy(isSelected = it.description == POPULAR) }
+                if (categories.isNotEmpty()) {
                     when (val resultTrips = getPaginatedTripsUseCase()) {
-                        is OperationResult.Error -> {}
+                        is OperationResult.Error -> {
+                            setState { copy(showUIError = true) }
+                        }
+
                         is OperationResult.Success -> {
                             val tripList = resultTrips.data.map { trip ->
                                 TripModel(
@@ -77,10 +80,10 @@ class ExploreViewModel(
                                     categoryList = categories
                                 )
                             }
-                            updateState { copy(items = tripList) }
+                            setState { copy(items = tripList) }
                         }
                     }
-                    updateState {
+                    setState {
                         copy(
                             categoryState = categoryState.copy(
                                 selectedCategoryModel = categories.firstOrNull { it.isSelected },
@@ -91,15 +94,16 @@ class ExploreViewModel(
                             ),
                         )
                     }
+                } else {
+                    setState { copy(showUIError = true) }
                 }
             }
-            updateState { copy(categoryState = categoryState.copy(isLoadingSkeleton = false)) }
         }
-
+        setState { copy(categoryState = categoryState.copy(isLoadingSkeleton = false)) }
     }
 
-    private fun updateSelectedCategory(categoryModel: CategoryModel) {
-        updateState {
+    private suspend fun updateSelectedCategory(categoryModel: CategoryModel) {
+        setState {
             copy(
                 categoryState = categoryState.copy(
                     selectedCategoryModel = categoryModel,
@@ -110,8 +114,8 @@ class ExploreViewModel(
         }
     }
 
-    private fun applySelectedFilter(categoryModel: CategoryModel) {
-        updateState {
+    private suspend fun applySelectedFilter(categoryModel: CategoryModel) {
+        setState {
             copy(
                 shouldBottomModal = false,
                 categoryState = categoryState.copy(
@@ -133,8 +137,8 @@ class ExploreViewModel(
     }
 
 
-    private fun toggleFilterModal(value: Boolean) {
-        updateState {
+    private suspend fun toggleFilterModal(value: Boolean) {
+        setState {
             if (value) {
                 copy(
                     shouldBottomModal = value
@@ -148,8 +152,8 @@ class ExploreViewModel(
         }
     }
 
-    private fun clearFilter() {
-        updateState {
+    private suspend fun clearFilter() {
+        setState {
             copy(
                 filterState = filterState.copy(
                     selectedCategoryModel = categoryState.selectedCategoryModel, searchText = ""
@@ -158,24 +162,24 @@ class ExploreViewModel(
         }
     }
 
-    private fun updateFilterCategory(categoryModel: CategoryModel) {
-        updateState {
+    private suspend fun updateFilterCategory(categoryModel: CategoryModel) {
+        setState {
             copy(
                 filterState = filterState.copy(selectedCategoryModel = categoryModel)
             )
         }
     }
 
-    private fun updateSearchText(value: String) {
-        updateState {
+    private suspend fun updateSearchText(value: String) {
+        setState {
             copy(
                 filterState = filterState.copy(searchText = value)
             )
         }
     }
 
-    private fun updateSelectedAmount(value: Float) {
-        updateState {
+    private suspend fun updateSelectedAmount(value: Float) {
+        setState {
             copy(
                 filterState = filterState.copy(selectedAmount = value)
             )
@@ -183,51 +187,49 @@ class ExploreViewModel(
     }
 
 
-    private fun updateShoppingitem(
+    private suspend fun updateShoppingitem(
         item: TripModel
     ) {
-        viewModelScope.launch {
-            updateState { copy(isLoading = true) }
-            val markState = !item.isSavedForLater
-            val result = if (markState) {
-                markFavoriteTripUseCase(userId = state.value.userId, tripId = item.id)
-            } else {
-                unmarkedFavoriteTripUseCase(userId = state.value.userId, tripId = item.id)
+        setState { copy(isLoading = true) }
+        val markState = !item.isSavedForLater
+        val result = if (markState) {
+            markFavoriteTripUseCase(userId = state.value.userId, tripId = item.id)
+        } else {
+            unmarkedFavoriteTripUseCase(userId = state.value.userId, tripId = item.id)
+        }
+        when (result) {
+            is OperationResult.Error -> {
+                onErrorHappened(
+                    true,
+                    "Error cambiando el estado de viaje",
+                    "No se pudo completar la operacion,intente mas tarde."
+                )
             }
-            when (result) {
-                is OperationResult.Error -> {
-                    onErrorHappened(
-                        true,
-                        "Error cambiando el estado de viaje",
-                        "No se pudo completar la operacion,intente mas tarde."
+
+            is OperationResult.Success -> {
+                setState {
+                    copy(
+                        items = items.map {
+                            if (it === item) {
+                                it.copy(isSavedForLater = markState)
+                            } else {
+                                it
+                            }
+                        }
                     )
                 }
-
-                is OperationResult.Success -> {
-                    updateState {
-                        copy(
-                            items = items.map {
-                                if (it === item) {
-                                    it.copy(isSavedForLater = markState)
-                                } else {
-                                    it
-                                }
-                            }
-                        )
-                    }
-                }
             }
-            updateState { copy(isLoading = false) }
         }
+        setState { copy(isLoading = false) }
     }
 
-    private fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
+    private suspend fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
         val errorModel = if (!value) {
             null
         } else {
             ErrorModel(title = title, message = message)
         }
-        updateState {
+        setState {
             copy(
                 errorModel = errorModel
             )
@@ -235,41 +237,43 @@ class ExploreViewModel(
     }
 
     fun onExploreEventChanged(event: ExploreEvent) {
-        when (event) {
-            is ExploreEvent.OnCategorySelected -> {
-                updateSelectedCategory(event.categoryModel)
-            }
+        viewModelScope.launch {
+            when (event) {
+                is ExploreEvent.OnCategorySelected -> {
+                    updateSelectedCategory(event.categoryModel)
+                }
 
-            is ExploreEvent.OnFilterChanged -> {
-                toggleFilterModal(event.value)
-            }
+                is ExploreEvent.OnFilterChanged -> {
+                    toggleFilterModal(event.value)
+                }
 
-            is ExploreEvent.OnFilterCleared -> {
-                clearFilter()
-            }
+                is ExploreEvent.OnFilterCleared -> {
+                    clearFilter()
+                }
 
-            is ExploreEvent.OnFilterApplied -> {
-                state.value.filterState.selectedCategoryModel?.let { applySelectedFilter(it) }
-            }
+                is ExploreEvent.OnFilterApplied -> {
+                    state.value.filterState.selectedCategoryModel?.let { applySelectedFilter(it) }
+                }
 
-            is ExploreEvent.OnFilterCategorySelected -> {
-                updateFilterCategory(event.categoryModel)
-            }
+                is ExploreEvent.OnFilterCategorySelected -> {
+                    updateFilterCategory(event.categoryModel)
+                }
 
-            is ExploreEvent.OnFilterSearchChanged -> {
-                updateSearchText(event.search)
-            }
+                is ExploreEvent.OnFilterSearchChanged -> {
+                    updateSearchText(event.search)
+                }
 
-            is ExploreEvent.OnSelectedFilterAmount -> {
-                updateSelectedAmount(event.selectedAmount)
-            }
+                is ExploreEvent.OnSelectedFilterAmount -> {
+                    updateSelectedAmount(event.selectedAmount)
+                }
 
-            is ExploreEvent.OnShoppingItemMarked -> {
-                updateShoppingitem(event.item)
-            }
+                is ExploreEvent.OnShoppingItemMarked -> {
+                    updateShoppingitem(event.item)
+                }
 
-            is ExploreEvent.OnErrorModalAccepted -> {
-                onErrorHappened(false)
+                is ExploreEvent.OnErrorModalAccepted -> {
+                    onErrorHappened(false)
+                }
             }
         }
     }

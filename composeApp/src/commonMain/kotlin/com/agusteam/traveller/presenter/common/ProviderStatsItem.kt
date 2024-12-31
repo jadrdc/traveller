@@ -18,7 +18,7 @@ fun ProviderStatsItem(tripProviderModel: TripProviderModel) {
         modifier = Modifier
     ) {
         ProviderStatItem(
-            value = tripProviderModel.registeredItems,
+            value = tripProviderModel.totalOfferedTrips.toString(),
             label = stringResource(Res.string.trip_offered)
         )
         ProviderStatItem(

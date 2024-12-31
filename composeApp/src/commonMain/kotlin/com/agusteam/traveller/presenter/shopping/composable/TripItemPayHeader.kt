@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.agusteam.traveller.presenter.common.NavigationBar
+import com.agusteam.traveller.presenter.getGalleryPhoto
 import com.agusteam.traveller.presenter.shopping.state.TripDetailState
 import com.agusteam.traveller.presenter.theme.grey500
 import com.agusteam.traveller.presenter.theme.secondary
@@ -38,7 +39,7 @@ fun TripItemPayHeader(
         ) {
             AsyncImage(
                 modifier = Modifier.size(120.dp).clip(RoundedCornerShape(8.dp)),
-                model = state.galleryPhotos[0],
+                model = getGalleryPhoto(),
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )

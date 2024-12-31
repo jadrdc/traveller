@@ -25,7 +25,7 @@ class ProfileViewModel(val getProfileUseCase: GetProfileUseCase, val logoutUseCa
 
     init {
         viewModelScope.launch {
-            updateState { copy(isLoading = true) }
+            setState { copy(isLoading = true) }
             getProfileUseCase().mapLatest { preference ->
                 val nameKey = stringPreferencesKey(NAME)
                 val lastNameKey = stringPreferencesKey(LAST_NAME)
@@ -37,47 +37,52 @@ class ProfileViewModel(val getProfileUseCase: GetProfileUseCase, val logoutUseCa
                 val email = preference[emailKey] ?: ""
                 val phone = preference[phoneKey] ?: ""
 
-                updateState {
+                setState {
                     copy(name = name, lastname = lastNam, email = email, phone = formatPhone(phone))
                 }
             }.launchIn(viewModelScope)
-            updateState { copy(isLoading = false) }
+            setState { copy(isLoading = false) }
         }
     }
 
     fun handleEvent(event: ProfileEvent) {
-        when (event) {
-            ProfileEvent.LogoutUser -> {
-
-            }
-
-            ProfileEvent.OnErrorModalAccepted -> {
-                onErrorHappened(false)
-            }
-        }
-    }
-
-    private fun logout() {
         viewModelScope.launch {
-            try {
-                logoutUseCase()
-            } catch (e: Exception) {
-                onErrorHappened(
-                    true,
-                    "Error Inesperado",
-                    "No se pudo completar la operacion,intente mas tarde."
-                )
+            when (event) {
+                ProfileEvent.LogoutUser -> {
+                    logout()
+                }
+
+                ProfileEvent.OnErrorModalAccepted -> {
+                    onErrorHappened(false)
+                }
+
+                else -> {
+
+                }
             }
         }
     }
 
-    private fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
+    private suspend fun logout() {
+        try {
+            logoutUseCase()
+            sendEvent(ProfileEvent.UserSessionClosed)
+        } catch (e: Exception) {
+            onErrorHappened(
+                true,
+                "Error Inesperado",
+                "No se pudo completar la operacion,intente mas tarde."
+            )
+        }
+    }
+
+    private suspend fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
         val errorModel = if (!value) {
             null
         } else {
             ErrorModel(title = title, message = message)
         }
-        updateState {
+        setState {
             copy(
                 errorModel = errorModel
             )
@@ -86,7 +91,9 @@ class ProfileViewModel(val getProfileUseCase: GetProfileUseCase, val logoutUseCa
 }
 
 sealed interface ProfileEvent {
+    data object ProfileLoaded : ProfileEvent
     data object LogoutUser : ProfileEvent
+    data object UserSessionClosed : ProfileEvent
     data object OnErrorModalAccepted : ProfileEvent
 
 }

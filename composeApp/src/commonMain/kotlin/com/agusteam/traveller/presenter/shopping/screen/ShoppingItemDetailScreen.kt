@@ -10,10 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,6 +23,7 @@ import com.agusteam.traveller.presenter.common.ErrorModal
 import com.agusteam.traveller.presenter.common.ItemProviderOverviewItem
 import com.agusteam.traveller.presenter.common.LinkButton
 import com.agusteam.traveller.presenter.common.MapDetails
+import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemHeader
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemIncluded
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemOverview
@@ -36,7 +36,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import traveller.composeapp.generated.resources.Res
 import traveller.composeapp.generated.resources.arrival_time
 import traveller.composeapp.generated.resources.cancellation_policy
-import traveller.composeapp.generated.resources.cancellation_policy_details
 import traveller.composeapp.generated.resources.destiny
 import traveller.composeapp.generated.resources.ic_address
 import traveller.composeapp.generated.resources.ic_cash
@@ -54,14 +53,21 @@ fun ShoppingItemDetailScreen(
     viewModel: ShoppingItemDetailsViewModel = koinViewModel(),
     goBack: () -> Unit,
     goProviderProfile: (id: String) -> Unit,
-    payItem: () -> Unit
+    payItem: () -> Unit,
+    model: TripDetailScreenRoute,
 ) {
+    LaunchedEffect(model.tripId) {
+        viewModel.loadShoppingDetails(model)
+    }
+
     val state = viewModel.state.collectAsStateWithLifecycle().value
     ErrorModal(title = state.errorModel?.title ?: "",
         message = state.errorModel?.message ?: "",
         showError = state.errorModel != null, onDismiss = {
             viewModel.handleEvent(ShoppingItemDetailsViewModel.ShoppingDetailEvent.OnErrorModalAccepted)
         })
+
+
     Box(Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.padding(
@@ -71,21 +77,23 @@ fun ShoppingItemDetailScreen(
             ,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
-                ShoppingItemHeader(
-                    images = state.details.galleryPhotos,
-                    isSavedForLater = state.isMarkedAsFavorite,
-                    onBackPressed = goBack
-                ) {
-                    viewModel.handleEvent(ShoppingItemDetailsViewModel.ShoppingDetailEvent.MarkFavorite)
+            if (state.tripId.isNotBlank()) {
+                item {
+                    ShoppingItemHeader(
+                        images = state.details.galleryPhotos,
+                        isSavedForLater = state.isMarkedAsFavorite,
+                        onBackPressed = goBack
+                    ) {
+                        viewModel.handleEvent(ShoppingItemDetailsViewModel.ShoppingDetailEvent.MarkFavorite)
+                    }
                 }
-            }
-            item {
-                ShoppingItemOverview(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    title = state.title,
-                    description = state.description
-                )
+                item {
+                    ShoppingItemOverview(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        title = state.title,
+                        description = state.description
+                    )
+                }
             }
             if (state.isLoadingContent) {
                 item {
@@ -93,7 +101,8 @@ fun ShoppingItemDetailScreen(
                         AnimationLoading()
                     }
                 }
-            } else {
+            } else if (state.tripId.isNotBlank()) {
+
                 item {
                     ItemProviderOverviewItem(
                         modifier = Modifier, state =
@@ -156,6 +165,7 @@ fun ShoppingItemDetailScreen(
                         items = state.includedServices
                     )
                 }
+
             }
         }
 
@@ -171,27 +181,27 @@ fun ShoppingItemDetailScreen(
             }
         }
 
-
-        Row(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp).align(
-                Alignment.BottomCenter
-            ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-
-            LinkButton(
-                text = state.totalPayment,
+        if (state.tripId.isNotBlank())
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp).align(
+                    Alignment.BottomCenter
+                ),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
-            }
+                LinkButton(
+                    text = state.totalPayment,
+                ) {
 
-            ActionButton(
-                text = stringResource(Res.string.pay),
-                modifier = Modifier.fillMaxWidth(0.6f)
-            ) {
-                payItem()
+                }
+
+                ActionButton(
+                    text = stringResource(Res.string.pay),
+                    modifier = Modifier.fillMaxWidth(0.6f)
+                ) {
+                    payItem()
+                }
             }
-        }
     }
 }

@@ -134,18 +134,21 @@ fun getIncludedServices(): List<String> {
 
 fun getProvider(): TripProviderModel {
     return TripProviderModel(
-        address = "Calle, Av. San Vicente de Paúl Megacentro, Santo Domingo Este 11504",
-        phone = "809-945-3434",
-        email = "email@email.com",
-        categoryModel = createCategories().filter { it.description != "Populares" },
+        id = "",
         name = "AgustTrip",
-        avatarUrl = "https://picsum.photos/200/300",
+        image = "",
         registeredItems = "48",
         currentItems = "23",
-        image = "", month = 2, id = "",
         description = "Descubre el mundo con [Nombre de la Empresa]. Somos expertos en crear experiencias únicas para cada viajero, diseñando itinerarios personalizados que combinan aventura, confort y cultura. Desde escapadas románticas hasta viajes en grupo o aventuras familiares, nos aseguramos de que cada detalle esté cuidadosamente planificado para que disfrutes al máximo.\n" +
                 "\n" +
-                "Conectamos a nuestros clientes con los destinos más impresionantes, ofreciendo servicios de calidad, atención personalizada y precios competitivos. ¡Haz realidad tus sueños de viaje con nosotros!"
+                "Conectamos a nuestros clientes con los destinos más impresionantes, ofreciendo servicios de calidad, atención personalizada y precios competitivos. ¡Haz realidad tus sueños de viaje con nosotros!",
+        phone = "809-945-3434",
+        email = "email@email.com",
+        address = "Calle, Av. San Vicente de Paúl Megacentro, Santo Domingo Este 11504",
+        month = 2,
+        avatarUrl = "https://picsum.photos/200/300",
+        categoryModel = createCategories().filter { it.description != "Populares" },
+        totalOfferedTrips = 60
     )
 }
 
@@ -163,8 +166,17 @@ fun getShoppingItemsDetails(): TripDetailsModel {
         includedServices = getIncludedServices(),
     )
 }
-
+fun getGalleryPhoto(): List<String> {
+    return listOf(
+        "https://picsum.photos/200/300",
+        "https://picsum.photos/300/300",
+        "https://picsum.photos/400/300",
+        "https://picsum.photos/500/300"
+    )
+}
+const val INITIAL_PAYMENT="$1000.0"
+const val TOTAL_PAYMENT="$12,000.0"
 const val PRICE = "2,430"
 const val DATE_RANGE = "Aug 31 - Sep 5"
-const val URL = "http://127.0.0.1:9000/"
-const val URL2 = "http://10.0.2.2:9000/"
+const val URL1 = "http://127.0.0.1:9000/"
+const val URL = "http://10.0.2.2:9000/"

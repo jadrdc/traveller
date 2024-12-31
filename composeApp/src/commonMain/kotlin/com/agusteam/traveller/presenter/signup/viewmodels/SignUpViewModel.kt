@@ -16,75 +16,74 @@ class SignUpViewModel(
     private val signUpUseCase: SignUpUseCase,
 ) : GenericViewModel<SignupState, SignUpViewModel.SignUpEvent>(SignupState()) {
 
-    private fun signUp() {
-        viewModelScope.launch {
-            updateState { copy(isLoading = true) }
-            when (val result = signUpUseCase(
-                state.value.name,
-                state.value.lastName,
-                state.value.phone,
-                state.value.email,
-                state.value.password
-            )) {
-                is OperationResult.Error -> {
-                    onErrorHappened(
-                        true,
-                        "Error al registrar la cuenta",
-                        message = result.exception.message ?: " "
-                    )
-                }
-
-                is OperationResult.Success -> {
-                    onErrorHappened(
-                        true,
-                        "Confirmación enviada",
-                        "¡Cuenta creada con éxito! Hemos enviado un correo de confirmación a tu dirección de correo electrónico. Por favor, revisa tu bandeja de entrada y confirma tu cuenta."
-                    )
-                }
+    private suspend fun signUp() {
+        setState { copy(isLoading = true) }
+        when (val result = signUpUseCase(
+            state.value.name,
+            state.value.lastName,
+            state.value.phone,
+            state.value.email,
+            state.value.password
+        )) {
+            is OperationResult.Error -> {
+                onErrorHappened(
+                    true,
+                    "Error al registrar la cuenta",
+                    message = result.exception.message ?: " "
+                )
             }
-            updateState { copy(isLoading = false) }
+
+            is OperationResult.Success -> {
+                onErrorHappened(
+                    true,
+                    "Confirmación enviada",
+                    "¡Cuenta creada con éxito! Hemos enviado un correo de confirmación a tu dirección de correo electrónico. Por favor, revisa tu bandeja de entrada y confirma tu cuenta."
+                )
+            }
         }
+        setState { copy(isLoading = false) }
+
     }
 
-    private fun onNameChanged(value: String) {
-        updateState {
+    private suspend fun onNameChanged(value: String) {
+        setState {
             copy(name = value)
         }
     }
 
-    private fun onLastNameChanged(value: String) {
-        updateState {
+    private suspend fun onLastNameChanged(value: String) {
+        setState {
             copy(lastName = value)
         }
     }
 
-    private fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
+    private suspend fun onErrorHappened(value: Boolean, title: String = "", message: String = "") {
         val errorModel = if (!value) {
             null
         } else {
             ErrorModel(title = title, message = message)
         }
-        updateState {
+        setState {
             copy(
                 errorModel = errorModel
             )
         }
     }
 
-    private fun onPhoneChanged(value: String) {
-        updateState {
-            setValidationError(ValidatorType.PHONE, value)
+    private suspend fun onPhoneChanged(value: String) {
+        setState {
             copy(phone = value)
         }
+        setValidationError(ValidatorType.PHONE, value)
     }
 
-    private fun setValidationError(
+    private suspend fun setValidationError(
         validatorType: ValidatorType, value: String, value2: String = ""
     ) {
         val result = validator.validateField(validatorType, value = value, value2 = value2)
         when (result.validatorType) {
             ValidatorType.EMAIL -> {
-                updateState {
+                setState {
                     copy(
                         emailError = result.errorMessage, isEmailError = result.isError
                     )
@@ -92,7 +91,7 @@ class SignUpViewModel(
             }
 
             ValidatorType.PHONE -> {
-                updateState {
+                setState {
                     copy(
                         phoneError = result.errorMessage, isPhoneError = result.isError
                     )
@@ -101,10 +100,10 @@ class SignUpViewModel(
             }
 
             ValidatorType.PASSWORD -> {
-                updateState {
-                    if (!result.isError) {
-                        setValidationError(ValidatorType.PASSWORD_SAME, value, value2)
-                    }
+                if (!result.isError) {
+                    setValidationError(ValidatorType.PASSWORD_SAME, value, value2)
+                }
+                setState {
                     copy(
                         passwordError = result.errorMessage, isPasswordError = result.isError
                     )
@@ -112,7 +111,7 @@ class SignUpViewModel(
             }
 
             ValidatorType.PASSWORD_SAME -> {
-                updateState {
+                setState {
                     copy(
                         samePasswordError = result.errorMessage,
                         isSamePasswordError = result.isError
@@ -123,59 +122,61 @@ class SignUpViewModel(
 
     }
 
-    private fun onEmailChanged(value: String) {
-        updateState {
-            setValidationError(ValidatorType.EMAIL, value)
+    private suspend fun onEmailChanged(value: String) {
+        setState {
             copy(email = value)
         }
+        setValidationError(ValidatorType.EMAIL, value)
     }
 
-    private fun onPasswordChanged(value: String) {
-        updateState {
-            setValidationError(ValidatorType.PASSWORD, value)
+    private suspend fun onPasswordChanged(value: String) {
+        setState {
             copy(password = value)
         }
+        setValidationError(ValidatorType.PASSWORD, value)
     }
 
-    private fun onPasswordConfirmChanged(value: String) {
-        updateState {
-            setValidationError(ValidatorType.PASSWORD_SAME, state.value.password, value)
+    private suspend fun onPasswordConfirmChanged(value: String) {
+        setState {
             copy(confirmPassword = value)
         }
+        setValidationError(ValidatorType.PASSWORD_SAME, state.value.password, value)
     }
 
     fun onEventHandler(event: SignUpEvent) {
-        when (event) {
-            is SignUpEvent.OnConfirmPasswordChanged -> {
-                onPasswordConfirmChanged(event.value)
-            }
+        viewModelScope.launch {
+            when (event) {
+                is SignUpEvent.OnConfirmPasswordChanged -> {
+                    onPasswordConfirmChanged(event.value)
+                }
 
-            is SignUpEvent.OnEmailChanged -> {
-                onEmailChanged(event.value)
-            }
+                is SignUpEvent.OnEmailChanged -> {
+                    onEmailChanged(event.value)
+                }
 
-            is SignUpEvent.OnLastNameChanged -> {
-                onLastNameChanged(event.value)
-            }
+                is SignUpEvent.OnLastNameChanged -> {
+                    onLastNameChanged(event.value)
+                }
 
-            is SignUpEvent.OnNameChanged -> {
-                onNameChanged(event.value)
-            }
+                is SignUpEvent.OnNameChanged -> {
+                    onNameChanged(event.value)
+                }
 
-            is SignUpEvent.OnPasswordChanged -> {
-                onPasswordChanged(event.value)
-            }
+                is SignUpEvent.OnPasswordChanged -> {
+                    onPasswordChanged(event.value)
+                }
 
-            is SignUpEvent.OnPhoneNumberChanged -> {
-                onPhoneChanged(event.value)
-            }
+                is SignUpEvent.OnPhoneNumberChanged -> {
+                    onPhoneChanged(event.value)
+                }
 
-            is SignUpEvent.SignUp -> {
-                signUp()
-            }
+                is SignUpEvent.SignUp -> {
+                    signUp()
+                }
 
-            is SignUpEvent.ClearError -> {
-                onErrorHappened(false)
+                is SignUpEvent.ClearError -> {
+                    onErrorHappened(false)
+                }
             }
         }
     }

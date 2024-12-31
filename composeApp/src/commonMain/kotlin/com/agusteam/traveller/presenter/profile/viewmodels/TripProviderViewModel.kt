@@ -22,7 +22,7 @@ class TripProviderViewModel(private val getTripProviderDetailsUseCase: GetTripPr
     }
 
     private suspend fun getDetails(id: String) {
-        updateState { copy(isLoading = true) }
+        setState { copy(isLoading = true) }
         when (val result = getTripProviderDetailsUseCase(id)) {
             is OperationResult.Error -> {
                 val e = result.exception
@@ -32,7 +32,7 @@ class TripProviderViewModel(private val getTripProviderDetailsUseCase: GetTripPr
                 updateState { copy(tripProviderModel = result.data) }
             }
         }
-        updateState { copy(isLoading = false) }
+        setState { copy(isLoading = false) }
     }
 
 

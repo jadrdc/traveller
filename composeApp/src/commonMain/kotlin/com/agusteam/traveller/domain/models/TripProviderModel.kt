@@ -11,7 +11,8 @@ data class TripProviderModel(
     val email: String,
     val address: String,
     val month: Int,
+    val totalOfferedTrips: Int,
 
     val avatarUrl: String = "",
-    val categoryModel: List<CategoryModel>
+    val categoryModel: List<CategoryModel>,
 )

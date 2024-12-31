@@ -46,29 +46,31 @@ fun TripProviderProfileScreen(
             item {
                 NavigationBar(title = stringResource(Res.string.agency_title)) { onBackPressed() }
             }
-            if (state.tripProviderModel != null) {
-                item {
-                    ProviderOverViewItem(
-                        tripProviderModel = state.tripProviderModel
-                    )
-                }
+            if (!state.isLoading) {
+                state.tripProviderModel?.let {
+                    item {
+                        ProviderOverViewItem(
+                            tripProviderModel = state.tripProviderModel
+                        )
+                    }
 
-                item {
-                    ProviderProfileOverview(state.tripProviderModel)
-                }
+                    item {
+                        ProviderProfileOverview(state.tripProviderModel)
+                    }
 
-                item {
-                    ProviderProfileCategory(
-                        modifier = Modifier,
-                        state.tripProviderModel.categoryModel
-                    )
+                    item {
+                        ProviderProfileCategory(
+                            modifier = Modifier,
+                            state.tripProviderModel.categoryModel
+                        )
+                    }
                 }
             } else {
                 item {
                     TripProviderOverviewShimmer()
                 }
             }
-            if (state.tripProviderModel != null) item {
+            if (!state.isLoading) item {
                 UpcomingTripItemSection(
                     upcomingTripItemList = state.upcomingTrips,
                 ) {}

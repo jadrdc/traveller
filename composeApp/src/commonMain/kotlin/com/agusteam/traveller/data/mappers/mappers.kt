@@ -34,7 +34,7 @@ fun BusinessProfileModel.toDomain(): TripProviderModel {
         registeredItems = "0",
         month = month,
         currentItems = "0",
-        description = description, image = image
+        description = description, image = image, totalOfferedTrips = tripOffers
     )
 }
 

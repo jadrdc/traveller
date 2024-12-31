@@ -16,6 +16,7 @@ import com.agusteam.traveller.presenter.shopping.composable.TripItemPayHeader
 import com.agusteam.traveller.presenter.shopping.model.ShoppingDetailModel
 import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingItemDetailsViewModel
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import traveller.composeapp.generated.resources.Res
 import traveller.composeapp.generated.resources.ic_address
 import traveller.composeapp.generated.resources.ic_cash
@@ -26,7 +27,10 @@ import traveller.composeapp.generated.resources.starting_place
 import traveller.composeapp.generated.resources.total_payment
 
 @Composable
-fun TripItemPayingScreen(onBackPressed: () -> Unit, viewModel: ShoppingItemDetailsViewModel) {
+fun TripItemPayingScreen(
+    onBackPressed: () -> Unit,
+    viewModel: ShoppingItemDetailsViewModel = koinViewModel()
+) {
     val state = viewModel.state.collectAsStateWithLifecycle()
 
     val details = listOf(

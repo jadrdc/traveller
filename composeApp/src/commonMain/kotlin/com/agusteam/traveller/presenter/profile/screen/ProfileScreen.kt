@@ -25,11 +25,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.domain.models.ProfileDataModel
 import com.agusteam.traveller.presenter.common.ErrorModal
+import com.agusteam.traveller.presenter.common.ObserveAsEvents
 import com.agusteam.traveller.presenter.common.effects.shimmerEffect
-import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent
 import com.agusteam.traveller.presenter.profile.composable.ProfileDetailItemSection
 import com.agusteam.traveller.presenter.profile.composable.ProfileHeader
-import com.agusteam.traveller.presenter.profile.viewmodels.ProfileEvent
+import com.agusteam.traveller.presenter.profile.viewmodels.ProfileEvent.LogoutUser
+import com.agusteam.traveller.presenter.profile.viewmodels.ProfileEvent.OnErrorModalAccepted
+import com.agusteam.traveller.presenter.profile.viewmodels.ProfileEvent.UserSessionClosed
 import com.agusteam.traveller.presenter.profile.viewmodels.ProfileViewModel
 import com.agusteam.traveller.presenter.theme.primary
 import org.jetbrains.compose.resources.stringResource
@@ -44,8 +46,16 @@ import traveller.composeapp.generated.resources.phone
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = koinViewModel(),
+    logout: () -> Unit
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
+    val event = viewModel.events
+
+    ObserveAsEvents(event) { events ->
+        if (events is UserSessionClosed) {
+            logout()
+        }
+    }
 
     val profiles =
         listOf(
@@ -73,7 +83,7 @@ fun ProfileScreen(
     ErrorModal(title = state.errorModel?.title ?: "",
         message = state.errorModel?.message ?: "",
         showError = state.errorModel != null, onDismiss = {
-            viewModel.handleEvent(ProfileEvent.OnErrorModalAccepted)
+            viewModel.handleEvent(OnErrorModalAccepted)
         })
 
     Column(
@@ -92,7 +102,7 @@ fun ProfileScreen(
             )
         } else {
             Box(Modifier.padding(top = 40.dp).align(Alignment.CenterHorizontally).clickable {
-                // TODO IMPLEMENTAR LOGOUT CALL
+                viewModel.handleEvent(LogoutUser)
             }) {
                 Text(
                     color = primary,
