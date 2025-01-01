@@ -5,7 +5,6 @@ import com.agusteam.traveller.data.mappers.toDomain
 import com.agusteam.traveller.data.model.TripProviderRequest
 import com.agusteam.traveller.data.network.services.TripProviderService
 import com.agusteam.traveller.domain.interfaces.TripProviderRepository
-import com.agusteam.traveller.domain.models.TripFavoriteModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.models.TripProviderModel
 

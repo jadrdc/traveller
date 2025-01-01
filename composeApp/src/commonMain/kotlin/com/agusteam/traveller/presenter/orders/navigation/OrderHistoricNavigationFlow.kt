@@ -23,10 +23,10 @@ fun OrderHistoryNavigationFlow(onClick: () -> Unit, onBackPreesed: () -> Unit) {
             }
         }
         composable(OrderHistoryNavigation.OrderDetailScreen.route) {
-            OrderItemDetailsScreen(goBack = {
-                onBackPreesed()
-                navController.popBackStack()
-            })
+            /*   OrderItemDetailsScreen(goBack = {
+                   onBackPreesed()
+                   navController.popBackStack()
+               }, model = model)*/
         }
     }
 }

@@ -90,10 +90,12 @@ class ShoppingItemDetailsViewModel(
                             userId = event.userId,
                             tripId = event.tripId,
                             isMarkedAsFavorite = event.isFavorite,
-                            month = event.month,
-                            businessImage = event.businessImage,
+                            itemProviderState = itemProviderState.copy(
+                                month = event.month,
+                                businessName = event.businessName,
+                                businessImage = event.businessImage
+                            ),
                             businessId = event.businessId,
-                            businessName = event.businessName,
                             lat = event.lat,
                             lng = event.lng,
                             description = event.description,

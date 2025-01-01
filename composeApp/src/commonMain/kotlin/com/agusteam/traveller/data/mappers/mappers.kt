@@ -9,7 +9,6 @@ import com.agusteam.traveller.data.model.TripProviderUpcomingTripsResponseItem
 import com.agusteam.traveller.data.model.TripWishListResponse
 import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.domain.models.LoginModel
-import com.agusteam.traveller.domain.models.TripFavoriteModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.models.TripProviderModel
 import com.agusteam.traveller.presenter.formatInstant
@@ -18,16 +17,24 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 
 fun TripWishListResponse.toDomain(): TripModel {
-   return   TripModel(
-       date =tripModel.leavingTime,
-       id = tripModel.id,
-       name = tripModel.name,
-       images = tripModel.images,
-       destiny = tripModel.destiny,
-       arrivingTime = tripModel.arrivingTime,
-       leavingTime = tripModel.leavingTime,
-       price =tripModel.price
-   )
+    return TripModel(
+        date = tripModel.leavingTime,
+        id = tripModel.id,
+        name = tripModel.name,
+        images = tripModel.images,
+        destiny = tripModel.destiny,
+        lat = tripModel.lat,
+        cancellation_policy = tripModel.cancellation_policy,
+        lng = tripModel.lng,
+        description = tripModel.description,
+        arrivingTime = tripModel.arrivingTime,
+        leavingTime = tripModel.leavingTime,
+        price = tripModel.price,
+        month = tripModel.businessModel?.month ?: 0,
+        businessImage = tripModel.businessModel?.image ?: "",
+        businessId = tripModel.businessModel?.id ?: "",
+        businessName = tripModel.businessModel?.name ?: ""
+    )
 }
 
 fun List<TripProviderUpcomingTripsResponseItem>.toDomain(): List<TripModel> {

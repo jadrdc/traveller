@@ -2,12 +2,15 @@ package com.agusteam.traveller.presenter.wishlist.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -51,5 +54,17 @@ fun WishItem(
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal
         )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AsyncImage(
+                modifier = Modifier.size(24.dp).clip(CircleShape),
+                model = item.businessImage,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = null
+            )
+            Text(
+                text = item.businessName,
+                modifier = Modifier.padding(top = 4.dp, start = 4.dp)
+            )
+        }
     }
 }

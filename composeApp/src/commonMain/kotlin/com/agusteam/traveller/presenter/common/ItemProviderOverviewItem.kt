@@ -28,7 +28,7 @@ import traveller.composeapp.generated.resources.agency
 @Composable
 fun ItemProviderOverviewItem(
     modifier: Modifier = Modifier,
-    state: TripDetailState,
+    state: ItemProviderState,
     goProviderProfile: () -> Unit
 ) {
     Column(Modifier.clickable { goProviderProfile() }.padding(start = 16.dp, end = 16.dp)) {
@@ -64,3 +64,10 @@ fun ItemProviderOverviewItem(
         )
     }
 }
+
+data class ItemProviderState
+    (
+    val businessImage: String,
+    val businessName: String,
+    val month: Int,
+)

@@ -2,7 +2,7 @@ package com.agusteam.traveller.core.di
 
 import com.agusteam.traveller.presenter.explore.viewmodels.ExploreViewModel
 import com.agusteam.traveller.presenter.home.viewmodel.HomeViewModel
-import com.agusteam.traveller.presenter.orders.viewmodels.OrderDetailViewModel
+import com.agusteam.traveller.presenter.orders.viewmodels.WishListOrderDetailViewModel
 import com.agusteam.traveller.presenter.orders.viewmodels.OrderHistoryViewModel
 import com.agusteam.traveller.presenter.profile.viewmodels.ProfileViewModel
 import com.agusteam.traveller.presenter.profile.viewmodels.TripProviderViewModel
@@ -19,8 +19,8 @@ val viewModelModule = module {
     single<ProfileViewModel> { ProfileViewModel(get(), get()) }
     single<OrderHistoryViewModel> { OrderHistoryViewModel() }
     single<ShoppingItemDetailsViewModel> { ShoppingItemDetailsViewModel(get(), get(), get()) }
-    single<OrderDetailViewModel> { OrderDetailViewModel() }
-    single<WishListItemViewModel> { WishListItemViewModel(get()) }
+    single<WishListOrderDetailViewModel> { WishListOrderDetailViewModel(get()) }
+    single<WishListItemViewModel> { WishListItemViewModel(get(), get()) }
     single<HomeViewModel> { HomeViewModel() }
     single<TripProviderViewModel> { TripProviderViewModel(get(), get()) }
 }

@@ -60,7 +60,7 @@ fun HomeScreen(
                             onNavigateDetails(
                                 TripDetailScreenRoute(
                                     destiny = tripModel.destiny,
-                                    cancellationPolicy = tripModel.cancellationPolicy,
+                                    cancellationPolicy = tripModel.cancellation_policy,
                                     images = tripModel.images,
                                     userdId = userId,
                                     tripId = tripModel.id,

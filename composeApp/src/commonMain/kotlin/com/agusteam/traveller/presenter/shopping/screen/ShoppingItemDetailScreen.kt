@@ -107,7 +107,7 @@ fun ShoppingItemDetailScreen(
                 item {
                     ItemProviderOverviewItem(
                         modifier = Modifier, state =
-                        state
+                        state.itemProviderState
                     ) {
                         goProviderProfile(state.businessId)
                     }

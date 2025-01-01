@@ -4,18 +4,16 @@ import com.agusteam.traveller.core.base.ViewModelState
 import com.agusteam.traveller.domain.models.ErrorModel
 import com.agusteam.traveller.domain.models.PaymentModel
 import com.agusteam.traveller.domain.models.TripProviderModel
+import com.agusteam.traveller.presenter.common.ItemProviderState
 
 data class TripDetailState(
     val title: String = "",
     val description: String = "",
     val destiny: String = "",
     val businessId: String = "",
-    val businessImage: String = "",
-    val businessName: String = "",
     val lat: Double = 0.0,
     val lng: Double = 0.0,
     val avatarUrl: String = "",
-    val month: Int = 0,
     val isMarkedAsFavorite: Boolean = false,
     val errorModel: ErrorModel? = null,
     val userId: String = "",
@@ -30,7 +28,13 @@ data class TripDetailState(
     val meetingPoint: String = "",
     val initialPayment: Int = 0,
     val totalPayment: Int = 0,
-    val tripProviderModel: TripProviderModel?=null,
+    val tripProviderModel: TripProviderModel? = null,
     val selectedPaymentType: PaymentModel = PaymentModel.TOTAL_PAYMENT,
+    val itemProviderState: ItemProviderState = ItemProviderState("", "", 0)
+
+    // val businessImage: String = "",
+    // val businessName: String = "",
+    // val month: Int = 0,
+
 ) : ViewModelState
 

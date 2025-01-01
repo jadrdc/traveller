@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
+import androidx.navigation.toRoute
 import com.agusteam.traveller.presenter.orders.screen.OrderItemDetailsScreen
 import com.agusteam.traveller.presenter.wishlist.screen.WishListScreen
 
@@ -21,13 +21,13 @@ fun WishListNavigationFlow() {
             WishListScreen { tripModel ->
                 val route = WishListItemDetailScreenRoute(
                     destiny = tripModel.destiny,
-                    cancellationPolicy = tripModel.cancellationPolicy,
+                    cancellationPolicy = tripModel.cancellation_policy,
                     images = tripModel.images,
                     tripId = tripModel.id,
                     isFavorite = tripModel.isSavedForLater,
-                    month = tripModel.month,
-                    businessImage = tripModel.businessImage,
-                    businessName = tripModel.businessName,
+                    month = tripModel.businessModel?.month ?: 0,
+                    businessImage = tripModel.businessModel?.image ?: "",
+                    businessName = tripModel.businessModel?.name ?: "",
                     businessId = tripModel.businessId,
                     name = tripModel.name,
                     description = tripModel.description,
@@ -42,10 +42,13 @@ fun WishListNavigationFlow() {
                 navController.navigate(route)
             }
         }
-        composable<WishListItemDetailScreenRoute> {
-            OrderItemDetailsScreen(goBack = {
-                navController.popBackStack()
-            })
+        composable<WishListItemDetailScreenRoute> { backStackEntry ->
+            val model = backStackEntry.toRoute<WishListItemDetailScreenRoute>()
+            OrderItemDetailsScreen(
+                model = model,
+                goBack = {
+                    navController.popBackStack()
+                })
         }
     }
 
