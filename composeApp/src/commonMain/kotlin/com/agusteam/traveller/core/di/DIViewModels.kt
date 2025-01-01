@@ -20,7 +20,7 @@ val viewModelModule = module {
     single<OrderHistoryViewModel> { OrderHistoryViewModel() }
     single<ShoppingItemDetailsViewModel> { ShoppingItemDetailsViewModel(get(), get(), get()) }
     single<OrderDetailViewModel> { OrderDetailViewModel() }
-    single<WishListItemViewModel> { WishListItemViewModel() }
+    single<WishListItemViewModel> { WishListItemViewModel(get()) }
     single<HomeViewModel> { HomeViewModel() }
-    single<TripProviderViewModel> { TripProviderViewModel(get()) }
+    single<TripProviderViewModel> { TripProviderViewModel(get(), get()) }
 }

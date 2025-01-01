@@ -70,7 +70,7 @@ fun TripProviderProfileScreen(
                     TripProviderOverviewShimmer()
                 }
             }
-            if (!state.isLoading) item {
+            if (!state.isLoading && state.upcomingTrips.isNotEmpty()) item {
                 UpcomingTripItemSection(
                     upcomingTripItemList = state.upcomingTrips,
                 ) {}

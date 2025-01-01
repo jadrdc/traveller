@@ -13,8 +13,10 @@ import com.agusteam.traveller.domain.interfaces.TripRepository
 import com.agusteam.traveller.domain.usecase.GetCategoryUseCase
 import com.agusteam.traveller.domain.usecase.GetPaginatedTripsUseCase
 import com.agusteam.traveller.domain.usecase.GetProfileUseCase
+import com.agusteam.traveller.domain.usecase.GetTripFavoriteListUseCase
 import com.agusteam.traveller.domain.usecase.GetTripProviderDetailsUseCase
 import com.agusteam.traveller.domain.usecase.GetTripsIncludedServicesUseCase
+import com.agusteam.traveller.domain.usecase.GetUpcomingTripByProviderUseCase
 import com.agusteam.traveller.domain.usecase.LoginUseCase
 import com.agusteam.traveller.domain.usecase.LogoutUseCase
 import com.agusteam.traveller.domain.usecase.MarkFavoriteTripUseCase
@@ -44,4 +46,6 @@ val diDomainModule = module {
     single<UnmarkedFavoriteTripUseCase> { UnmarkedFavoriteTripUseCase(get()) }
     single<MarkFavoriteTripUseCase> { MarkFavoriteTripUseCase(get()) }
     single<GetTripsIncludedServicesUseCase> { GetTripsIncludedServicesUseCase(get()) }
+    single<GetUpcomingTripByProviderUseCase> { GetUpcomingTripByProviderUseCase(get()) }
+    single<GetTripFavoriteListUseCase> { GetTripFavoriteListUseCase(get()) }
 }
