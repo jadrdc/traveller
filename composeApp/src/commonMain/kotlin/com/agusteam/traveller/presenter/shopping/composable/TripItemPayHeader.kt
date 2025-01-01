@@ -3,6 +3,7 @@ package com.agusteam.traveller.presenter.shopping.composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.agusteam.traveller.presenter.common.NavigationBar
-import com.agusteam.traveller.presenter.getGalleryPhoto
 import com.agusteam.traveller.presenter.shopping.state.TripDetailState
 import com.agusteam.traveller.presenter.theme.grey500
 import com.agusteam.traveller.presenter.theme.secondary
@@ -39,25 +39,39 @@ fun TripItemPayHeader(
         ) {
             AsyncImage(
                 modifier = Modifier.size(120.dp).clip(RoundedCornerShape(8.dp)),
-                model = getGalleryPhoto(),
+                model = state.galleryPhotos.firstOrNull() ?: "",
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )
-            Column {
-                Text(
-                    modifier = Modifier,
-                    text = state.title,
-                    color = secondary,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    modifier = Modifier,
-                    text = state.destiny,
-                    color = grey500,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Normal
-                )
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.height(120.dp)
+            ) {
+                Column {
+                    Text(
+                        modifier = Modifier,
+                        text = state.title,
+                        color = secondary,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        modifier = Modifier,
+                        text = state.destiny,
+                        color = grey500,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
+                Column {
+                    Text(
+                        color = secondary,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        text = "Fecha"
+                    )
+                    Text(text = state.leavingTime, modifier = Modifier.padding(top = 8.dp))
+                }
             }
         }
         HorizontalDivider(

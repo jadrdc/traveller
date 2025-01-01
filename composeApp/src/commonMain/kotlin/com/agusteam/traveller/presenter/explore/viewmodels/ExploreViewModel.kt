@@ -88,7 +88,7 @@ class ExploreViewModel(
                                     meetingPoint = trip.meeting_point,
                                     price = trip.total_payment,
                                     leavingTime = formatInstant(trip.leaving_time),
-                                    arrivingTime = formatInstant(trip.leaving_time)
+                                    arrivingTime = formatInstant(trip.returning_time)
 
                                 )
                             }

@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.agusteam.traveller.domain.models.PaymentModel
 import com.agusteam.traveller.presenter.common.CustomRadioButton
+import com.agusteam.traveller.presenter.formatMoney
 import com.agusteam.traveller.presenter.shopping.state.TripDetailState
 import com.agusteam.traveller.presenter.shopping.viewmodels.ShoppingItemDetailsViewModel
 import com.agusteam.traveller.presenter.theme.secondary
@@ -34,24 +35,31 @@ fun ShoppingPaymentWay(
         )
         CustomRadioButton(
             title = stringResource(Res.string.total_payment),
-            description = stringResource(Res.string.total_payment_description, state.totalPayment),
+            description = stringResource(
+                Res.string.total_payment_description,
+                formatMoney(state.totalPayment)
+            ),
             isSelected = PaymentModel.TOTAL_PAYMENT == state.selectedPaymentType
         ) {
             onEvent(
                 ShoppingItemDetailsViewModel.ShoppingDetailEvent.OnPaymentTypePicked(
-                PaymentModel.TOTAL_PAYMENT))
+                    PaymentModel.TOTAL_PAYMENT
+                )
+            )
         }
         CustomRadioButton(
             title = stringResource(Res.string.booking_payment),
             description = stringResource(
                 Res.string.booking_payment_description,
-                state.initialPayment
+                formatMoney(state.initialPayment)
             ),
             isSelected = PaymentModel.BOOKING_PAYMENT == state.selectedPaymentType
         ) {
             onEvent(
                 ShoppingItemDetailsViewModel.ShoppingDetailEvent.OnPaymentTypePicked(
-                PaymentModel.BOOKING_PAYMENT))
+                    PaymentModel.BOOKING_PAYMENT
+                )
+            )
 
         }
     }

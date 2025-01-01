@@ -73,7 +73,7 @@ fun TripItemPayingScreen(
             }
         }
         item {
-            Box(Modifier.padding(vertical = 16.dp)) {
+            Box(Modifier.padding(top = 16.dp)) {
                 ActionButton(
                     text = stringResource(Res.string.process_payment),
                     modifier = Modifier.fillMaxWidth()

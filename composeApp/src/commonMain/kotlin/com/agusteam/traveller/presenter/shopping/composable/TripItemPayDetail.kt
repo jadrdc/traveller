@@ -34,7 +34,7 @@ fun TripItemPayDetail(details:List<ShoppingDetailModel>) {
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(top = 8.dp),
                     text = item.description,
                     color = grey500,
                     fontSize = 14.sp,
