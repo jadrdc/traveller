@@ -32,9 +32,10 @@ import traveller.composeapp.generated.resources.trip_categories
 fun OrderItemDetailsScreen(
     viewModel: WishListOrderDetailViewModel = koinViewModel(),
     goBack: () -> Unit,
+    goDetails: (String) -> Unit,
     model: WishListItemDetailScreenRoute
 ) {
-    LaunchedEffect(model.tripId) {
+    LaunchedEffect(model.tripId, model.businessId) {
         viewModel.handleEvent(
             WishListOrderDetailViewModel.OrderDetailsEvent.OrderDetailsLoadIncludeServices(
                 model.tripId, model.businessName, model.businessImage, model.month
@@ -67,7 +68,7 @@ fun OrderItemDetailsScreen(
                     modifier = Modifier, state =
                     state.value.itemProviderState
                 ) {
-
+                    goDetails(model.businessId)
                 }
             }
             item {

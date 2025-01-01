@@ -7,6 +7,12 @@ sealed class WishListNavigation(val route: String) {
 }
 
 @Serializable
+data class WishProviderProfileScreen(
+    val businessId: String
+)
+
+
+@Serializable
 data class WishListItemDetailScreenRoute(
     val tripId: String,
     val name: String,

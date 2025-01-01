@@ -1,17 +1,26 @@
 package com.agusteam.traveller.presenter.wishlist.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.agusteam.traveller.presenter.orders.screen.OrderItemDetailsScreen
+import com.agusteam.traveller.presenter.profile.screen.TripProviderProfileScreen
 import com.agusteam.traveller.presenter.wishlist.screen.WishListScreen
 
 @Composable
 fun WishListNavigationFlow() {
     val navController = rememberNavController()
-
+    var route = remember {
+        WishListItemDetailScreenRoute(
+            "", "",
+            0.0f, 0.0f,
+            "", "", "", "", 0, isFavorite = true, images = listOf(),
+            "", "", "", "", 0, 0, "",
+        )
+    }
 
     NavHost(
         navController = navController,
@@ -19,15 +28,15 @@ fun WishListNavigationFlow() {
     ) {
         composable(WishListNavigation.WishListScreen.route) {
             WishListScreen { tripModel ->
-                val route = WishListItemDetailScreenRoute(
+                route = WishListItemDetailScreenRoute(
                     destiny = tripModel.destiny,
                     cancellationPolicy = tripModel.cancellation_policy,
                     images = tripModel.images,
                     tripId = tripModel.id,
                     isFavorite = tripModel.isSavedForLater,
-                    month = tripModel.businessModel?.month ?: 0,
-                    businessImage = tripModel.businessModel?.image ?: "",
-                    businessName = tripModel.businessModel?.name ?: "",
+                    month = tripModel.month,
+                    businessImage = tripModel.businessImage,
+                    businessName = tripModel.businessName,
                     businessId = tripModel.businessId,
                     name = tripModel.name,
                     description = tripModel.description,
@@ -47,8 +56,16 @@ fun WishListNavigationFlow() {
             OrderItemDetailsScreen(
                 model = model,
                 goBack = {
-                    navController.popBackStack()
+                    navController.navigate(WishListNavigation.WishListScreen.route)
+                }, goDetails = { businessId ->
+                    navController.navigate(WishProviderProfileScreen(businessId))
                 })
+        }
+        composable<WishProviderProfileScreen> { backStackEntry ->
+            val tripProviderModel = backStackEntry.toRoute<WishProviderProfileScreen>()
+            TripProviderProfileScreen(businessId = tripProviderModel.businessId, onBackPressed = {
+                navController.navigate(route)
+            })
         }
     }
 
