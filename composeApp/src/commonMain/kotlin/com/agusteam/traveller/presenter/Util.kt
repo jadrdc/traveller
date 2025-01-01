@@ -2,7 +2,6 @@ package com.agusteam.traveller.presenter
 
 import com.agusteam.traveller.domain.models.CategoryModel
 import com.agusteam.traveller.domain.models.TripModel
-import com.agusteam.traveller.domain.models.TripProviderModel
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -122,7 +121,6 @@ fun formatPhone(phone: String): String {
     return "${phone.substring(0, 3)}-${phone.substring(3, 6)}-${phone.substring(6)}"
 }
 
-
 fun createCategories(): List<CategoryModel> = listOf(
     CategoryModel(
         isSelected = true,
@@ -192,35 +190,6 @@ fun getIncludedServices(): List<String> {
         "Seguro Médico de Aventura",
         "Servicio de Aeroambulancia",
         "Super Staff entrenado en Primeros Auxilios en Lugares Remotos",
-    )
-}
-
-fun getProvider(): TripProviderModel {
-    return TripProviderModel(
-        id = "",
-        name = "AgustTrip",
-        image = "",
-        registeredItems = "48",
-        currentItems = "23",
-        description = "Descubre el mundo con [Nombre de la Empresa]. Somos expertos en crear experiencias únicas para cada viajero, diseñando itinerarios personalizados que combinan aventura, confort y cultura. Desde escapadas románticas hasta viajes en grupo o aventuras familiares, nos aseguramos de que cada detalle esté cuidadosamente planificado para que disfrutes al máximo.\n" +
-                "\n" +
-                "Conectamos a nuestros clientes con los destinos más impresionantes, ofreciendo servicios de calidad, atención personalizada y precios competitivos. ¡Haz realidad tus sueños de viaje con nosotros!",
-        phone = "809-945-3434",
-        email = "email@email.com",
-        address = "Calle, Av. San Vicente de Paúl Megacentro, Santo Domingo Este 11504",
-        month = 2,
-        avatarUrl = "https://picsum.photos/200/300",
-        categoryModel = createCategories().filter { it.description != "Populares" },
-        totalOfferedTrips = 60
-    )
-}
-
-fun getGalleryPhoto(): List<String> {
-    return listOf(
-        "https://picsum.photos/200/300",
-        "https://picsum.photos/300/300",
-        "https://picsum.photos/400/300",
-        "https://picsum.photos/500/300"
     )
 }
 
