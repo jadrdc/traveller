@@ -16,6 +16,8 @@ import com.agusteam.traveller.domain.usecase.MarkFavoriteTripUseCase
 import com.agusteam.traveller.domain.usecase.UnmarkedFavoriteTripUseCase
 import com.agusteam.traveller.presenter.explore.state.ExploreFilterState
 import com.agusteam.traveller.presenter.explore.state.ExploreState
+import com.agusteam.traveller.presenter.formatDateRange
+import com.agusteam.traveller.presenter.formatInstant
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
@@ -65,19 +67,29 @@ class ExploreViewModel(
                         is OperationResult.Success -> {
                             val tripList = resultTrips.data.map { trip ->
                                 TripModel(
-                                    cancellationPolicy = trip.cancellation_policy,
-                                    id = trip.id,
-                                    businessId = trip.businessModel.id,
-                                    businessName = trip.businessModel.name,
-                                    images = trip.images,
-                                    businessImage = trip.businessModel.image,
-                                    name = trip.name,
-                                    description = trip.description,
-                                    lat = trip.lat,
-                                    lng = trip.lng,
-                                    destiny = trip.destiny,
-                                    month = trip.businessModel.month,
-                                    categoryList = categories
+                                    cancellationPolicy = trip.tripModel.cancellation_policy,
+                                    id = trip.tripModel.id,
+                                    //businessId =" trip.businessModel.id",
+                                    //businessName = "trip.businessModel.name",
+                                    images = trip.tripModel.images,
+                                    // businessImage = "trip.businessModel.image",
+                                    name = trip.tripModel.name,
+                                    description = trip.tripModel.description,
+                                    lat = trip.tripModel.lat,
+                                    lng = trip.tripModel.lng,
+                                    date = formatDateRange(
+                                        start = trip.leaving_time,
+                                        end = trip.returning_time
+                                    ),
+                                    destiny = trip.tripModel.destiny,
+                                    //month = trip..businessModel.month,
+                                    categoryList = categories,
+                                    initialPayment = trip.initial_payment,
+                                    meetingPoint = trip.meeting_point,
+                                    price = trip.total_payment,
+                                    leavingTime = formatInstant(trip.leaving_time),
+                                    arrivingTime = formatInstant(trip.leaving_time)
+
                                 )
                             }
                             setState { copy(items = tripList) }

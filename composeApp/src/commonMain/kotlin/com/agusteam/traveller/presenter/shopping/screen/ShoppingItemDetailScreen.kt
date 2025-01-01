@@ -23,6 +23,7 @@ import com.agusteam.traveller.presenter.common.ErrorModal
 import com.agusteam.traveller.presenter.common.ItemProviderOverviewItem
 import com.agusteam.traveller.presenter.common.LinkButton
 import com.agusteam.traveller.presenter.common.MapDetails
+import com.agusteam.traveller.presenter.formatMoney
 import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemHeader
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemIncluded
@@ -80,7 +81,7 @@ fun ShoppingItemDetailScreen(
             if (state.tripId.isNotBlank()) {
                 item {
                     ShoppingItemHeader(
-                        images = state.details.galleryPhotos,
+                        images = state.galleryPhotos,
                         isSavedForLater = state.isMarkedAsFavorite,
                         onBackPressed = goBack
                     ) {
@@ -117,30 +118,30 @@ fun ShoppingItemDetailScreen(
                         itemsDetails = listOf(
                             ShoppingDetailModel(
                                 title = stringResource(Res.string.destiny),
-                                description = state.details.destiny,
+                                description = state.destiny,
                                 icon = Res.drawable.ic_pin
                             ), ShoppingDetailModel(
                                 title = stringResource(Res.string.initial_payment),
-                                description = state.initialPayment,
+                                description = formatMoney(state.initialPayment),
                                 icon = Res.drawable.ic_cash
                             ), ShoppingDetailModel(
                                 title = stringResource(Res.string.total_payment),
-                                description = state.totalPayment,
+                                description = formatMoney(state.totalPayment),
                                 icon = Res.drawable.ic_cash
                             ),
                             ShoppingDetailModel(
                                 title = stringResource(Res.string.starting_place),
-                                description = state.details.meetingPoint,
+                                description = state.meetingPoint,
                                 icon = Res.drawable.ic_address
                             ),
                             ShoppingDetailModel(
                                 title = stringResource(Res.string.leaving_time),
-                                description = state.details.leavingTime,
+                                description = state.leavingTime,
                                 icon = Res.drawable.ic_clock
                             ),
                             ShoppingDetailModel(
                                 title = stringResource(Res.string.arrival_time),
-                                description = state.details.arrivingTime,
+                                description = state.arrivingTime,
                                 icon = Res.drawable.ic_clock
                             )
                         )
@@ -191,7 +192,7 @@ fun ShoppingItemDetailScreen(
             ) {
 
                 LinkButton(
-                    text = state.totalPayment,
+                    text = formatMoney(state.totalPayment),
                 ) {
 
                 }

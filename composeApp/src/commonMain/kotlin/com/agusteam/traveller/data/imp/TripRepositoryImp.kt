@@ -2,7 +2,7 @@ package com.agusteam.traveller.data.imp
 
 import com.agusteam.traveller.core.base.OperationResult
 import com.agusteam.traveller.data.model.TripFavoriteRequest
-import com.agusteam.traveller.data.model.TripsPaginatedResponse
+import com.agusteam.traveller.data.model.TripListPaginationResponseItem
 import com.agusteam.traveller.data.network.services.TripService
 import com.agusteam.traveller.domain.interfaces.TripRepository
 
@@ -23,7 +23,7 @@ class TripRepositoryImp(private val service: TripService) : TripRepository {
         }
     }
 
-    override suspend fun getPaginatedTrips(): OperationResult<List<TripsPaginatedResponse>> {
+    override suspend fun getPaginatedTrips(): OperationResult<List<TripListPaginationResponseItem>> {
         return try {
             when (val result = service.getTrips()) {
                 is OperationResult.Success -> {

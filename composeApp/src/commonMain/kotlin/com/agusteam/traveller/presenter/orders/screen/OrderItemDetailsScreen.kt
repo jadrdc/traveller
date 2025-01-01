@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.agusteam.traveller.presenter.formatMoney
 import com.agusteam.traveller.presenter.getIncludedServices
 import com.agusteam.traveller.presenter.orders.viewmodels.OrderDetailViewModel
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingItemHeader
@@ -41,7 +42,7 @@ fun OrderItemDetailsScreen(viewModel: OrderDetailViewModel = koinViewModel(), go
         ) {
             item {
                 ShoppingItemHeader(
-                    images = state.value.details.galleryPhotos,
+                    images = state.value.galleryPhotos,
                     isSavedForLater = state.value.isMarkedAsFavorite,
                     onBackPressed = goBack
                 )
@@ -50,7 +51,7 @@ fun OrderItemDetailsScreen(viewModel: OrderDetailViewModel = koinViewModel(), go
                 ShoppingItemOverview(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     title = state.value.title,
-                    description = state.value.details.description
+                    description = state.value.description
                 )
             }
             item {
@@ -59,30 +60,31 @@ fun OrderItemDetailsScreen(viewModel: OrderDetailViewModel = koinViewModel(), go
                     itemsDetails = listOf(
                         ShoppingDetailModel(
                             title = stringResource(Res.string.destiny),
-                            description = state.value.details.destiny,
+                            description = state.value.destiny,
                             icon = Res.drawable.ic_pin
                         ), ShoppingDetailModel(
                             title = stringResource(Res.string.initial_payment),
-                            description = state.value.initialPayment,
+                            description = formatMoney(state.value.initialPayment),
                             icon = Res.drawable.ic_cash
                         ), ShoppingDetailModel(
                             title = stringResource(Res.string.total_payment),
-                            description = state.value.totalPayment,
+                            description = formatMoney(state.value.totalPayment)
+                                ,
                             icon = Res.drawable.ic_cash
                         ),
                         ShoppingDetailModel(
                             title = stringResource(Res.string.starting_place),
-                            description = state.value.details.meetingPoint,
+                            description = state.value.meetingPoint,
                             icon = Res.drawable.ic_address
                         ),
                         ShoppingDetailModel(
                             title = stringResource(Res.string.leaving_time),
-                            description = state.value.details.leavingTime,
+                            description = state.value.leavingTime,
                             icon = Res.drawable.ic_clock
                         ),
                         ShoppingDetailModel(
                             title = stringResource(Res.string.arrival_time),
-                            description = state.value.details.arrivingTime,
+                            description = state.value.arrivingTime,
                             icon = Res.drawable.ic_clock
                         )
                     )

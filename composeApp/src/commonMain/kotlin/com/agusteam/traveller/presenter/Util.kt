@@ -1,10 +1,52 @@
 package com.agusteam.traveller.presenter
 
 import com.agusteam.traveller.domain.models.CategoryModel
-import com.agusteam.traveller.domain.models.TripDetailsModel
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.domain.models.TripProviderModel
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.math.roundToInt
+
+fun formatMoney(amount: String): String {
+    return try {
+        val parts = amount.split(".")
+        val integerPart = parts[0].reversed().chunked(3).joinToString(",").reversed()
+        val decimalPart = if (parts.size > 1) parts[1].padEnd(2, '0').take(2) else "00"
+        "$integerPart.$decimalPart"
+    } catch (e: Exception) {
+        "Invalid amount"
+    }
+}
+
+fun formatInstant(
+    instant: Instant,
+    zoneId: TimeZone = TimeZone.currentSystemDefault()
+): String {
+    // Convert Instant to LocalDateTime in the provided TimeZone
+    val dateTime = instant.toLocalDateTime(zoneId)
+
+    // Define the months in Spanish
+    val monthsInSpanish = listOf(
+        "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+        "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+    )
+
+    // Extract day, month, year, hour, and minute
+    val day = dateTime.date.dayOfMonth
+    val month = monthsInSpanish[dateTime.date.monthNumber - 1]
+    val year = dateTime.date.year
+    val hour = dateTime.time.hour
+    val minute = dateTime.time.minute
+
+    // Determine AM/PM and format hour (12-hour clock)
+    val ampm = if (hour < 12) "AM" else "PM"
+    val hour12 = if (hour % 12 == 0) 12 else hour % 12
+    val minuteFormatted = if (minute < 10) "0$minute" else minute.toString()
+
+    // Construct the formatted string
+    return "$day $month $year ${hour12}:${minuteFormatted} $ampm"
+}
 
 fun getTimePeriodUnit(month: Int): String {
     val result = if (month in 0..11) {
@@ -15,6 +57,34 @@ fun getTimePeriodUnit(month: Int): String {
     val roundedResult = (result * 10.0).roundToInt() / 10.0
 
     return roundedResult.toString()  // Format the result to 1 decimal point
+}
+
+fun formatDateRange(
+    start: Instant,
+    end: Instant,
+    zoneId: TimeZone = TimeZone.currentSystemDefault()
+): String {
+    // Convert Instant to LocalDate in the provided TimeZone
+    val startDate = start.toLocalDateTime(zoneId).date
+    val endDate = end.toLocalDateTime(zoneId).date
+
+    // Define the months in Spanish manually
+    val monthsInSpanish = listOf(
+        "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+        "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+    )
+
+    // Extract day, month, and year from start and end dates
+    val startDay = startDate.dayOfMonth
+    val startMonth = monthsInSpanish[startDate.monthNumber - 1]
+    val startYear = startDate.year
+
+    val endDay = endDate.dayOfMonth
+    val endMonth = monthsInSpanish[endDate.monthNumber - 1]
+    val endYear = endDate.year
+
+    // Return the formatted range string
+    return "$startDay $startMonth - $endDay $endMonth $startYear"
 }
 
 fun getTimePeriod(month: Int): String {
@@ -66,7 +136,7 @@ fun createCategories(): List<CategoryModel> = listOf(
 )
 
 fun createShoppingItems(categories: List<CategoryModel>) = listOf(
-    TripModel(name = "Trudille", price = "23,430", categoryList = categories, id = ""),
+    TripModel(name = "Trudille", categoryList = categories, id = ""),
     TripModel(
         name = "Playa Fronton",
         categoryList = categories.take(2),
@@ -74,44 +144,37 @@ fun createShoppingItems(categories: List<CategoryModel>) = listOf(
     ),
     TripModel(
         name = "Valle de Dios",
-        price = "2,000",
         categoryList = categories.drop(2),
         id = ""
     ),
     TripModel(
         name = "Pico Duarte",
-        price = "22,000",
         categoryList = categories.firstOrNull()?.let { listOf(it) } ?: listOf(),
         id = ""),
-    TripModel(name = "Valle Nuevo", price = "2,300", id = ""),
+    TripModel(name = "Valle Nuevo", id = ""),
     TripModel(
         name = "Los Cacaos",
-        price = "6,300",
         categoryList = if (categories.size >= 4) listOf(categories[1], categories[3]) else listOf(),
         id = ""
     ),
     TripModel(
         name = "Playa Fronton",
-        price = "2,430",
         categoryList = categories.take(2),
         id = ""
     ),
     TripModel(
         name = "Valle de Dios",
-        price = "2,000",
         categoryList = categories.drop(2),
         id = ""
     ),
     TripModel(
         name = "Pico Duarte",
-        price = "22,000",
         categoryList = listOf(categories.first()),
         id = ""
     ),
-    TripModel(name = "Valle Nuevo", price = "2,300", id = ""),
+    TripModel(name = "Valle Nuevo", id = ""),
     TripModel(
         name = "Los Cacaos",
-        price = "6,300",
         categoryList = listOf(categories[1], categories[3]),
         id = ""
     )
@@ -152,20 +215,6 @@ fun getProvider(): TripProviderModel {
     )
 }
 
-fun getShoppingItemsDetails(): TripDetailsModel {
-    return TripDetailsModel(
-        description = "Un viaje a las playas más exóticas de Samaná, en República Dominicana Comenzaremos nuestro recorrido en la impresionante Laguna Cristal donde nos daremos un chapuzón, aprovecharemos para tomar fotos y luego iremos a comer donde una señora de la comunidad de El Valle, un delicioso Buffet de campo.\n" +
-                "\n" +
-                "Después de reposar la comida, nos vamos hacia playa El Valle a montar campamento, disfrutar de una tarde libre y explorar todo lo que tenemos a nuestro alrededor. Aquí hay ríos en los dos extremos y un paisaje que sin duda la pone dentro de las diez playas más hermosas de República Dominicana.\n" +
-                "\n" +
-                "En la noche podremos apreciar el cielo estrellado y disfrutar de una fogata en buena compañía. Al otro día seguimos con la aventura, nos vamos en lanchas a tres playas que se han mantenido completamente virgen. La primera, Playa Ermitaño II, conocida a nivel internacional por la versión turca del famoso reality “Survivor”. Allí estaremos disfrutando parte de la mañana y luego visitaremos Playa Ermitaño I y Playa Onda.",
-        arrivingTime = "23 Noviembre 2024  5:00AM",
-        leavingTime = "25 Noviembre 2024  5:00AM",
-        meetingPoint = "Barra Piantini - Plaza Andalucía I, Av. Gustavo Mejía Ricart con Avenida Abraham Lincoln, Santo Domingo",
-        destiny = "Pedernales",
-        includedServices = getIncludedServices(),
-    )
-}
 fun getGalleryPhoto(): List<String> {
     return listOf(
         "https://picsum.photos/200/300",
@@ -174,9 +223,6 @@ fun getGalleryPhoto(): List<String> {
         "https://picsum.photos/500/300"
     )
 }
-const val INITIAL_PAYMENT="$1000.0"
-const val TOTAL_PAYMENT="$12,000.0"
-const val PRICE = "2,430"
-const val DATE_RANGE = "Aug 31 - Sep 5"
+
 const val URL1 = "http://127.0.0.1:9000/"
 const val URL = "http://10.0.2.2:9000/"

@@ -10,10 +10,6 @@ sealed class NavigationRoutes(val route: String) {
     data object WishListScreen : NavigationRoutes("wishlist_screen")
     data object OrderHistoryScreen : NavigationRoutes("order_history_screen")
 }
-
-@Serializable
-object HomeScreenRoute
-
 @Serializable
 data class TripDetailScreenRoute(
     val tripId: String,
@@ -27,6 +23,17 @@ data class TripDetailScreenRoute(
     val month: Int = 0,
     val isFavorite: Boolean,
     val userdId: String,
-    val images: List<String>, val cancellationPolicy: String
-)
+    val images: List<String>,
+    val cancellationPolicy: String,
+
+    val arrivingTime: String,
+    val leavingTime: String,
+    val meetingPoint: String,
+    val price: Int,
+    val initialPayment: Int,
+    val destiny: String,
+
+
+
+    )
 

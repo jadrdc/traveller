@@ -3,14 +3,13 @@ package com.agusteam.traveller.data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TripsPaginatedResponse(
-    val businessModel: SummaryBusinessModel,
+data class TripModel(
+    val cancellation_policy: String,
     val description: String,
     val destiny: String,
+    val id: String,
+    val images: List<String>,
     val lat: Double,
     val lng: Double,
-    val id: String,
-    val name: String,
-    val images: List<String>,
-    val cancellation_policy: String
+    val name: String
 )

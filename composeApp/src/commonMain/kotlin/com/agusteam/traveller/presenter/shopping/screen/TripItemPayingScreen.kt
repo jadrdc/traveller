@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agusteam.traveller.presenter.common.ActionButton
+import com.agusteam.traveller.presenter.formatMoney
 import com.agusteam.traveller.presenter.shopping.composable.ShoppingPaymentWay
 import com.agusteam.traveller.presenter.shopping.composable.TripItemPayDetail
 import com.agusteam.traveller.presenter.shopping.composable.TripItemPayHeader
@@ -36,22 +37,22 @@ fun TripItemPayingScreen(
     val details = listOf(
         ShoppingDetailModel(
             title = stringResource(Res.string.initial_payment),
-            description = state.value.initialPayment,
+            description = formatMoney(state.value.initialPayment),
             icon = Res.drawable.ic_cash
         ),
         ShoppingDetailModel(
             title = stringResource(Res.string.total_payment),
-            description = state.value.totalPayment,
+            description = formatMoney(state.value.totalPayment),
             icon = Res.drawable.ic_cash
         ),
         ShoppingDetailModel(
             title = stringResource(Res.string.starting_place),
-            description = state.value.details.meetingPoint,
+            description = state.value.meetingPoint,
             icon = Res.drawable.ic_address
         ),
         ShoppingDetailModel(
             title = stringResource(Res.string.leaving_date),
-            description = state.value.details.leavingTime,
+            description = state.value.leavingTime,
             icon = Res.drawable.ic_address
         ),
     )

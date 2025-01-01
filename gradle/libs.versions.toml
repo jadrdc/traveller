@@ -17,6 +17,7 @@ junit = "4.13.2"
 kotlin = "2.0.21"
 kotlinSerialization = "1.7.3"
 koin = "4.0.0"
+kotlinxDatetime = "0.6.1"
 ktor-client = "3.0.3"
 coil3 = "3.0.0-rc02"
 ksp = "2.0.20-1.0.24"
@@ -34,10 +35,12 @@ pods-google-ios-maps-utils = "6.0.0"
 stripeAndroid = "21.2.1"
 stripeJava = "28.0.0"
 datastore = "1.1.1"
+coreI18n = "1.0.0-alpha01"
 
 
 [libraries]
 android-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieComposeVersion" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
 ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor-client" }
@@ -79,6 +82,7 @@ stripe-android = { module = "com.stripe:stripe-android", version.ref = "stripeAn
 stripe-java = { module = "com.stripe:stripe-java", version.ref = "stripeJava" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+androidx-core-i18n = { group = "androidx.core", name = "core-i18n", version.ref = "coreI18n" }
 
 
 [plugins]

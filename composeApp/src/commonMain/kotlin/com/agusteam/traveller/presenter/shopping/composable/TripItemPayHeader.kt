@@ -53,7 +53,7 @@ fun TripItemPayHeader(
                 )
                 Text(
                     modifier = Modifier,
-                    text = state.details.destiny,
+                    text = state.destiny,
                     color = grey500,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal

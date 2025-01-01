@@ -28,6 +28,7 @@ import coil3.compose.AsyncImage
 import com.agusteam.traveller.domain.models.TripModel
 import com.agusteam.traveller.presenter.common.FavoriteButton
 import com.agusteam.traveller.presenter.explore.viewmodels.ExploreEvent
+import com.agusteam.traveller.presenter.formatMoney
 import com.agusteam.traveller.presenter.theme.CustomFontFamily
 import com.agusteam.traveller.presenter.theme.grey500
 import com.agusteam.traveller.presenter.theme.primary
@@ -94,7 +95,7 @@ fun TripItem(
 
             )
             Text(
-                text = "$${item.price}",
+                text = formatMoney(item.price),
                 color = secondary,
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier,

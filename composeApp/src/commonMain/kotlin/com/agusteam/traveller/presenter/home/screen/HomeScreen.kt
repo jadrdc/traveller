@@ -59,6 +59,7 @@ fun HomeScreen(
                         ExploreScreen { tripModel, userId ->
                             onNavigateDetails(
                                 TripDetailScreenRoute(
+                                    destiny = tripModel.destiny,
                                     cancellationPolicy = tripModel.cancellationPolicy,
                                     images = tripModel.images,
                                     userdId = userId,
@@ -71,7 +72,12 @@ fun HomeScreen(
                                     name = tripModel.name,
                                     description = tripModel.description,
                                     lat = tripModel.lat.toFloat(),
-                                    lng = tripModel.lng.toFloat()
+                                    lng = tripModel.lng.toFloat(),
+                                    initialPayment = tripModel.initialPayment,
+                                    meetingPoint = tripModel.meetingPoint,
+                                    arrivingTime = tripModel.arrivingTime,
+                                    leavingTime = tripModel.leavingTime,
+                                    price = tripModel.price,
                                 )
                             )
                         }

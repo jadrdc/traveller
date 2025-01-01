@@ -1,7 +1,5 @@
 package com.agusteam.traveller.domain.models
 
-import com.agusteam.traveller.presenter.DATE_RANGE
-import com.agusteam.traveller.presenter.PRICE
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,8 +16,16 @@ data class TripModel(
     val month: Int = 0,
     val images: List<String> = listOf(),
     val cancellationPolicy: String = "",
-    val price: String = PRICE,
-    val date: String = DATE_RANGE,
     val categoryList: List<CategoryModel> = listOf(),
     val isSavedForLater: Boolean = false,
-)
+
+    val arrivingTime: String = "",
+    val leavingTime: String = "",
+    val meetingPoint: String = "",
+    val price: Int = 0,
+    val initialPayment: Int = 0,
+
+
+    val date: String = "",
+
+    )

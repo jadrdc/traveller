@@ -8,7 +8,6 @@ import com.agusteam.traveller.domain.models.PaymentModel
 import com.agusteam.traveller.domain.usecase.GetTripsIncludedServicesUseCase
 import com.agusteam.traveller.domain.usecase.MarkFavoriteTripUseCase
 import com.agusteam.traveller.domain.usecase.UnmarkedFavoriteTripUseCase
-import com.agusteam.traveller.presenter.getShoppingItemsDetails
 import com.agusteam.traveller.presenter.home.navigation.TripDetailScreenRoute
 import com.agusteam.traveller.presenter.shopping.state.TripDetailState
 import kotlinx.coroutines.launch
@@ -38,7 +37,13 @@ class ShoppingItemDetailsViewModel(
                         tripId = model.tripId,
                         userId = model.userdId,
                         images = model.images,
-                        cancellationPolicy = model.cancellationPolicy
+                        cancellationPolicy = model.cancellationPolicy,
+                        initialPrice = model.initialPayment,
+                        meetingPoint = model.meetingPoint,
+                        leavingTime = model.leavingTime,
+                        arrivingTime = model.arrivingTime,
+                        price = model.price,
+                        destiny = model.destiny
                     )
                 )
             } catch (e: CancellationException) {
@@ -81,6 +86,7 @@ class ShoppingItemDetailsViewModel(
                 is ShoppingDetailEvent.ShoppingDetailLoaded -> {
                     setState {
                         copy(
+                            galleryPhotos = event.images,
                             userId = event.userId,
                             tripId = event.tripId,
                             isMarkedAsFavorite = event.isFavorite,
@@ -91,9 +97,14 @@ class ShoppingItemDetailsViewModel(
                             lat = event.lat,
                             lng = event.lng,
                             description = event.description,
-                            details = getShoppingItemsDetails().copy(galleryPhotos = event.images),
                             title = event.name,
-                            cancellationPolicy = event.cancellationPolicy
+                            cancellationPolicy = event.cancellationPolicy,
+                            destiny = event.destiny,
+                            arrivingTime = event.arrivingTime,
+                            leavingTime = event.leavingTime,
+                            meetingPoint = event.meetingPoint,
+                            initialPayment = event.initialPrice,
+                            totalPayment = event.price
                         )
                     }
                     getIncludedServices()
@@ -171,7 +182,13 @@ class ShoppingItemDetailsViewModel(
             val images: List<String>,
             val cancellationPolicy: String,
 
-            ) : ShoppingDetailEvent
+            val arrivingTime: String = "",
+            val leavingTime: String = "",
+            val meetingPoint: String = "",
+            val destiny: String = "",
+            val price: Int,
+            val initialPrice: Int = 0,
+        ) : ShoppingDetailEvent
 
         data object MarkFavorite : ShoppingDetailEvent
         data object OnErrorModalAccepted : ShoppingDetailEvent

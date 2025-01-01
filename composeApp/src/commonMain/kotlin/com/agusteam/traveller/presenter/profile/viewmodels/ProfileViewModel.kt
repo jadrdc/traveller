@@ -3,7 +3,6 @@ package com.agusteam.traveller.presenter.profile.viewmodels
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.viewModelScope
 import com.agusteam.traveller.core.base.GenericViewModel
-import com.agusteam.traveller.core.di.viewModelModule
 import com.agusteam.traveller.data.util.EMAIL
 import com.agusteam.traveller.data.util.LAST_NAME
 import com.agusteam.traveller.data.util.NAME
@@ -13,7 +12,6 @@ import com.agusteam.traveller.domain.usecase.GetProfileUseCase
 import com.agusteam.traveller.domain.usecase.LogoutUseCase
 import com.agusteam.traveller.presenter.formatPhone
 import com.agusteam.traveller.presenter.profile.state.ProfileState
-import com.agusteam.traveller.presenter.signup.viewmodels.LoginEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
