@@ -69,10 +69,10 @@ class ExploreViewModel(
                                 TripModel(
                                     cancellationPolicy = trip.tripModel.cancellation_policy,
                                     id = trip.tripModel.id,
-                                    //businessId =" trip.businessModel.id",
-                                    //businessName = "trip.businessModel.name",
+                                    businessId = trip.tripModel.businessModel.id,
+                                    businessName = trip.tripModel.businessModel.name,
                                     images = trip.tripModel.images,
-                                    // businessImage = "trip.businessModel.image",
+                                    businessImage = trip.tripModel.businessModel.image,
                                     name = trip.tripModel.name,
                                     description = trip.tripModel.description,
                                     lat = trip.tripModel.lat,
@@ -82,7 +82,7 @@ class ExploreViewModel(
                                         end = trip.returning_time
                                     ),
                                     destiny = trip.tripModel.destiny,
-                                    //month = trip..businessModel.month,
+                                    month = trip.tripModel.businessModel.month,
                                     categoryList = categories,
                                     initialPayment = trip.initial_payment,
                                     meetingPoint = trip.meeting_point,

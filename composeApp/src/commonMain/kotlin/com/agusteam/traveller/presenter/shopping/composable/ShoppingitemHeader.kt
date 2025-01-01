@@ -33,7 +33,7 @@ fun ShoppingItemHeader(
         Box {
             HorizontalPager(state = pagerState) { page ->
                 AsyncImage(
-                    modifier = Modifier.fillMaxWidth().height(290.dp),
+                    modifier = Modifier.fillMaxWidth().height(250.dp),
                     model = images[page],
                     contentScale = ContentScale.FillBounds,
                     contentDescription = null

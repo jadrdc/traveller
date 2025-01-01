@@ -19,7 +19,7 @@ import com.agusteam.traveller.presenter.common.effects.shimmerEffect
 fun TripItemLoading() {
     Column {
         Box(
-            modifier = Modifier.fillMaxWidth().height(290.dp).clip(RoundedCornerShape(16.dp))
+            modifier = Modifier.fillMaxWidth().height(250.dp).clip(RoundedCornerShape(16.dp))
                 .shimmerEffect(),
         ) {
 

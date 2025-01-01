@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,7 +44,7 @@ fun TripItem(
     Column(Modifier.clickable { onClick() }) {
         Box {
             AsyncImage(
-                modifier = Modifier.fillMaxWidth().height(290.dp).clip(RoundedCornerShape(16.dp)),
+                modifier = Modifier.fillMaxWidth().height(250.dp).clip(RoundedCornerShape(16.dp)),
                 model = item.images.firstOrNull() ?: "",
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
@@ -87,13 +88,31 @@ fun TripItem(
                     }
                 }
             }
-            Text(
-                text = item.date,
-                color = grey500,
-                modifier = Modifier,
-                style = MaterialTheme.typography.bodyMedium // Use the appropriate typography style
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = item.date,
+                    color = grey500,
+                    modifier = Modifier,
+                    style = MaterialTheme.typography.bodyMedium // Use the appropriate typography style
 
-            )
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    AsyncImage(
+                        modifier = Modifier.size(24.dp).clip(CircleShape),
+                        model = item.businessImage,
+                        contentScale = ContentScale.FillBounds,
+                        contentDescription = null
+                    )
+                    Text(
+                        text = item.businessName,
+                        modifier = Modifier.padding(top = 4.dp, start = 4.dp)
+                    )
+                }
+            }
             Text(
                 text = formatMoney(item.price),
                 color = secondary,
