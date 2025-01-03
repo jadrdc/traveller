@@ -18,6 +18,7 @@ import com.agusteam.traveller.presenter.explore.state.ExploreFilterState
 import com.agusteam.traveller.presenter.explore.state.ExploreState
 import com.agusteam.traveller.presenter.formatDateRange
 import com.agusteam.traveller.presenter.formatInstant
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ class ExploreViewModel(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun getUserInfo() {
         getProfileUseCase().mapLatest { preference ->
             val userIdKey = stringPreferencesKey(USER_ID)
@@ -83,7 +85,7 @@ class ExploreViewModel(
                                     ),
                                     destiny = trip.tripModel.destiny,
                                     month = trip.tripModel.businessModel.month,
-                                    categoryList = categories,
+                                    categoryList = listOf(),
                                     initialPayment = trip.initial_payment,
                                     meetingPoint = trip.meeting_point,
                                     price = trip.total_payment,
